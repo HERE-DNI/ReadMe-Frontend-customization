@@ -1,0 +1,309 @@
+<script>
+(function () {
+  /**
+   * HERE / ReadMe Staging CSS + JS Loader
+   *
+   * Put this in:
+   * ReadMe Dashboard > Appearance > Custom Code > Footer JS
+   *
+   * TEST PARAMS:
+   * ?staging-css=true
+   * ?staging-js=true
+   *
+   * CSS only:
+   * ?staging-css=true
+   *
+   * JS only:
+   * ?staging-js=true
+   *
+   * CSS + JS together:
+   * ?staging-css=true&staging-js=true
+   *
+   * Normal visitors see nothing.
+   * Staging CSS and/or staging JS only load when their matching param is found.
+   *
+   * This also tries to support ReadMe logged-in preview iframe mode by checking:
+   * - the current iframe URL
+   * - the parent/top URL, if accessible
+   * - document.referrer, if available
+   *
+   * Replace these with the real HERE-hosted staging CSS and JS files.
+   */
+  var STAGING_CSS_URL = "/PATH-TO-YOUR-STAGING-FILE.css";
+  var STAGING_JS_URL = "/PATH-TO-YOUR-STAGING-FILE.js";
+
+  var CSS_ID = "readme-staging-css";
+  var JS_ID = "readme-staging-js";
+
+  var BADGE_CONTAINER_ID = "readme-staging-badge-container";
+  var CSS_BADGE_ID = "readme-staging-css-badge";
+  var JS_BADGE_ID = "readme-staging-js-badge";
+
+  var CSS_PARAM_NAME = "staging-css";
+  var JS_PARAM_NAME = "staging-js";
+
+  var stagingCssLoaded = false;
+  var stagingJsLoaded = false;
+
+  function urlHasParam(url, paramName) {
+    if (!url) return false;
+
+    try {
+      var parsedUrl = new URL(url, window.location.origin);
+      return parsedUrl.searchParams.get(paramName) === "true";
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function shouldLoadParam(paramName) {
+    /**
+     * 1. Normal public docs page:
+     * https://docs.here.com/...?...staging-css=true
+     * https://docs.here.com/...?...staging-js=true
+     */
+    if (urlHasParam(window.location.href, paramName)) {
+      return true;
+    }
+
+    /**
+     * 2. Logged-in preview/admin wrapper, only if the browser allows access.
+     * This may fail if the parent page is cross-origin, so it is wrapped safely.
+     */
+    try {
+      if (window.top && window.top !== window && urlHasParam(window.top.location.href, paramName)) {
+        return true;
+      }
+    } catch (e) {
+      /**
+       * Cross-origin iframe access can be blocked. That is expected.
+       */
+    }
+
+    try {
+      if (window.parent && window.parent !== window && urlHasParam(window.parent.location.href, paramName)) {
+        return true;
+      }
+    } catch (e) {
+      /**
+       * Cross-origin iframe access can be blocked. That is expected.
+       */
+    }
+
+    /**
+     * 3. Fallback for iframe preview.
+     * Some browsers expose the parent URL through document.referrer.
+     */
+    if (urlHasParam(document.referrer, paramName)) {
+      return true;
+    }
+
+    return false;
+  }
+
+  function shouldLoadStagingCss() {
+    return shouldLoadParam(CSS_PARAM_NAME);
+  }
+
+  function shouldLoadStagingJs() {
+    return shouldLoadParam(JS_PARAM_NAME);
+  }
+
+  function addCacheBuster(url) {
+    var separator = url.indexOf("?") === -1 ? "?" : "&";
+    return url + separator + "readmeStagingBust=" + Date.now();
+  }
+
+  function removeElement(id) {
+    var el = document.getElementById(id);
+    if (el) el.remove();
+  }
+
+  function isPlaceholderUrl(url) {
+    return (
+      !url ||
+      url.indexOf("PATH-TO-YOUR-STAGING-FILE") !== -1 ||
+      url.indexOf("PATH-TO-YOUR-STAGING-CSS") !== -1 ||
+      url.indexOf("PATH-TO-YOUR-STAGING-JS") !== -1
+    );
+  }
+
+  function removeBadgesIfEmpty() {
+    var container = document.getElementById(BADGE_CONTAINER_ID);
+
+    if (container && container.children.length === 0) {
+      container.remove();
+    }
+  }
+
+  function removeStagingCss() {
+    removeElement(CSS_ID);
+    removeElement(CSS_BADGE_ID);
+    stagingCssLoaded = false;
+    removeBadgesIfEmpty();
+  }
+
+  function removeStagingJs() {
+    removeElement(JS_ID);
+    removeElement(JS_BADGE_ID);
+    stagingJsLoaded = false;
+    removeBadgesIfEmpty();
+  }
+
+  function removeStaging() {
+    removeStagingCss();
+    removeStagingJs();
+
+    /**
+     * Cleanup from earlier testing/debug snippets.
+     */
+    removeElement("readme-staging-css-test");
+    removeElement("readme-css-debug-badge");
+    removeElement("readme-staging-loader-badge");
+    removeElement("readme-staging-css-badge");
+
+    document.documentElement.style.outline = "";
+  }
+
+  function getBadgeContainer() {
+    var container = document.getElementById(BADGE_CONTAINER_ID);
+
+    if (!container) {
+      container = document.createElement("div");
+      container.id = BADGE_CONTAINER_ID;
+      container.style.position = "fixed";
+      container.style.right = "16px";
+      container.style.bottom = "16px";
+      container.style.zIndex = "999999999";
+      container.style.display = "flex";
+      container.style.flexDirection = "column";
+      container.style.gap = "8px";
+      container.style.alignItems = "flex-end";
+      container.style.pointerEvents = "none";
+
+      document.body.appendChild(container);
+    }
+
+    return container;
+  }
+
+  function showBadge(id, text, background) {
+    removeElement(id);
+
+    var badge = document.createElement("div");
+    badge.id = id;
+    badge.textContent = text;
+    badge.style.padding = "8px 12px";
+    badge.style.borderRadius = "999px";
+    badge.style.background = background;
+    badge.style.color = "#fff";
+    badge.style.fontFamily = "system-ui, sans-serif";
+    badge.style.fontSize = "12px";
+    badge.style.fontWeight = "700";
+    badge.style.boxShadow = "0 6px 18px rgba(0,0,0,.25)";
+    badge.style.pointerEvents = "none";
+
+    getBadgeContainer().appendChild(badge);
+  }
+
+  function loadStagingCss() {
+    removeElement(CSS_ID);
+    removeElement(CSS_BADGE_ID);
+
+    if (isPlaceholderUrl(STAGING_CSS_URL)) {
+      showBadge(CSS_BADGE_ID, "NO STAGING CSS FOUND", "#dc2626");
+      return;
+    }
+
+    var link = document.createElement("link");
+    link.id = CSS_ID;
+    link.rel = "stylesheet";
+    link.href = addCacheBuster(STAGING_CSS_URL);
+
+    link.onload = function () {
+      stagingCssLoaded = true;
+      showBadge(CSS_BADGE_ID, "STAGING CSS ACTIVE", "#16a34a");
+    };
+
+    link.onerror = function () {
+      removeElement(CSS_ID);
+      stagingCssLoaded = false;
+      showBadge(CSS_BADGE_ID, "NO STAGING CSS FOUND", "#dc2626");
+    };
+
+    document.head.appendChild(link);
+  }
+
+  function loadStagingJs() {
+    removeElement(JS_ID);
+    removeElement(JS_BADGE_ID);
+
+    if (isPlaceholderUrl(STAGING_JS_URL)) {
+      showBadge(JS_BADGE_ID, "NO STAGING JS FOUND", "#dc2626");
+      return;
+    }
+
+    var script = document.createElement("script");
+    script.id = JS_ID;
+    script.src = addCacheBuster(STAGING_JS_URL);
+
+    script.onload = function () {
+      stagingJsLoaded = true;
+      showBadge(JS_BADGE_ID, "STAGING JS ACTIVE", "#16a34a");
+    };
+
+    script.onerror = function () {
+      removeElement(JS_ID);
+      stagingJsLoaded = false;
+      showBadge(JS_BADGE_ID, "NO STAGING JS FOUND", "#dc2626");
+    };
+
+    document.body.appendChild(script);
+  }
+
+  function syncStagingAssets() {
+    if (shouldLoadStagingCss()) {
+      if (!stagingCssLoaded && !document.getElementById(CSS_ID)) {
+        loadStagingCss();
+      }
+    } else {
+      removeStagingCss();
+    }
+
+    if (shouldLoadStagingJs()) {
+      if (!stagingJsLoaded && !document.getElementById(JS_ID)) {
+        loadStagingJs();
+      }
+    } else {
+      removeStagingJs();
+    }
+  }
+
+  syncStagingAssets();
+
+  /**
+   * ReadMe is an SPA, so catch URL changes without a full refresh.
+   */
+  ["pushState", "replaceState"].forEach(function (method) {
+    var original = history[method];
+
+    history[method] = function () {
+      var result = original.apply(this, arguments);
+      setTimeout(syncStagingAssets, 50);
+      return result;
+    };
+  });
+
+  window.addEventListener("popstate", function () {
+    setTimeout(syncStagingAssets, 50);
+  });
+
+  /**
+   * Backup cleanup.
+   * If a staging param is gone, remove only that matching staging asset and badge.
+   */
+  setInterval(function () {
+    syncStagingAssets();
+  }, 1000);
+})();
+</script>

@@ -1,0 +1,347 @@
+<link rel="stylesheet" href="https://platform.here.com/hds/hds-styles.css?versionOverride=2026.2.0" />
+<link rel="stylesheet" href="https://platform.here.com/hds/hds-iconlibrary-8px.css?versionOverride=2026.2.0" />
+<link rel="stylesheet" href="https://platform.here.com/hds/hds-iconlibrary-16px.css?versionOverride=2026.2.0" />
+<link rel="stylesheet" href="https://platform.here.com/hds/hds-iconlibrary-24px.css?versionOverride=2026.2.0" />
+<script defer src="https://platform.here.com/hds/hds-webcomponents.js?versionOverride=2026.2.0"></script>
+
+<script src="https://js.api.here.com/v3/3.1/mapsjs-core.js"></script>
+<script src="https://js.api.here.com/v3/3.1/mapsjs-service.js"></script>
+<script src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js"></script>
+<script src="https://js.api.here.com/v3/3.1/mapsjs-ui.js"></script>
+<!-- HARP rendering engine (required for EngineType.HARP) -->
+<script src="https://js.api.here.com/v3/3.1/mapsjs-harp.js"></script>
+
+<script>
+  window.utag_cfg_ovrd = { noview: true };
+  window.nkT = { pName: "", sCountry: "", sLang: "" };
+</script>
+<script src="//tags.tiqcdn.com/utag/here/herecomcorporate/prod/utag.js"></script>
+
+<script>
+//DO NOT ALLOW REQUEST ACCESS PAGE
+(function () {
+  const HOME_URL = 'https://docs.here.com/';
+
+  // Map every possible route/alias to one canonical project key
+  const PROJECT_ALIASES = {
+    'custom-attributes': 'custom-attributes',
+    'here-custom-attributes': 'custom-attributes',
+
+    'anonymizer': 'anonymizer',
+
+    'behavioral-maneuvers': 'behavioral-maneuvers',
+
+    'coverage': 'coverage',
+    'coverage-kpky': 'coverage',
+
+    'data-api': 'data-api',
+    'data-api-fmrg': 'data-api',
+
+    'data-sdk': 'data-sdk',
+
+    'embedded-editor': 'embedded-editor',
+
+    'geocoding-and-search': 'geocoding-and-search',
+    'geocoding-search': 'geocoding-and-search',
+
+    'gis-data-suite': 'gis-data-suite',
+
+    'hd-live-map': 'hd-live-map',
+
+    'destination-weather': 'destination-weather',
+    'here-destination-weather': 'destination-weather',
+
+    'ev-products': 'ev-products',
+    'here-ev-products': 'ev-products',
+
+    'fuel-prices': 'fuel-prices',
+    'here-fuel-prices': 'fuel-prices',
+
+    'map-rendering': 'map-rendering',
+    'here-map-rendering': 'map-rendering',
+
+    'parking': 'parking',
+    'here-parking': 'parking',
+
+    'positioning': 'positioning',
+    'here-positioning': 'positioning',
+
+    'real-time-traffic': 'real-time-traffic',
+    'here-real-time-traffic': 'real-time-traffic',
+
+    'routing': 'routing',
+    'here-routing': 'routing',
+    'routing-api': 'routing-api',
+    'here-routing-api': 'routing-api',
+
+    'safety-cameras': 'safety-cameras',
+    'here-safety-cameras': 'safety-cameras',
+
+    'here-sdk': 'here-sdk',
+
+    'style-editor': 'style-editor',
+    'here-style-editor': 'style-editor',
+
+    'tour-planning': 'tour-planning',
+    'here-tour-planning': 'tour-planning',
+
+    'traffic-analytics': 'traffic-analytics',
+    'here-traffic-analytics': 'traffic-analytics',
+
+    'traffic-api': 'traffic-api',
+    'here-traffic-api': 'traffic-api',
+
+    'transit': 'transit',
+    'here-transit': 'transit',
+
+    'wego': 'wego',
+    'here-wego': 'wego',
+
+    'identity-and-access-management': 'identity-and-access-management',
+
+    'indoor-map': 'indoor-map',
+    'indoor-map-skpy': 'indoor-map',
+
+    'intro-to-mapping-concepts': 'intro-to-mapping-concepts',
+    'introduction-to-mapping-c': 'intro-to-mapping-concepts',
+
+    'local-maps-regulatory-approval': 'local-maps-regulatory-approval',
+
+    'map-attributes': 'map-attributes',
+    'map-attributes-api': 'map-attributes',
+
+    'map-content': 'map-content',
+
+    'map-feedback': 'map-feedback',
+    'map-feedback-api': 'map-feedback',
+
+    'mapmaking': 'mapmaking',
+
+    'maps-api-for-js': 'maps-api-for-js',
+
+    'maps-xml': 'maps-xml',
+
+    'optimized-client-map': 'optimized-client-map',
+
+    'voice-phonetic-transcriptions': 'voice-phonetic-transcriptions',
+    'phonetic-training-data': 'voice-phonetic-transcriptions',
+
+    'platform-mom': 'platform-mom',
+
+    'system-status': 'system-status',
+    'system-status-api': 'system-status',
+
+    'policies': 'policies',
+
+    'scenextract': 'scenextract',
+
+    'tracking': 'tracking',
+    'tracking-api': 'tracking',
+
+    'usage': 'usage',
+    'usage-api': 'usage',
+
+    'what3words': 'what3words',
+    'what3words-diqg': 'what3words',
+
+    'workspace': 'workspace',
+    'workspace-lvmk': 'workspace',
+
+    'outing-api-test': 'outing-api-test',
+
+    'test-swagger-files': 'test-swagger-files',
+
+    'test-l10n-scenarios': 'test-l10n-scenarios'
+  };
+
+  function getHubMeData() {
+    const el = document.querySelector('#hub-me[data-json]');
+    if (!el) return null;
+
+    try {
+      return JSON.parse(el.getAttribute('data-json'));
+    } catch (err) {
+      console.error('Failed to parse hub-me:', err);
+      return null;
+    }
+  }
+
+  function normalizePathname(pathname) {
+    return pathname.replace(/^\/+|\/+$/g, '');
+  }
+
+  function getCanonicalAccessSet(hub) {
+    const set = new Set();
+
+    if (!hub?.search?.metaData || !Array.isArray(hub.search.metaData)) {
+      return set;
+    }
+
+    for (const project of hub.search.metaData) {
+      const candidates = [project?.subpath, project?.subdomain]
+        .filter(Boolean)
+        .map(v => String(v).trim().replace(/^\/+|\/+$/g, ''));
+
+      for (const candidate of candidates) {
+        const canonical = PROJECT_ALIASES[candidate] || candidate;
+        set.add(canonical);
+      }
+    }
+
+    return set;
+  }
+
+  function getRequestedRouteInfo(url) {
+    const parts = normalizePathname(url.pathname).split('/').filter(Boolean);
+    if (!parts.length) return null;
+
+    const firstPart = parts[0];
+    const canonicalProject = PROJECT_ALIASES[firstPart];
+
+    if (!canonicalProject) return null;
+
+    return {
+      rawProjectPath: firstPart,
+      canonicalProject,
+      isAdminUrl: parts[1] === 'admin'
+    };
+  }
+
+  function getLanguage() {
+    const lang = document.documentElement.lang || navigator.language || '';
+    return lang.toLowerCase().startsWith('ja') ? 'ja' : 'en';
+  }
+
+  function showAccessDeniedModal() {
+    const messages = {
+      en: 'This documentation is restricted to customers who have licensed this product. If you have licensed this product and are unable to access this documentation, please contact us at support.here.com.',
+      ja: 'このドキュメントは、本製品をライセンスされたお客様のみがアクセスできます。本製品をライセンスされているにもかかわらずドキュメントにアクセスできない場合は、support.here.com までお問い合わせください。'
+    };
+
+    const lang = getLanguage();
+    const message = messages[lang];
+
+    if (!document.getElementById('here-access-modal-styles')) {
+      const style = document.createElement('style');
+      style.id = 'here-access-modal-styles';
+      style.textContent = [
+        '#here-access-modal-overlay {',
+        '  position: fixed; inset: 0; background: rgba(0,0,0,0.5);',
+        '  z-index: 99999; display: flex; align-items: center; justify-content: center;',
+        '}',
+        '#here-access-modal {',
+        '  background: #fff; border-radius: 8px; padding: 32px;',
+        '  max-width: 480px; width: 90%; position: relative;',
+        '  box-shadow: 0 8px 32px rgba(0,0,0,0.18); font-family: inherit;',
+        '}',
+        '#here-access-modal-close-x {',
+        '  position: absolute; top: 12px; right: 16px; background: none;',
+        '  border: none; font-size: 22px; cursor: pointer; color: #666;',
+        '  line-height: 1; padding: 4px;',
+        '}',
+        '#here-access-modal-close-x:hover { color: #000; }',
+        '#here-access-modal p {',
+        '  margin: 0 0 24px; font-size: 15px; line-height: 1.6; color: #333 !important;',
+        '}',
+        '#here-access-modal a {',
+        '  color: #00AFAA !important;',
+        '}',
+        '#here-access-modal-close-btn {',
+        '  display: block; margin: 0 auto; padding: 10px 28px;',
+        '  background: #00AFAA; color: #fff; border: none;',
+        '  border-radius: 4px; font-size: 14px; cursor: pointer;',
+        '}',
+        '#here-access-modal-close-btn:hover { background: #008F8A; }'
+      ].join('\n');
+      document.head.appendChild(style);
+    }
+
+    const overlay = document.createElement('div');
+    overlay.id = 'here-access-modal-overlay';
+
+    const modal = document.createElement('div');
+    modal.id = 'here-access-modal';
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+
+    const closeX = document.createElement('button');
+    closeX.id = 'here-access-modal-close-x';
+    closeX.setAttribute('aria-label', 'Close');
+    closeX.textContent = '\u00d7';
+
+    const p = document.createElement('p');
+    const parts = message.split('support.here.com');
+    p.appendChild(document.createTextNode(parts[0]));
+    const a = document.createElement('a');
+    a.href = 'https://support.here.com';
+    a.textContent = 'support.here.com';
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    p.appendChild(a);
+    p.appendChild(document.createTextNode(parts[1]));
+
+    const closeBtn = document.createElement('button');
+    closeBtn.id = 'here-access-modal-close-btn';
+    closeBtn.textContent = lang === 'ja' ? '\u9589\u3058\u308b' : 'Close';
+
+    modal.appendChild(closeX);
+    modal.appendChild(p);
+    modal.appendChild(closeBtn);
+    overlay.appendChild(modal);
+    document.body.appendChild(overlay);
+
+    function dismiss() {
+      overlay.remove();
+      document.removeEventListener('keydown', onKeyDown);
+    }
+
+    function onKeyDown(e) {
+      if (e.key === 'Escape') dismiss();
+    }
+
+    closeX.addEventListener('click', dismiss);
+    closeBtn.addEventListener('click', dismiss);
+    overlay.addEventListener('click', function (e) {
+      if (e.target === overlay) dismiss();
+    });
+    document.addEventListener('keydown', onKeyDown);
+  }
+
+  document.addEventListener(
+    'click',
+    function (e) {
+      const link = e.target.closest('a[href]');
+      if (!link) return;
+
+      const url = new URL(link.href, window.location.origin);
+      if (url.origin !== window.location.origin) return;
+
+      const routeInfo = getRequestedRouteInfo(url);
+      if (!routeInfo) return;
+
+      const hub = getHubMeData();
+      if (!hub || hub.loggedIn !== true) return;
+
+      const accessibleProjects = getCanonicalAccessSet(hub);
+      const hasAccess = accessibleProjects.has(routeInfo.canonicalProject);
+
+      if (!hasAccess) {
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation?.();
+        showAccessDeniedModal();
+        return;
+      }
+
+      // If they somehow hit an /admin route directly via a click, send them to the normal route instead
+      if (routeInfo.isAdminUrl) {
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation?.();
+        window.location.assign(`${window.location.origin}/${routeInfo.rawProjectPath}`);
+      }
+    },
+    true
+  );
+})();
+</script>

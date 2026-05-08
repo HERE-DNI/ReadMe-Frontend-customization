@@ -1,0 +1,553 @@
+<!-- -------------------- FOOTER -------------------- -->
+<div class="here-footer" role="contentinfo" aria-label="Footer" data-active-lang="en">
+  <style>
+    .here-footer {
+      background: #ECF7FC;
+      color: #092732;
+      font-family: "Fira GO","Fira Sans",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      padding: 40px 0 28px;
+    }
+
+    /* i18n visibility */
+    .here-footer__i18n { display: none; width: 100%; }
+    .here-footer[data-active-lang="en"] .here-footer__i18n[data-lang="en"] { display: block; }
+    .here-footer[data-active-lang="ja"] .here-footer__i18n[data-lang="ja"] { display: block; }
+
+    [data-color-mode="dark"] .here-footer {
+      background: #0C0E10 !important;
+      color: #e8edf0 !important;
+    }
+    @media (prefers-color-scheme: dark) {
+      [data-color-mode="system"] .here-footer {
+        background: #0C0E10 !important;
+        color: #e8edf0 !important;
+      }
+    }
+
+    .here-footer .here-container {
+      max-width: 1388px;
+      margin: 0 auto;
+      padding: 0 32px;
+      box-sizing: border-box;
+    }
+    .here-footer__grid {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 32px;
+      width: 100%;
+    }
+    .here-footer__row {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 16px;
+      width: 100%;
+      min-height: 144px;
+      isolation: isolate;
+    }
+    .here-footer__assist {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 0;
+      width: 218px;
+      min-height: 144px;
+      flex: 0 0 218px;
+    }
+    .here-footer__logoWrap {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 16.8735px 0;
+      gap: 14.06px;
+      width: 96px;
+      height: 96px;
+      box-sizing: border-box;
+    }
+    .here-footer__logo {
+      width: 56px;
+      height: auto;
+      display: block;
+      opacity: 0.9;
+      transform: none !important;
+    }
+
+    /* Footer lang toggle */
+    .here-footer__lang {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      border: 1px solid rgba(9,39,50,0.20);
+      border-radius: 999px;
+      padding: 3px 4px;
+      margin-top: 8px;
+    }
+    .here-footer__lang button {
+      border: 0;
+      background: transparent;
+      border-radius: 999px;
+      padding: 3px 10px;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      color: rgba(9,39,50,0.55);
+      cursor: pointer;
+      line-height: 18px;
+      transition: background .12s, color .12s;
+    }
+    .here-footer__lang button[aria-pressed="true"] {
+      background: #092732;
+      color: #ffffff;
+    }
+    .here-footer__lang button:hover:not([aria-pressed="true"]) {
+      background: rgba(9,39,50,0.06);
+      color: #092732;
+    }
+
+    [data-color-mode="dark"] .here-footer__lang { border-color: rgba(255,255,255,0.18) !important; }
+    [data-color-mode="dark"] .here-footer__lang button { color: rgba(232,237,240,0.45) !important; }
+    [data-color-mode="dark"] .here-footer__lang button[aria-pressed="true"] { background: #e8edf0 !important; color: #092732 !important; }
+    [data-color-mode="dark"] .here-footer__lang button:hover:not([aria-pressed="true"]) { background: rgba(255,255,255,0.08) !important; color: #e8edf0 !important; }
+
+    .here-footer__spacer { flex: 1 1 auto; min-width: 16px; }
+    .here-footer__otherSites {
+      width: 218px;
+      flex: 0 0 218px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      align-items: flex-start;
+    }
+    .here-footer__otherTitle {
+      margin: 0;
+      font-size: 16px;
+      line-height: 24px;
+      letter-spacing: -0.2px;
+      font-weight: 400;
+      color: #092732;
+    }
+    .here-footer__otherList {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .here-footer__otherList a {
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 16px;
+      letter-spacing: -0.4px;
+      color: #092732;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .here-footer__otherList a:hover { text-decoration: underline; }
+
+    .here-footer__rule {
+      width: 100%;
+      height: 1px;
+      background: rgba(0,129,177,0.25);
+    }
+
+    .here-footer__bottom {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 32px;
+      width: 100%;
+      min-height: 28px;
+    }
+    .here-footer__copyright {
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 20px;
+      letter-spacing: -0.004em;
+      color: #2c596a;
+      white-space: nowrap;
+      flex: 0 0 auto;
+    }
+    .here-footer__legal {
+      margin-left: auto;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+    .here-footer__legal a {
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 16px;
+      letter-spacing: -0.4px;
+      color: #092732;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .here-footer__legal a:hover { text-decoration: underline; }
+
+    /* Dark mode */
+    [data-color-mode="dark"] .here-footer__otherTitle,
+    [data-color-mode="dark"] .here-footer__otherList a,
+    [data-color-mode="dark"] .here-footer__legal a { color: rgba(232,237,240,0.75) !important; }
+    [data-color-mode="dark"] .here-footer__copyright { color: rgba(232,237,240,0.50) !important; }
+    [data-color-mode="dark"] .here-footer__rule { background: rgba(255,255,255,0.10) !important; }
+
+    /* Responsive */
+    @media (max-width: 980px) {
+      .here-footer__row { flex-wrap: wrap; }
+      .here-footer__spacer { display: none; }
+      .here-footer__otherSites { margin-left: auto; }
+    }
+    @media (max-width: 720px) {
+      .here-footer .here-container { padding: 0 20px; }
+      .here-footer__assist { flex: 1 1 100%; width: 100%; }
+      .here-footer__otherSites { flex: 1 1 100%; width: 100%; margin-left: 0; }
+      .here-footer__bottom { flex-direction: column; align-items: flex-start; gap: 14px; }
+      .here-footer__legal { margin-left: 0; justify-content: flex-start; gap: 18px; }
+    }
+
+    /* Footer dark-mode parity for ReadMe DARK + SYSTEM/AUTO */
+
+    /* Explicit dark mode */
+    [data-color-mode="dark"] .here-footer__otherTitle,
+    [data-color-mode="dark"] .here-footer__otherList a,
+    [data-color-mode="dark"] .here-footer__legal a {
+      color: rgba(232,237,240,0.75) !important;
+    }
+
+    [data-color-mode="dark"] .here-footer__copyright {
+      color: rgba(232,237,240,0.50) !important;
+    }
+
+    [data-color-mode="dark"] .here-footer__rule {
+      background: rgba(255,255,255,0.10) !important;
+    }
+
+    [data-color-mode="dark"] .here-footer .LangPicker17mF-TSKPUmJ .Button {
+      color: rgba(232,237,240,0.75) !important;
+    }
+
+    [data-color-mode="dark"] .here-footer .LangPicker17mF-TSKPUmJ .IconWrapper,
+    [data-color-mode="dark"] .here-footer .LangPicker17mF-TSKPUmJ .Icon-svg2Lm7f6G9Ly5a {
+      color: rgba(232,237,240,0.75) !important;
+      stroke: rgba(232,237,240,0.75) !important;
+    }
+
+    [data-color-mode="dark"] .here-footer .LangPicker17mF-TSKPUmJ .Icon-svg2Lm7f6G9Ly5a path {
+      stroke: rgba(232,237,240,0.75) !important;
+    }
+
+    [data-color-mode="dark"] .here-footer .LangPicker17mF-TSKPUmJ .Button-label::before {
+      color: rgba(232,237,240,0.75) !important;
+    }
+
+    [data-color-mode="dark"] .here-footer .LangPicker17mF-TSKPUmJ .Button-label::after {
+      border-color: rgba(232,237,240,0.75) !important;
+    }
+
+    /* System / auto dark mode */
+    @media (prefers-color-scheme: dark) {
+      [data-color-mode="system"] .here-footer__otherTitle,
+      [data-color-mode="system"] .here-footer__otherList a,
+      [data-color-mode="system"] .here-footer__legal a {
+        color: rgba(232,237,240,0.75) !important;
+      }
+
+      [data-color-mode="system"] .here-footer__copyright {
+        color: rgba(232,237,240,0.50) !important;
+      }
+
+      [data-color-mode="system"] .here-footer__rule {
+        background: rgba(255,255,255,0.10) !important;
+      }
+
+      [data-color-mode="system"] .here-footer__lang {
+        border-color: rgba(255,255,255,0.18) !important;
+      }
+
+      [data-color-mode="system"] .here-footer__lang button {
+        color: rgba(232,237,240,0.45) !important;
+      }
+
+      [data-color-mode="system"] .here-footer__lang button[aria-pressed="true"] {
+        background: #e8edf0 !important;
+        color: #092732 !important;
+      }
+
+      [data-color-mode="system"] .here-footer__lang button:hover:not([aria-pressed="true"]) {
+        background: rgba(255,255,255,0.08) !important;
+        color: #e8edf0 !important;
+      }
+
+      [data-color-mode="system"] .here-footer .LangPicker17mF-TSKPUmJ .Button {
+        color: rgba(232,237,240,0.75) !important;
+      }
+
+      [data-color-mode="system"] .here-footer .LangPicker17mF-TSKPUmJ .IconWrapper,
+      [data-color-mode="system"] .here-footer .LangPicker17mF-TSKPUmJ .Icon-svg2Lm7f6G9Ly5a {
+        color: rgba(232,237,240,0.75) !important;
+        stroke: rgba(232,237,240,0.75) !important;
+      }
+
+      [data-color-mode="system"] .here-footer .LangPicker17mF-TSKPUmJ .Icon-svg2Lm7f6G9Ly5a path {
+        stroke: rgba(232,237,240,0.75) !important;
+      }
+
+      [data-color-mode="system"] .here-footer .LangPicker17mF-TSKPUmJ .Button-label::before {
+        color: rgba(232,237,240,0.75) !important;
+      }
+
+      [data-color-mode="system"] .here-footer .LangPicker17mF-TSKPUmJ .Button-label::after {
+        border-color: rgba(232,237,240,0.75) !important;
+      }
+    }
+
+    /* Footer Lang Picker Reskin */
+    .here-footer .LangPicker17mF-TSKPUmJ .Button {
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+      padding: 0 8px !important;
+      height: 48px !important;
+      max-width: 222px !important;
+      border-radius: 0 !important;
+      display: inline-flex !important;
+      flex-direction: row !important;
+      align-items: center !important;
+      gap: 8px !important;
+      cursor: pointer !important;
+      color: #092732 !important;
+    }
+
+    .here-footer .LangPicker17mF-TSKPUmJ .Button:hover {
+      opacity: 0.7 !important;
+    }
+
+    .here-footer .LangPicker17mF-TSKPUmJ .IconWrapper {
+      display: inline-flex !important;
+      align-items: center !important;
+      flex-shrink: 0 !important;
+      color: #092732 !important;
+    }
+
+    .here-footer .LangPicker17mF-TSKPUmJ .Icon-svg2Lm7f6G9Ly5a {
+      width: 20px !important;
+      height: 20px !important;
+      color: #092732 !important;
+      stroke: #092732 !important;
+    }
+
+    .here-footer .LangPicker17mF-TSKPUmJ .Icon-svg2Lm7f6G9Ly5a path {
+      stroke: #092732 !important;
+    }
+
+    .here-footer .LangPicker17mF-TSKPUmJ .Button-label {
+      font-size: 0 !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 8px !important;
+      white-space: nowrap !important;
+      flex-grow: 1 !important;
+    }
+
+    .here-footer .LangPicker17mF-TSKPUmJ .Button-label::before {
+      content: 'Select language';
+      font-family: 'FiraGO-Regular', 'FiraGO', 'Fira GO', 'Fira Sans',
+                   'NotoSansJP', 'NotoSansJP-Bold', 'Noto Sans JP',
+                   -apple-system, BlinkMacSystemFont, 'Segoe UI',
+                   Roboto, Helvetica, Arial, sans-serif !important;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 20px;
+      letter-spacing: -0.4px;
+      color: #092732;
+    }
+
+    .here-footer .LangPicker17mF-TSKPUmJ .Button-label::after {
+      content: '';
+      display: inline-block !important;
+      width: 8px !important;
+      height: 8px !important;
+      border-right: 2.5px solid #2C596A !important;
+      border-bottom: 2.5px solid #2C596A !important;
+      transform: rotate(45deg) translateY(-3px) !important;
+      flex-shrink: 0 !important;
+      margin-left: auto !important;
+    }
+
+    [data-color-mode="dark"] .here-footer .LangPicker17mF-TSKPUmJ .Icon-svg2Lm7f6G9Ly5a path {
+      stroke: rgba(232,237,240,0.75) !important;
+    }
+    [data-color-mode="dark"] .here-footer .LangPicker17mF-TSKPUmJ .Button-label::before {
+      color: rgba(232,237,240,0.75) !important;
+    }
+    [data-color-mode="dark"] .here-footer .LangPicker17mF-TSKPUmJ .Button-label::after {
+      border-color: rgba(232,237,240,0.75) !important;
+    }
+  </style>
+
+  <div class="here-container">
+
+    <!-- ENGLISH FOOTER -->
+    <div class="here-footer__i18n" data-lang="en" lang="en">
+      <div class="here-footer__grid">
+
+        <div class="here-footer__row">
+          <div class="here-footer__assist">
+            <div class="here-footer__logoWrap">
+              <img class="here-footer__logo"
+                src="https://files.readme.io/28abe332833e94d7bffcfada17e950921329bba3bc1495f55cd849b33cee69c1-Logo.svg"
+                alt="HERE" />
+            </div>
+            <div class="here-footer__lang" id="here-footer-lang">
+              <button type="button" data-lang="en" aria-pressed="true">EN</button>
+              <button type="button" data-lang="ja" aria-pressed="false">日本語</button>
+            </div>
+          </div>
+
+          <div class="here-footer__spacer"></div>
+
+          <div class="here-footer__otherSites">
+            <p class="here-footer__otherTitle">Other sites</p>
+            <ul class="here-footer__otherList">
+              <li><a href="https://www.here.com" rel="noopener">here.com</a></li>
+              <li><a href="https://platform.here.com/" rel="noopener">HERE platform</a></li>
+              <li><a href="https://www.here.com/learn/developer-blog" rel="noopener">Developer blog</a></li>
+              <li><a href="https://knowledge.here.com/csm_kb" rel="noopener">Knowledge base</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="here-footer__rule" role="separator" aria-hidden="true"></div>
+
+        <div class="here-footer__bottom">
+          <div class="here-footer__copyright">© 2026 HERE</div>
+          <nav class="here-footer__legal" aria-label="Legal links">
+            <a href="https://www.here.com/contact?intref=dev_docum" rel="noopener">Contact us</a>
+            <a href="#" rel="noopener" onclick="try{window.utag.gdpr.showConsentPreferences()}catch(e){};return false;">Cookie preferences</a>
+            <a href="https://www.here.com/here-responsible-ai-charter" rel="noopener">Responsible AI</a>
+            <a href="https://legal.here.com/en-gb/terms/here-end-user-terms" rel="noopener">Terms</a>
+            <a href="https://legal.here.com/en-gb/security" rel="noopener">Security</a>
+            <a href="https://legal.here.com/en-gb/privacy" rel="noopener">Privacy</a>
+            <a href="https://www.here.com/here-privacy-charter" rel="noopener">Privacy charter</a>
+            <a href="https://www.here.com/here-modern-slavery-statement" rel="noopener">Modern slavery statement</a>
+            <a href="https://legal.here.com/en-gb/privacy/do-not-sell" rel="noopener">Do not sell my personal information</a>
+          </nav>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- JAPANESE FOOTER -->
+    <div class="here-footer__i18n" data-lang="ja" lang="ja">
+      <div class="here-footer__grid">
+
+        <div class="here-footer__row">
+          <div class="here-footer__assist">
+            <div class="here-footer__logoWrap">
+              <img class="here-footer__logo"
+                src="https://files.readme.io/28abe332833e94d7bffcfada17e950921329bba3bc1495f55cd849b33cee69c1-Logo.svg"
+                alt="HERE" />
+            </div>
+            <div class="here-footer__lang" id="here-footer-lang-ja">
+              <button type="button" data-lang="en" aria-pressed="false">EN</button>
+              <button type="button" data-lang="ja" aria-pressed="true">日本語</button>
+            </div>
+          </div>
+
+          <div class="here-footer__spacer"></div>
+
+          <div class="here-footer__otherSites">
+            <p class="here-footer__otherTitle">関連サイト</p>
+            <ul class="here-footer__otherList">
+              <li><a href="https://www.here.com/jp" rel="noopener">here.com/jp</a></li>
+              <li><a href="https://platform.here.com/" rel="noopener">HERE プラットフォーム</a></li>
+              <li><a href="https://www.here.com/jp/platform/developer" rel="noopener">ディベロッパーリソース</a></li>
+              <li><a href="https://knowledge.here.com/csm_kb" rel="noopener">ナレッジベース（英語）</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="here-footer__rule" role="separator" aria-hidden="true"></div>
+
+        <div class="here-footer__bottom">
+          <div class="here-footer__copyright">© 2026 HERE</div>
+          <nav class="here-footer__legal" aria-label="Legal links">
+            <a href="https://www.here.com/jp/contact" rel="noopener">お問い合わせ</a>
+            <a href="#" rel="noopener" onclick="try{window.utag.gdpr.showConsentPreferences()}catch(e){};return false;">Cookie 設定</a>
+            <a href="https://www.here.com/here-responsible-ai-charter" rel="noopener">責任ある AI</a>
+            <a href="https://legal.here.com/en-gb/terms/here-end-user-terms" rel="noopener">利用規約</a>
+            <a href="https://legal.here.com/en-gb/security" rel="noopener">セキュリティ</a>
+            <a href="https://legal.here.com/en-gb/privacy" rel="noopener">プライバシー</a>
+            <a href="https://www.here.com/here-privacy-charter" rel="noopener">プライバシーチャーター</a>
+            <a href="https://www.here.com/here-modern-slavery-statement" rel="noopener">現代奴隷制に関する声明</a>
+            <a href="https://legal.here.com/en-gb/privacy/do-not-sell" rel="noopener">個人情報の販売を拒否する</a>
+          </nav>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    (function () {
+      var TAG = "__hereFooterLang_v2";
+      if (window[TAG]) return;
+      window[TAG] = true;
+
+      function getLang() {
+        var urls = window.location.href;
+        return /\/ja(\/|$|\?)/.test(urls) ? "ja" : "en";
+      }
+
+      function root() {
+        return document.querySelector(".here-footer");
+      }
+
+      function apply() {
+        var lang = getLang();
+        var el = root();
+        if (el) el.setAttribute("data-active-lang", lang);
+
+        document.querySelectorAll(".here-footer__lang button[data-lang]").forEach(function (btn) {
+          btn.setAttribute("aria-pressed", btn.getAttribute("data-lang") === lang ? "true" : "false");
+        });
+      }
+
+      function navigate(lang) {
+        var target = lang === "ja"
+          ? "https://docs.here.com/ja"
+          : "https://docs.here.com/";
+        window.location.assign(target);
+      }
+
+      function bind() {
+        document.querySelectorAll(".here-footer__lang button[data-lang]").forEach(function (btn) {
+          if (btn.__hereFooterBound) return;
+          btn.__hereFooterBound = true;
+          btn.addEventListener("click", function () {
+            var lang = btn.getAttribute("data-lang");
+            if (!lang || lang === getLang()) return;
+            navigate(lang);
+          });
+        });
+      }
+
+      apply();
+      bind();
+
+      try {
+        new MutationObserver(function () {
+          apply();
+          bind();
+        }).observe(document.documentElement, { childList: true, subtree: true });
+      } catch (e) {}
+    })();
+  </script>
+</div>
