@@ -2008,9 +2008,16 @@ span.img.lightbox.closed { display: block; }
 .lightbox-inner { display: inline-block; }
 
 /* ── Left-align standalone images (matching Zoomin behaviour) ──────────
-   ReadMe's base CSS centres images via:
-     .markdown-body img { margin-left: auto; margin-right: auto; }
-   We reset the margin to left-align all body images.                   */
+   Two sources of centering in ReadMe's base CSS:
+   1. .markdown-body img { margin-left: auto; margin-right: auto; }
+   2. text-align: center inherited by <p>, centering the inline-block
+      .lightbox-inner inside the block span.img.lightbox.closed
+   Both must be overridden.                                              */
+.rm-Markdown span.img.lightbox.closed,
+.markdown-body span.img.lightbox.closed {
+  text-align: left !important;
+}
+
 .rm-Markdown img,
 .markdown-body img {
   margin-left: 0 !important;
@@ -2018,14 +2025,39 @@ span.img.lightbox.closed { display: block; }
 }
 
 /* Exception: images inside callout / note / alert / banner blocks
-   should remain centred at their natural position                      */
+   should remain centred at their natural position.
+   Covers all known ReadMe callout class naming patterns.               */
+.rm-Markdown .callout span.img.lightbox.closed,
+.rm-Markdown .alert span.img.lightbox.closed,
+.rm-Markdown .rdmd-callout span.img.lightbox.closed,
+.rm-Markdown .rdmd-alert span.img.lightbox.closed,
+.rm-Markdown [class*="Callout"] span.img.lightbox.closed,
+.rm-Markdown [class*="callout"] span.img.lightbox.closed,
+.rm-Markdown [class*="alert"] span.img.lightbox.closed,
+.rm-Markdown [class*="Alert"] span.img.lightbox.closed,
+.rm-Markdown [class*="Banner"] span.img.lightbox.closed,
+.rm-Markdown [class*="banner"] span.img.lightbox.closed,
+.rm-Markdown [class*="notice"] span.img.lightbox.closed,
+.rm-Markdown [class*="Warning"] span.img.lightbox.closed,
+.rm-Markdown [class*="Hint"] span.img.lightbox.closed,
+.rm-Markdown [class*="Info"] span.img.lightbox.closed {
+  text-align: unset !important;
+}
+
 .rm-Markdown .callout img,
 .rm-Markdown .alert img,
+.rm-Markdown .rdmd-callout img,
+.rm-Markdown .rdmd-alert img,
 .rm-Markdown [class*="Callout"] img,
 .rm-Markdown [class*="callout"] img,
 .rm-Markdown [class*="alert"] img,
+.rm-Markdown [class*="Alert"] img,
 .rm-Markdown [class*="Banner"] img,
-.rm-Markdown [class*="notice"] img {
+.rm-Markdown [class*="banner"] img,
+.rm-Markdown [class*="notice"] img,
+.rm-Markdown [class*="Warning"] img,
+.rm-Markdown [class*="Hint"] img,
+.rm-Markdown [class*="Info"] img {
   margin-left: auto !important;
   margin-right: auto !important;
 }
