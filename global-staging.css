@@ -2007,21 +2007,40 @@ html[data-color-mode="dark"] .rm-Markdown figcaption {
 span.img.lightbox.closed { display: block; }
 .lightbox-inner { display: inline-block; }
 
-/* Left-align standalone images in article body */
+/* ── Left-align standalone images (matching Zoomin behaviour) ──────────
+   ReadMe's base CSS centres images via text-align:center on figure/p.
+   We override all likely containers in the article body.               */
+.rm-Markdown figure,
+.rm-Markdown p > span.img.lightbox.closed,
 .rm-Markdown span.img.lightbox.closed {
-  text-align: left;
+  text-align: left !important;
+}
+
+/* Also reset margin:auto centering on the figure itself */
+.rm-Markdown figure {
+  margin-left: 0 !important;
+  margin-right: auto !important;
 }
 
 /* Exception: images inside callout / note / alert / banner blocks
    should remain at their natural inline position and not be forced left */
+.rm-Markdown .callout figure,
 .rm-Markdown .callout span.img.lightbox.closed,
+.rm-Markdown .alert figure,
 .rm-Markdown .alert span.img.lightbox.closed,
+.rm-Markdown [class*="Callout"] figure,
 .rm-Markdown [class*="Callout"] span.img.lightbox.closed,
+.rm-Markdown [class*="callout"] figure,
 .rm-Markdown [class*="callout"] span.img.lightbox.closed,
+.rm-Markdown [class*="alert"] figure,
 .rm-Markdown [class*="alert"] span.img.lightbox.closed,
+.rm-Markdown [class*="Banner"] figure,
 .rm-Markdown [class*="Banner"] span.img.lightbox.closed,
+.rm-Markdown [class*="notice"] figure,
 .rm-Markdown [class*="notice"] span.img.lightbox.closed {
-  text-align: unset;
+  text-align: unset !important;
+  margin-left: unset !important;
+  margin-right: unset !important;
 }
 
 .rm-alt-caption {
