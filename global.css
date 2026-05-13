@@ -1999,10 +1999,30 @@ html[data-color-mode="dark"] .rm-Markdown figcaption {
    ----------------------------------------------------------------------
    Targets: .lightbox, .lightbox-inner, .rm-alt-caption
    Why: Block-level lightbox display and caption styling.
+   Image alignment: left-align images (matching Zoomin behaviour),
+   but preserve default inline flow for images embedded inside
+   notes / callout / alert blocks so they don't break layout there.
    ====================================================================== */
 
 span.img.lightbox.closed { display: block; }
 .lightbox-inner { display: inline-block; }
+
+/* Left-align standalone images in article body */
+.rm-Markdown span.img.lightbox.closed {
+  text-align: left;
+}
+
+/* Exception: images inside callout / note / alert / banner blocks
+   should remain at their natural inline position and not be forced left */
+.rm-Markdown .callout span.img.lightbox.closed,
+.rm-Markdown .alert span.img.lightbox.closed,
+.rm-Markdown [class*="Callout"] span.img.lightbox.closed,
+.rm-Markdown [class*="callout"] span.img.lightbox.closed,
+.rm-Markdown [class*="alert"] span.img.lightbox.closed,
+.rm-Markdown [class*="Banner"] span.img.lightbox.closed,
+.rm-Markdown [class*="notice"] span.img.lightbox.closed {
+  text-align: unset;
+}
 
 .rm-alt-caption {
   margin-top: 8px;
