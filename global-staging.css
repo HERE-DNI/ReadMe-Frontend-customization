@@ -2008,39 +2008,26 @@ span.img.lightbox.closed { display: block; }
 .lightbox-inner { display: inline-block; }
 
 /* ── Left-align standalone images (matching Zoomin behaviour) ──────────
-   ReadMe's base CSS centres images via text-align:center on figure/p.
-   We override all likely containers in the article body.               */
-.rm-Markdown figure,
-.rm-Markdown p > span.img.lightbox.closed,
-.rm-Markdown span.img.lightbox.closed {
-  text-align: left !important;
-}
-
-/* Also reset margin:auto centering on the figure itself */
-.rm-Markdown figure {
+   ReadMe's base CSS centres images via:
+     .markdown-body img { margin-left: auto; margin-right: auto; }
+   We reset the margin to left-align all body images.                   */
+.rm-Markdown img,
+.markdown-body img {
   margin-left: 0 !important;
   margin-right: auto !important;
 }
 
 /* Exception: images inside callout / note / alert / banner blocks
-   should remain at their natural inline position and not be forced left */
-.rm-Markdown .callout figure,
-.rm-Markdown .callout span.img.lightbox.closed,
-.rm-Markdown .alert figure,
-.rm-Markdown .alert span.img.lightbox.closed,
-.rm-Markdown [class*="Callout"] figure,
-.rm-Markdown [class*="Callout"] span.img.lightbox.closed,
-.rm-Markdown [class*="callout"] figure,
-.rm-Markdown [class*="callout"] span.img.lightbox.closed,
-.rm-Markdown [class*="alert"] figure,
-.rm-Markdown [class*="alert"] span.img.lightbox.closed,
-.rm-Markdown [class*="Banner"] figure,
-.rm-Markdown [class*="Banner"] span.img.lightbox.closed,
-.rm-Markdown [class*="notice"] figure,
-.rm-Markdown [class*="notice"] span.img.lightbox.closed {
-  text-align: unset !important;
-  margin-left: unset !important;
-  margin-right: unset !important;
+   should remain centred at their natural position                      */
+.rm-Markdown .callout img,
+.rm-Markdown .alert img,
+.rm-Markdown [class*="Callout"] img,
+.rm-Markdown [class*="callout"] img,
+.rm-Markdown [class*="alert"] img,
+.rm-Markdown [class*="Banner"] img,
+.rm-Markdown [class*="notice"] img {
+  margin-left: auto !important;
+  margin-right: auto !important;
 }
 
 .rm-alt-caption {
