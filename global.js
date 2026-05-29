@@ -1573,7 +1573,7 @@ function stampMarkdownScopes() {
       "  display: block;",
       "  width: 100%;",
       "  box-sizing: border-box;",
-      "  text-align: center;",
+      "  text-align: left;",
       "  background: rgba(0,0,0,0.04);",
       "  border: 1px solid rgba(0,0,0,0.06);",
       "  border-top: 0;",
