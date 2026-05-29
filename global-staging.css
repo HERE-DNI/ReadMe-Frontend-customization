@@ -1946,7 +1946,7 @@ li.subnav-expanded,
   display: block;
   width: 100%;
   box-sizing: border-box;
-  text-align: left;
+  text-align: center;
   background: rgba(0, 0, 0, 0.04);
   border: 1px solid rgba(0, 0, 0, 0.06);
   border-top: 0;
@@ -2035,7 +2035,7 @@ span.img.lightbox.closed { display: block; }
   opacity: 0.8;
   font-style: italic;
   background: var(--color-caption-bg);
-  text-align: left;
+  text-align: center;
 }
 
 
