@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en" data-color-mode="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HERE Docs — Local Preview</title>
+
+  <!--
+    ─────────────────────────────────────────────────────────────
+    LOCAL PREVIEW HARNESS for ReadMe Custom Page content
+    ─────────────────────────────────────────────────────────────
+    Mimics the ReadMe /page/ route environment so index.html can
+    be rendered locally without pushing to ReadMe.
+
+    Loads (in order):
+      1. HDS CSS + web components from platform.here.com (same as head-global.html)
+      2. Local global.css (production custom code)
+      3. Optional global-staging.css / global-staging.js via URL params
+      4. index.html content fetched at runtime and injected
+
+    Usage:
+      python3 -m http.server 8080
+      open http://localhost:8080/preview.html
+
+    URL flags (matching body-global.html loader semantics):
+      ?staging-css=true     load global-staging.css
+      ?staging-js=true      load global-staging.js
+      ?dark=true            preview dark mode
+  -->
+
+  <!-- HDS from public CDN (same as head-global.html) -->
+  <link rel="stylesheet" href="https://platform.here.com/hds/hds-styles.css?versionOverride=2026.2.0" />
+  <link rel="stylesheet" href="https://platform.here.com/hds/hds-iconlibrary-8px.css?versionOverride=2026.2.0" />
+  <link rel="stylesheet" href="https://platform.here.com/hds/hds-iconlibrary-16px.css?versionOverride=2026.2.0" />
+  <link rel="stylesheet" href="https://platform.here.com/hds/hds-iconlibrary-24px.css?versionOverride=2026.2.0" />
+  <script defer src="https://platform.here.com/hds/hds-webcomponents.js?versionOverride=2026.2.0"></script>
+
+  <!-- Local production CSS -->
+  <link rel="stylesheet" href="./global.css" />
+
+  <style>
+    /* Minimal preview shell — DO NOT ship this to production.
+       Only exists so .here-glp has a sane containing environment. */
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #f7fafc;
+      font-family: "Fira GO", "Fira Sans", system-ui, sans-serif;
+    }
+
+    /* Stand-in for ReadMe's App container */
+    .App {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      background: #ffffff;
+    }
+    .rm-Container {
+      margin: 0 auto;
+      max-width: 95%;
+      width: 100%;
+    }
+
+    /* Simulated ReadMe header — mimics the real chrome */
+    .preview-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 10px 24px;
+      background: #ffffff;
+      border-bottom: 1px solid rgba(9, 39, 50, 0.10);
+      position: sticky;
+      top: 0;
+      z-index: 90;
+    }
+    [data-color-mode="dark"] .preview-header {
+      background: #0C0E10;
+      border-bottom-color: rgba(255, 255, 255, 0.08);
+    }
+    .preview-header__left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .preview-header__brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+    .preview-header__brand img { height: 42px; width: auto; }
+    .preview-header__brand-text {
+      font-weight: 700;
+      color: #092732;
+      font-size: 14px;
+    }
+    [data-color-mode="dark"] .preview-header__brand-text { color: #e8edf0; }
+    .preview-header__right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .preview-header__search {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 14px;
+      border: 1px solid rgba(9, 39, 50, 0.20);
+      border-radius: 999px;
+      background: transparent;
+      color: #092732;
+      font-size: 13px;
+      cursor: pointer;
+      min-width: 220px;
+    }
+    .preview-header__search svg { width: 14px; height: 14px; }
+    .preview-header__search-placeholder { flex: 1; text-align: left; color: rgba(9,39,50,0.5); }
+    .preview-header__search-kbd {
+      font-size: 11px;
+      padding: 1px 5px;
+      border: 1px solid rgba(9,39,50,0.15);
+      border-radius: 3px;
+      color: rgba(9,39,50,0.5);
+    }
+    [data-color-mode="dark"] .preview-header__search {
+      border-color: rgba(255, 255, 255, 0.18);
+      color: #e8edf0;
+    }
+    [data-color-mode="dark"] .preview-header__search-placeholder { color: rgba(232,237,240,0.45); }
+    [data-color-mode="dark"] .preview-header__search-kbd { border-color: rgba(255,255,255,0.15); color: rgba(232,237,240,0.45); }
+    .preview-header__ai {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 18px;
+      background: #092732;
+      color: #1ef3e4;
+      border: none;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      height: 36px;
+    }
+    .preview-header__ai svg { width: 14px; height: 14px; }
+    .preview-header__icon-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      border: 1px solid rgba(9,39,50,0.20);
+      background: transparent;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #092732;
+    }
+    [data-color-mode="dark"] .preview-header__icon-btn {
+      border-color: rgba(255,255,255,0.18);
+      color: #e8edf0;
+    }
+    .preview-header__icon-btn svg { width: 16px; height: 16px; }
+    .preview-header__tag {
+      font-size: 10px;
+      font-weight: 700;
+      color: #1ef3e4;
+      background: #092732;
+      padding: 3px 8px;
+      border-radius: 999px;
+      letter-spacing: .3px;
+    }
+
+    /* Floating dev toolbar */
+    .preview-toolbar {
+      position: fixed;
+      left: 16px;
+      bottom: 16px;
+      z-index: 999999;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: 12px 14px;
+      background: rgba(9, 39, 50, 0.92);
+      color: #e8edf0;
+      font-size: 12px;
+      font-family: system-ui, sans-serif;
+      border-radius: 10px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+      min-width: 200px;
+    }
+    .preview-toolbar__title {
+      font-weight: 700;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      opacity: .8;
+      margin-bottom: 4px;
+    }
+    .preview-toolbar label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .preview-toolbar input { accent-color: #1ef3e4; }
+    .preview-toolbar__status {
+      font-size: 10px;
+      opacity: .6;
+      margin-top: 4px;
+    }
+
+    /* Error banner if index.html fails to load */
+    .preview-error {
+      margin: 24px;
+      padding: 16px 20px;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      border-radius: 8px;
+      color: #991b1b;
+      font-family: system-ui, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .preview-error strong { display: block; margin-bottom: 4px; }
+    .preview-error code {
+      background: rgba(153, 27, 27, 0.08);
+      padding: 1px 5px;
+      border-radius: 3px;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="App">
+    <div class="rm-Container">
+
+      <!-- Simulated ReadMe header -->
+      <header class="preview-header">
+        <div class="preview-header__left">
+          <a href="#" class="preview-header__brand">
+            <img src="https://files.readme.io/28abe332833e94d7bffcfada17e950921329bba3bc1495f55cd849b33cee69c1-Logo.svg" alt="HERE" />
+            <span class="preview-header__brand-text">Documentation</span>
+          </a>
+          <span class="preview-header__tag">LOCAL</span>
+        </div>
+        <div class="preview-header__right">
+          <button class="preview-header__search" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <span class="preview-header__search-placeholder">Search</span>
+            <span class="preview-header__search-kbd">&#8984; K</span>
+          </button>
+          <button class="preview-header__ai" type="button">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.2H22l-6 4.5 2.3 7.3L12 16.5 5.7 21l2.3-7.3-6-4.5h7.6z"/></svg>
+            Ask AI
+          </button>
+          <hds-button class="here-contact-us"
+                      data-styles="hds"
+                      data-theme="hds-web-product-light-theme"
+                      variant="secondary"
+                      size="medium"
+                      onclick="window.open('https://www.here.com/contact?intref=dev_docum','_blank','noopener')">
+            Contact us
+          </hds-button>
+          <button class="preview-header__icon-btn" type="button" aria-label="Toggle theme">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          </button>
+          <button class="preview-header__icon-btn" type="button" aria-label="Account">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- index.html content is injected here at runtime -->
+      <main id="preview-mount"></main>
+
+      <!-- footer-global.html content is injected here at runtime -->
+      <footer id="preview-footer-mount"></footer>
+
+    </div>
+  </div>
+
+  <!-- Dev toolbar -->
+  <aside class="preview-toolbar" aria-label="Preview controls">
+    <div class="preview-toolbar__title">Preview Controls</div>
+    <label>
+      <input type="checkbox" id="preview-staging-css" />
+      Staging CSS
+    </label>
+    <label>
+      <input type="checkbox" id="preview-staging-js" />
+      Staging JS
+    </label>
+    <label>
+      <input type="checkbox" id="preview-dark" />
+      Dark mode
+    </label>
+    <div class="preview-toolbar__status" id="preview-status">Ready</div>
+  </aside>
+
+  <script>
+    /* ============================================================
+       Preview harness controller
+       ============================================================ */
+    (function () {
+      const STAGING_CSS_URL = "./global-staging.css";
+      const STAGING_JS_URL = "./global-staging.js";
+
+      const params = new URLSearchParams(window.location.search);
+      const cssBox = document.getElementById("preview-staging-css");
+      const jsBox = document.getElementById("preview-staging-js");
+      const darkBox = document.getElementById("preview-dark");
+      const status = document.getElementById("preview-status");
+
+      // Init toolbar state from URL params
+      cssBox.checked = params.get("staging-css") === "true";
+      jsBox.checked = params.get("staging-js") === "true";
+      darkBox.checked = params.get("dark") === "true";
+
+      function bust(url) {
+        const sep = url.includes("?") ? "&" : "?";
+        return url + sep + "t=" + Date.now();
+      }
+
+      function applyStagingCss(on) {
+        const existing = document.getElementById("preview-staging-css-link");
+        if (on && !existing) {
+          const link = document.createElement("link");
+          link.id = "preview-staging-css-link";
+          link.rel = "stylesheet";
+          link.href = bust(STAGING_CSS_URL);
+          document.head.appendChild(link);
+        } else if (!on && existing) {
+          existing.remove();
+        }
+      }
+
+      function applyStagingJs(on) {
+        const existing = document.getElementById("preview-staging-js-script");
+        if (on && !existing) {
+          const s = document.createElement("script");
+          s.id = "preview-staging-js-script";
+          s.src = bust(STAGING_JS_URL);
+          document.body.appendChild(s);
+        } else if (!on && existing) {
+          existing.remove();
+          // Reload page to fully un-apply staging JS side-effects
+          const url = new URL(window.location.href);
+          url.searchParams.delete("staging-js");
+          window.location.replace(url.toString());
+        }
+      }
+
+      function applyDark(on) {
+        // Root: header, footer, and any HDS chrome respond to data-color-mode
+        document.documentElement.setAttribute("data-color-mode", on ? "dark" : "light");
+        document.body.setAttribute("data-color-mode", on ? "dark" : "light");
+
+        const theme = on
+          ? "hds-web-product-dark-theme"
+          : "hds-web-product-light-theme";
+
+        // Sync .here-glp data-theme (matches theme-sync logic in production)
+        const glp = document.querySelector(".here-glp");
+        if (glp) glp.setAttribute("data-theme", theme);
+
+        // Also sync any HDS elements outside .here-glp (like the header Contact us button)
+        document
+          .querySelectorAll('[data-styles="hds"]:not(.here-glp)')
+          .forEach((el) => el.setAttribute("data-theme", theme));
+      }
+
+      function updateUrl() {
+        const url = new URL(window.location.href);
+        cssBox.checked
+          ? url.searchParams.set("staging-css", "true")
+          : url.searchParams.delete("staging-css");
+        jsBox.checked
+          ? url.searchParams.set("staging-js", "true")
+          : url.searchParams.delete("staging-js");
+        darkBox.checked
+          ? url.searchParams.set("dark", "true")
+          : url.searchParams.delete("dark");
+        window.history.replaceState({}, "", url.toString());
+      }
+
+      cssBox.addEventListener("change", () => {
+        applyStagingCss(cssBox.checked);
+        updateUrl();
+      });
+      jsBox.addEventListener("change", () => {
+        applyStagingJs(jsBox.checked);
+        updateUrl();
+      });
+      darkBox.addEventListener("change", () => {
+        applyDark(darkBox.checked);
+        updateUrl();
+      });
+
+      /* ============================================================
+         Fetch and inject partial HTML into a mount node,
+         then re-execute any inline scripts (innerHTML skips them).
+         ============================================================ */
+      async function injectPartial(url, mountEl) {
+        const res = await fetch(url, { cache: "no-store" });
+        if (!res.ok) throw new Error("HTTP " + res.status + " for " + url);
+
+        let html = await res.text();
+
+        // Strip anything that would collide with the wrapper document:
+        html = html
+          .replace(/<!DOCTYPE[^>]*>/gi, "")
+          .replace(/<\/?html[^>]*>/gi, "")
+          .replace(/<head[\s\S]*?<\/head>/gi, "")
+          .replace(/<\/?body[^>]*>/gi, "");
+
+        mountEl.innerHTML = html;
+
+        // Re-execute inline <script> tags injected via innerHTML.
+        mountEl.querySelectorAll("script").forEach((oldScript) => {
+          const s = document.createElement("script");
+          [...oldScript.attributes].forEach((a) => s.setAttribute(a.name, a.value));
+          s.text = oldScript.textContent;
+          oldScript.replaceWith(s);
+        });
+      }
+
+      async function loadContent() {
+        const mainMount = document.getElementById("preview-mount");
+        const footerMount = document.getElementById("preview-footer-mount");
+        status.textContent = "Loading content…";
+
+        try {
+          await injectPartial("./index.html", mainMount);
+
+          // Footer is optional — soft-fail if missing
+          try {
+            await injectPartial("./footer-global.html", footerMount);
+          } catch (footerErr) {
+            console.warn("Footer failed to load:", footerErr);
+            footerMount.innerHTML =
+              '<div style="padding:16px 24px;background:#fef3c7;color:#92400e;font-size:12px;font-family:system-ui;">footer-global.html not loaded: ' +
+              String(footerErr.message || footerErr) +
+              "</div>";
+          }
+
+          // Apply initial toolbar state now that .here-glp and footer exist
+          if (cssBox.checked) applyStagingCss(true);
+          if (jsBox.checked) applyStagingJs(true);
+          if (darkBox.checked) applyDark(true);
+
+          status.textContent = "Loaded ✓";
+        } catch (err) {
+          mainMount.innerHTML =
+            '<div class="preview-error">' +
+            "<strong>Could not load index.html</strong>" +
+            "This preview page must be opened over HTTP (not <code>file://</code>). " +
+            "Run <code>python3 -m http.server 8080</code> in this folder, then " +
+            'open <a href="http://localhost:8080/preview.html">http://localhost:8080/preview.html</a>.' +
+            "<br /><br />Error: <code>" +
+            String(err.message || err) +
+            "</code></div>";
+          status.textContent = "Load failed";
+        }
+      }
+
+      loadContent();
+    })();
+  </script>
+</body>
+</html>
