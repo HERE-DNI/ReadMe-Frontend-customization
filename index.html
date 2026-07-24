@@ -207,12 +207,18 @@
       gap: 8px !important;
     }
 
-    /* Contact us button — HDS secondary button component.
-       hds-button doesn't observe href; navigation is wired up on click. */
+    /* Contact us button — HDS secondary button component, sized to
+       match Ask AI's 36px pill. We use size="small" (32px) and
+       inflate the outer bounding box to 36px so it aligns visually
+       without touching HDS's shadow-root internals. */
     hds-button.here-contact-us {
       display: inline-flex;
+      align-items: center;
+      align-self: center;
       vertical-align: middle;
+      height: 36px !important;
     }
+    hds-button.here-contact-us::part(button) { height: 36px !important; }
 
 
     /* ================================================================
@@ -1807,14 +1813,16 @@
         btn.setAttribute("data-styles", "hds");
         btn.setAttribute("data-theme", currentTheme());
         btn.setAttribute("variant", "secondary");
-        btn.setAttribute("size", "medium");
+        btn.setAttribute("size", "small");
         btn.textContent = LABELS[lang] || LABELS.en;
         btn.addEventListener("click", function () {
           window.open(url, "_blank", "noopener");
         });
 
-        // Sit immediately to the LEFT of Ask AI in DOM order.
-        headerRight.insertBefore(btn, askAiSlot);
+        // Sit immediately to the RIGHT of Ask AI in DOM order.
+        var afterAskAi = askAiSlot.nextSibling;
+        if (afterAskAi) headerRight.insertBefore(btn, afterAskAi);
+        else headerRight.appendChild(btn);
       }
 
       inject();
