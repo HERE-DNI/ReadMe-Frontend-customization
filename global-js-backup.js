@@ -453,7 +453,14 @@ function stampMarkdownScopes() {
       return !c.classList.contains("callout-icon");
     });
 
-    var firstIsTitle = children.length > 0 && children[0].tagName === "P";
+    // A lone paragraph is the callout's whole body, not a title — and a
+    // "title" paragraph that contains any markup (links, bold, code, images,
+    // etc.) can't safely collapse to .textContent without losing it, so only
+    // a plain-text-only first paragraph in a multi-paragraph callout counts.
+    var firstIsTitle =
+      children.length > 1 &&
+      children[0].tagName === "P" &&
+      !children[0].querySelector("*");
     var title = firstIsTitle ? (children[0].textContent || "").trim() : "";
     var bodyKids = firstIsTitle ? children.slice(1) : children;
 
@@ -609,9 +616,23 @@ function stampMarkdownScopes() {
   });
 
   // Re-stamp theme when ReadMe's color mode attribute changes (e.g. user toggles).
+  // Toggling light/dark makes ReadMe re-render the syntax-highlighted code
+  // blocks (new cm-s-* theme, new DOM node for .CodeTabs), which drops the
+  // data-hds-codetabs attribute our CSS depends on for layout. Re-stamp
+  // widgets here too, not just the markdown scope, so it doesn't require a
+  // full reload to look right again. The re-render can land a tick after the
+  // attribute flip, so retry once via rAF as a safety net.
   try {
-    new MutationObserver(function () {
+    function restampAfterThemeChange() {
       stampMarkdownScopes();
+      if (!isCustomPageRoute()) stampWidgets();
+    }
+
+    new MutationObserver(function () {
+      restampAfterThemeChange();
+      requestAnimationFrame(function () {
+        requestAnimationFrame(restampAfterThemeChange);
+      });
     }).observe(document.documentElement, {
       attributes: true,
       attributeFilter: ["data-color-mode"],
@@ -967,7 +988,7 @@ function stampMarkdownScopes() {
         {
           text: { en: "HERE Positioning", ja: "HERE Positioning" },
           href: {
-            en: "/positioning/docs/readme-guide",
+            en: "/positioning",
             ja: "/positioning/ja/v1.0/docs",
           },
           showInJa: false,
