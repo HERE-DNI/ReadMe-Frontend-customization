@@ -19,8 +19,21 @@
      15. MISC / OVERRIDES
 ====================================================================== */
 
+img[class*="Header-logo-img"] {
+  height: 50px !important;
+  width: auto;
+  margin-top: 3px !important;
+}
+
 .cl-meta { display: none; }
 
+.rm-ToC::after {
+  background-color: #47dad0 !important;
+}
+
+.rm-ToC a {
+  font-family: var(--here-font) !important;
+}
 
 .rm-Guides .rm-Article {
     margin-left: auto;
@@ -215,11 +228,11 @@ font-size: 14px !important;
   /* ----------------------------------------------------------
      Sidebar – light
      ---------------------------------------------------------- */
-  --color-sidebar-bg: #fbfbfb;
-  --color-sidebar-border: rgba(0, 129, 177, 0.20);
-  --color-sidebar-heading-fg: #2C596A;
-  --color-sidebar-link-fg: #2C596A;
-  --color-sidebar-sublink-fg: #2C596A;
+  --color-sidebar-bg: #FFFFFF;
+  --color-sidebar-border: rgba(0, 129, 177, 0.25);
+  --color-sidebar-heading-fg: #092732;
+  --color-sidebar-link-fg: #092732;
+  --color-sidebar-sublink-fg: #092732;
   --color-sidebar-hover-bg: rgba(0, 148, 215, 0.06);
   --color-sidebar-active-bg: rgba(0, 130, 121, 0.08);
   --color-sidebar-active-border: #0D7E75;
@@ -228,16 +241,16 @@ font-size: 14px !important;
   /* ----------------------------------------------------------
      Sidebar – dark
      ---------------------------------------------------------- */
-  --color-sidebar-dark-bg: #0C0E10;
-  --color-sidebar-dark-border: rgba(255, 255, 255, 0.08);
-  --color-sidebar-dark-link-fg: rgba(232, 237, 240, 0.85);
-  --color-sidebar-dark-heading-fg: rgba(232, 237, 240, 0.35);
-  --color-sidebar-dark-sublink-fg: rgba(232, 237, 240, 0.65);
-  --color-sidebar-dark-active-fg: #e8edf0;
-  --color-sidebar-dark-active-bg: rgba(0, 148, 215, 0.12);
+  --color-sidebar-dark-bg: #092732;
+  --color-sidebar-dark-border: rgba(0, 118, 160, 0.35);
+  --color-sidebar-dark-link-fg: #BEDFEB;
+  --color-sidebar-dark-heading-fg: #BEDFEB;
+  --color-sidebar-dark-sublink-fg: rgba(190, 223, 235, 0.75);
+  --color-sidebar-dark-active-fg: #ECF7FC;
+  --color-sidebar-dark-active-bg: rgba(0, 148, 206, 0.12);
   --color-sidebar-dark-active-border: #1ef3e4;
-  --color-sidebar-dark-subpages-border: rgba(255, 255, 255, 0.12);
-  --color-sidebar-dark-hover-bg: rgba(255, 255, 255, 0.05);
+  --color-sidebar-dark-subpages-border: rgba(0, 118, 160, 0.35);
+  --color-sidebar-dark-hover-bg: rgba(0, 148, 215, 0.07);
 
   /* ----------------------------------------------------------
      Map / misc UI
@@ -284,38 +297,38 @@ font-size: 14px !important;
 
 /* Dark mode token overrides */
 [data-color-mode="dark"] {
-  --color-ink: #e8edf0;
+  --color-ink: #ECF7FC;
 
-  /* Ask AI — dark mode: keep dark button, teal text (same as light) */
+  /* Ask AI — dark mode: dark teal button, teal text */
   --color-ai-bg: #1a3a47;
   --color-ai-fg: #1ef3e4;
-  --color-ai-hover-bg: #0e3d50;
+  --color-ai-hover-bg: #1E4554;
   --color-ai-icon: #1ef3e4;
 
-  --color-ctrl-border: rgba(255, 255, 255, 0.18);
-  --color-ctrl-hover-bg: rgba(255, 255, 255, 0.06);
+  --color-ctrl-border: rgba(0, 118, 160, 0.45);
+  --color-ctrl-hover-bg: rgba(0, 148, 215, 0.10);
 
-  --color-header-ink: #e8edf0;
-  --color-header-bg: #0C0E10;
-  --color-header-border: rgba(255, 255, 255, 0.08);
+  --color-header-ink: #ECF7FC;
+  --color-header-bg: #092732;
+  --color-header-border: rgba(0, 118, 160, 0.35);
 }
 
 /* System mode: only apply dark tokens when user prefers dark */
 @media (prefers-color-scheme: dark) {
   [data-color-mode="system"] {
-    --color-ink: #e8edf0;
+    --color-ink: #ECF7FC;
 
     --color-ai-bg: #1a3a47;
     --color-ai-fg: #1ef3e4;
-    --color-ai-hover-bg: #0e3d50;
+    --color-ai-hover-bg: #1E4554;
     --color-ai-icon: #1ef3e4;
 
-    --color-ctrl-border: rgba(255, 255, 255, 0.18);
-    --color-ctrl-hover-bg: rgba(255, 255, 255, 0.06);
+    --color-ctrl-border: rgba(0, 118, 160, 0.45);
+    --color-ctrl-hover-bg: rgba(0, 148, 215, 0.10);
 
-    --color-header-ink: #e8edf0;
-    --color-header-bg: #0C0E10;
-    --color-header-border: rgba(255, 255, 255, 0.08);
+    --color-header-ink: #ECF7FC;
+    --color-header-bg: #092732;
+    --color-header-border: rgba(0, 118, 160, 0.35);
   }
 }
 
@@ -336,6 +349,72 @@ font-size: 14px !important;
 
 .rm-Guides .rm-Article {
   margin-left: 20px;
+}
+
+/* ── Dark mode: article & page-shell backgrounds ──
+   ReadMe's native dark mode and HDS's "hds-web-product-dark-theme" stamp
+   both apply near-black backgrounds on the page shell, article, and
+   markdown body. Override every layer to HERE's branded deep-teal.
+   Also re-token the code-block colors so they read on the dark bg. ── */
+
+[data-color-mode="dark"] .App,
+[data-color-mode="dark"] article.rm-Article,
+[data-color-mode="dark"] #content-head,
+[data-color-mode="dark"] #content-container,
+[data-color-mode="dark"] .content-body,
+[data-color-mode="dark"] .rm-Markdown[data-styles="hds"],
+[data-color-mode="dark"] [data-theme="hds-web-product-dark-theme"] {
+  background-color: #092732 !important;
+}
+
+[data-color-mode="dark"] .rm-Markdown[data-styles="hds"],
+[data-color-mode="dark"] [data-theme="hds-web-product-dark-theme"] {
+  --hds-background-base: #092732;
+  --hds-background-object: #153947;
+}
+
+[data-color-mode="dark"] .rm-Markdown[data-styles="hds"] {
+  --md-code-background: #153947;
+  --md-code-text: #ECF7FC;
+  --md-code-tabs: #153947;
+  --md-code-divider: rgba(0, 118, 160, 0.35);
+  --md-code-tabgroup-bg: rgba(0, 148, 215, 0.12);
+  --md-code-tab-active-bg: #1E4554;
+  --md-code-tab-active-text: #ECF7FC;
+  --md-code-tab-inactive-text: #BEDFEB;
+  --md-code-copy-text: #BEDFEB;
+  --md-code-line-number: rgba(190, 223, 235, 0.46);
+}
+
+@media (prefers-color-scheme: dark) {
+  [data-color-mode="system"] .App,
+  [data-color-mode="system"] article.rm-Article,
+  [data-color-mode="system"] #content-head,
+  [data-color-mode="system"] #content-container,
+  [data-color-mode="system"] .content-body,
+  [data-color-mode="system"] .rm-Markdown[data-styles="hds"],
+  [data-color-mode="system"] [data-theme="hds-web-product-dark-theme"] {
+    background-color: #092732 !important;
+  }
+
+  [data-color-mode="system"] .rm-Markdown[data-styles="hds"],
+  [data-color-mode="system"] [data-theme="hds-web-product-dark-theme"] {
+    --hds-background-base: #092732;
+    --hds-background-object: #153947;
+  }
+
+  [data-color-mode="system"] .rm-Markdown[data-styles="hds"] {
+    --md-code-background: #153947;
+    --md-code-text: #ECF7FC;
+    --md-code-tabs: #153947;
+    --md-code-divider: rgba(0, 118, 160, 0.35);
+    --md-code-tabgroup-bg: rgba(0, 148, 215, 0.12);
+    --md-code-tab-active-bg: #1E4554;
+    --md-code-tab-active-text: #ECF7FC;
+    --md-code-tab-inactive-text: #BEDFEB;
+    --md-code-copy-text: #BEDFEB;
+    --md-code-line-number: rgba(190, 223, 235, 0.46);
+  }
 }
 
 
@@ -597,18 +676,19 @@ button.Button.Button_slate_text.Button_md.NavItem2xSfFaVqfRjy.Button.Button_slat
 
 /* ── Reference redesign base resets ── */
 .reference-redesign {
-  --Sidebar-border-color: var(--color-border-default);
-  --Sidebar-font-weight: 700;
+  --Sidebar-border-color: rgba(0, 129, 177, 0.25);
+  --Sidebar-font-weight: 400;
   --Sidebar-indent: 10px;
   --Sidebar-link-padding-y: 0.429em;
+  --hub-sidebar-width: 360px;
 }
 .reference-redesign .Sidebar-link-iconnjiqEiZlPn0W { opacity: 1; }
-.reference-redesign .Sidebar1t2G1ZJq-vU1 { padding: 0; }
+.reference-redesign .Sidebar1t2G1ZJq-vU1 { padding: 8px; }
 .reference-redesign .Sidebar-listWrapper6Q9_yUrG906C + .Sidebar-listWrapper6Q9_yUrG906C {
-  margin-top: 0;
+  margin-top: 8px;
   margin-bottom: 0;
 }
-.reference-redesign .Sidebar-list_sidebarLayout3RaX72iQNOEI { margin-top: 0; }
+.reference-redesign .Sidebar-list_sidebarLayout3RaX72iQNOEI { margin-top: 4px; }
 
 .rm-Sidebar-list,
 .Sidebar-list3cZWQLaBf9k8 {
@@ -625,31 +705,24 @@ button.Button.Button_slate_text.Button_md.NavItem2xSfFaVqfRjy.Button.Button_slat
   margin: 0 !important;
 }
 
-.subpages > li.Sidebar-item23D-2Kd61_k3:first-child {
-  padding-top: 16px !important;
-}
-.subpages > li.Sidebar-item23D-2Kd61_k3:last-child {
-  padding-bottom: 16px !important;
-  margin-top: -.1px !important;
-}
 
 /* ── Category headings (section separators) ── */
 nav#hub-sidebar .rm-cat__heading,
 .Sidebar-headingTRQyOa2pk0gh.rm-Sidebar-category {
   font-family: var(--here-font) !important;
   font-size: 14px !important;
+  font-weight: 700 !important;
   line-height: 20px !important;
-  letter-spacing: -0.1px !important;
+  letter-spacing: -0.4px !important;
   text-transform: none !important;
   color: var(--color-sidebar-link-fg) !important;
   opacity: 1 !important;
-  padding: 14px 16px !important;
-  min-height: unset !important;
+  padding: 18px 16px !important;
+  min-height: 56px !important;
   height: auto !important;
   width: 100% !important;
   margin: 0 !important;
   border: none !important;
-  border-bottom: 1px solid var(--color-sidebar-border) !important;
   box-sizing: border-box !important;
   display: flex !important;
   align-items: center !important;
@@ -657,14 +730,23 @@ nav#hub-sidebar .rm-cat__heading,
   flex-direction: row;
   gap: 6px !important;
   cursor: pointer !important;
-  background: transparent !important;
+  background: rgba(0, 148, 215, 0.07) !important;
   transition: background 0.12s !important;
   white-space: normal !important;
   overflow-wrap: anywhere !important;
-  border-radius: 0 !important;
+  border-radius: 4px !important;
 }
 nav#hub-sidebar .rm-cat__heading > * { min-width: 0 !important; }
-nav#hub-sidebar .rm-cat__heading:hover { background: var(--color-sidebar-hover-bg) !important; }
+nav#hub-sidebar .rm-cat__heading:hover { background: rgba(0, 148, 215, 0.12) !important; }
+
+/* ── Category SVG chevron rotation (collapsed=↓, expanded=↑) ── */
+.Sidebar-heading-icon2CRff70bVWxM {
+  transform: rotate(90deg) !important;
+  transition: transform 0.18s ease !important;
+}
+.Sidebar-heading_expanded2qZRKQjOeXe9 .Sidebar-heading-icon2CRff70bVWxM {
+  transform: rotate(-90deg) !important;
+}
 
 /* ── Category toggle chevron ── */
 nav#hub-sidebar .rm-cat__toggle {
@@ -706,15 +788,14 @@ nav#hub-sidebar .rm-cat__toggle[aria-expanded="true"]::before {
   font-family: var(--here-font) !important;
   font-size: 14px !important;
   line-height: 20px !important;
-  letter-spacing: -0.1px !important;
+  letter-spacing: -0.4px !important;
   color: var(--color-sidebar-link-fg) !important;
-  padding: 14px 16px !important;
-  min-height: unset !important;
+  padding: 0 8px !important;
+  min-height: 40px !important;
   height: auto !important;
   width: 100% !important;
   border: none !important;
   border-radius: 0 !important;
-  border-bottom: 1px solid var(--color-sidebar-border) !important;
   display: flex !important;
   align-items: center !important;
   justify-content: flex-start !important;
@@ -739,12 +820,12 @@ nav#hub-sidebar .rm-cat__toggle[aria-expanded="true"]::before {
 .Sidebar-link2Dsha-r-GKh2.active,
 a.rm-Sidebar-link[aria-current="page"],
 a.Sidebar-link2Dsha-r-GKh2[aria-current="page"] {
-  background: var(--color-sidebar-active-bg) !important;
-  color: var(--color-sidebar-active-fg, var(--color-sidebar-link-fg)) !important;
-  font-family: var(--here-font-bold) !important;
-  font-weight: 700 !important;
+  background: #D2DAFC !important;
+  color: #092732 !important;
+  font-family: var(--here-font) !important;
+  font-weight: 400 !important;
   border-left: none !important;
-  box-shadow: inset 4px 0 0 var(--color-sidebar-active-border) !important;
+  box-shadow: inset 2px 0 0 #1F28E8 !important;
 }
 
 /* Link text container */
@@ -769,6 +850,10 @@ a.Sidebar-link2Dsha-r-GKh2[aria-current="page"] {
 .Sidebar-link-buttonWrapper3hnFHNku8_BJ {
   background: transparent !important;
   border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
   color: var(--color-sidebar-link-fg) !important;
   opacity: 0.6 !important;
   width: 20px !important;
@@ -783,8 +868,18 @@ a.Sidebar-link2Dsha-r-GKh2[aria-current="page"] {
   margin: 0 !important;
   cursor: pointer !important;
   order: -1 !important;
+  border-radius: 50% !important;
 }
-.Sidebar-link-buttonWrapper3hnFHNku8_BJ:hover { opacity: 1 !important; }
+.Sidebar-link-buttonWrapper3hnFHNku8_BJ:focus,
+.Sidebar-link-buttonWrapper3hnFHNku8_BJ:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+.Sidebar-link-buttonWrapper3hnFHNku8_BJ:hover {
+  opacity: 1 !important;
+  background: rgba(0, 148, 215, 0.12) !important;
+  border-radius: 50% !important;
+}
 
 /* Use icon font chevron; rotate when expanded */
 .Sidebar-link-expandIcon2yVH6SarI6NW {
@@ -799,16 +894,39 @@ a[aria-expanded="true"] .Sidebar-link-expandIcon2yVH6SarI6NW,
   transform: rotate(90deg) !important;
 }
 
-/* Childless links: no chevron button space, so nudge text left */
+/* Childless links: bullet dot indicator instead of indented text */
 .Sidebar-link2Dsha-r-GKh2.childless .Sidebar-link-textLuTE1ySm4Kqn,
 .rm-Sidebar-link.childless .Sidebar-link-textLuTE1ySm4Kqn {
-  padding-left: 28px !important; /* align with parent link text that has chevron */
+  padding-left: 0 !important;
+}
+
+/* Childless dot: 20px-wide block matching the chevron button width so text
+   starts at the same x-position for both expandable and leaf items. */
+.Sidebar-link2Dsha-r-GKh2.childless:not(.subpage)::before,
+.rm-Sidebar-link.childless:not(.subpage)::before {
+  content: '';
+  display: block;
+  width: 20px;
+  min-width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  align-self: center;
+  margin: 0;
+  opacity: 0.6;
+  background: radial-gradient(circle 2px at center, #2C596A 100%, transparent 100%);
 }
 
 /* Light-mode active text color for reference-redesign */
 .reference-redesign .Sidebar-link2Dsha-r-GKh2:active,
 .reference-redesign .Sidebar-link2Dsha-r-GKh2.active {
   color: #092732 !important;
+}
+
+/* Override ReadMe's reference-redesign default border-radius and border-left on nav links */
+.reference-redesign .Sidebar-link2Dsha-r-GKh2,
+.reference-redesign .Sidebar-group-toggleUSiExTB-GVvb {
+  border-radius: 0 !important;
+  border-left: none !important;
 }
 
 /* ── Subpages ── */
@@ -820,7 +938,7 @@ a[aria-expanded="true"] .Sidebar-link-expandIcon2yVH6SarI6NW,
   margin-left: 0 !important;
   margin-top: 0 !important;
   margin-bottom: 0 !important;
-  padding: 0 0 0 24px !important;
+  padding: 0 0 0 16px !important;
   list-style: none !important;
   box-sizing: border-box !important;
 }
@@ -838,18 +956,15 @@ li.subnav-expanded,
 .subpages .rm-Sidebar-link,
 .subpages .Sidebar-link2Dsha-r-GKh2 {
   font-family: var(--here-font) !important;
-  font-weight: 500 !important;
+  font-weight: 400 !important;
   font-size: 14px !important;
   line-height: 20px !important;
   letter-spacing: -0.4px !important;
-  padding: 10px 16px 10px 12px !important;
-  min-height: unset !important;
+  padding: 0 8px 0 12px !important;
+  min-height: 32px !important;
   height: auto !important;
   width: 100% !important;
-  border-left: 2px solid rgba(0, 129, 177, 0.25) !important;
-  border-top: none !important;
-  border-right: none !important;
-  border-bottom: none !important;
+  border: none !important;
   border-radius: 0 !important;
   box-shadow: none !important;
   background: transparent !important;
@@ -866,27 +981,37 @@ li.subnav-expanded,
 .subpages .rm-Sidebar-link:hover,
 .subpages .Sidebar-link2Dsha-r-GKh2:hover {
   background: var(--color-sidebar-hover-bg) !important;
-  border-left: 2px solid rgba(0, 129, 177, 0.25) !important;
   box-shadow: none !important;
 }
 
 .subpages .rm-Sidebar-link.active,
 .subpages .Sidebar-link2Dsha-r-GKh2.active,
 .subpages a[aria-current="page"] {
-  font-weight: 500 !important;
+  font-weight: 400 !important;
   color: #092732 !important;
-  background: rgba(0, 148, 215, 0.07) !important;
-  border-left: 2px solid #48DAD0 !important;
-  box-shadow: none !important;
+  background: #D2DAFC !important;
+  border-left: none !important;
+  box-shadow: inset 2px 0 0 #1F28E8 !important;
 }
 
-.subpages .Sidebar-link-text_label1gCT_uPnx7Gu {
-  line-height: 16px !important;
-}
 
 .subpages .Sidebar-link2Dsha-r-GKh2.childless .Sidebar-link-textLuTE1ySm4Kqn,
 .subpages .rm-Sidebar-link.childless .Sidebar-link-textLuTE1ySm4Kqn {
   padding-left: 0 !important;
+}
+
+.subpages .Sidebar-link2Dsha-r-GKh2.childless::before,
+.subpages .rm-Sidebar-link.childless::before {
+  content: '';
+  display: block;
+  width: 20px;
+  min-width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  align-self: center;
+  margin: 0;
+  opacity: 0.6;
+  background: radial-gradient(circle 2px at center, #2C596A 100%, transparent 100%);
 }
 
 /* ── Sidebar dark mode — explicit [data-color-mode="dark"] ── */
@@ -928,7 +1053,7 @@ li.subnav-expanded,
 [data-color-mode="dark"] .Sidebar-link2Dsha-r-GKh2.active {
   background: var(--color-sidebar-dark-active-bg) !important;
   color: var(--color-sidebar-dark-active-fg) !important;
-  border-left-color: var(--color-sidebar-dark-active-border) !important;
+  box-shadow: inset 2px 0 0 var(--color-sidebar-dark-active-border) !important;
 }
 [data-color-mode="dark"] .Sidebar-link-buttonWrapper3hnFHNku8_BJ {
   color: var(--color-sidebar-dark-link-fg) !important;
@@ -948,7 +1073,8 @@ li.subnav-expanded,
 
 [data-color-mode="dark"] nav#hub-sidebar .rm-cat__heading,
 [data-color-mode="dark"] .Sidebar-headingTRQyOa2pk0gh.rm-Sidebar-category {
-  color: #ffffff !important;
+  color: #BEDFEB !important;
+  background: rgba(0, 148, 215, 0.10) !important;
 }
 
 /* Dark-mode parity for hardcoded light-mode styles */
@@ -963,14 +1089,13 @@ li.subnav-expanded,
   font-weight: 500 !important;
   color: var(--color-sidebar-dark-active-fg) !important;
   background: var(--color-sidebar-dark-active-bg) !important;
-  border-left: 2px solid var(--color-sidebar-dark-active-border) !important;
-  box-shadow: none !important;
+  border-left: none !important;
+  box-shadow: inset 2px 0 0 var(--color-sidebar-dark-active-border) !important;
 }
 
 [data-color-mode="dark"] .subpages .rm-Sidebar-link:hover,
 [data-color-mode="dark"] .subpages .Sidebar-link2Dsha-r-GKh2:hover {
   background: var(--color-sidebar-dark-hover-bg) !important;
-  border-left: 2px solid var(--color-sidebar-dark-subpages-border) !important;
   box-shadow: none !important;
 }
 
@@ -1018,7 +1143,7 @@ li.subnav-expanded,
   [data-color-mode="system"] .Sidebar-link2Dsha-r-GKh2.active {
     background: var(--color-sidebar-dark-active-bg) !important;
     color: var(--color-sidebar-dark-active-fg) !important;
-    border-left-color: var(--color-sidebar-dark-active-border) !important;
+    box-shadow: inset 2px 0 0 var(--color-sidebar-dark-active-border) !important;
   }
   [data-color-mode="system"] .Sidebar-link-buttonWrapper3hnFHNku8_BJ {
     color: var(--color-sidebar-dark-link-fg) !important;
@@ -1038,7 +1163,8 @@ li.subnav-expanded,
 
   [data-color-mode="system"] nav#hub-sidebar .rm-cat__heading,
   [data-color-mode="system"] .Sidebar-headingTRQyOa2pk0gh.rm-Sidebar-category {
-    color: #ffffff !important;
+    color: #BEDFEB !important;
+    background: rgba(0, 148, 215, 0.10) !important;
   }
 
   /* System dark parity for hardcoded light-mode styles */
@@ -1053,14 +1179,13 @@ li.subnav-expanded,
     font-weight: 500 !important;
     color: var(--color-sidebar-dark-active-fg) !important;
     background: var(--color-sidebar-dark-active-bg) !important;
-    border-left: 2px solid var(--color-sidebar-dark-active-border) !important;
-    box-shadow: none !important;
+    border-left: none !important;
+    box-shadow: inset 2px 0 0 var(--color-sidebar-dark-active-border) !important;
   }
 
   [data-color-mode="system"] .subpages .rm-Sidebar-link:hover,
   [data-color-mode="system"] .subpages .Sidebar-link2Dsha-r-GKh2:hover {
     background: var(--color-sidebar-dark-hover-bg) !important;
-    border-left: 2px solid var(--color-sidebar-dark-subpages-border) !important;
     box-shadow: none !important;
   }
 
@@ -1999,33 +2124,10 @@ html[data-color-mode="dark"] .rm-Markdown figcaption {
    ----------------------------------------------------------------------
    Targets: .lightbox, .lightbox-inner, .rm-alt-caption
    Why: Block-level lightbox display and caption styling.
-   Image alignment: left-align images (matching Zoomin behaviour),
-   but preserve default inline flow for images embedded inside
-   notes / callout / alert blocks so they don't break layout there.
    ====================================================================== */
 
 span.img.lightbox.closed { display: block; }
 .lightbox-inner { display: inline-block; }
-
-/* ── Left-align standalone lightbox images (matching Zoomin behaviour) ─
-   Scoped only to the lightbox image component — does NOT affect inline
-   images, icons, table images or any other img tags on the page.       */
-.rm-Markdown span.img.lightbox.closed,
-.markdown-body span.img.lightbox.closed {
-  text-align: left !important;
-}
-
-.rm-Markdown span.img.lightbox > .lightbox-inner > img,
-.markdown-body span.img.lightbox > .lightbox-inner > img {
-  margin-left: 0 !important;
-  margin-right: auto !important;
-}
-
-/* TODO: Add exception for callout/note blocks once the exact wrapper
-   class name is confirmed via DevTools inspection on a page that has
-   an image embedded inside a note/hint/callout block.
-   e.g. inspect the note block on:
-   https://docs.here.com/map-rendering/docs/viewport-zoom             */
 
 .rm-alt-caption {
   margin-top: 8px;
@@ -2957,4 +3059,9 @@ header .LangPicker17mF-TSKPUmJ.undefined.Dropdown.Dropdown_closed {
 [data-color-mode="dark"] #AppSearch[data-styles="hds"] .Toggle-display {
   background: #0d1f26 !important;
   border-color: #3f7183 !important;
+}
+
+.Header-search_featherYsmQBn55F3d9 {
+  -webkit-box-shadow: none;
+  box-shadow: none;
 }
