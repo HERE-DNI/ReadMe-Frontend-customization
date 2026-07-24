@@ -27,6 +27,16 @@
   data-styles="hds"
   data-theme="hds-web-product-light-theme"
 >
+  <script>
+    (function () {
+      var el = document.currentScript && document.currentScript.parentElement;
+      if (!el) return;
+      var mode = (document.documentElement.getAttribute("data-color-mode") || "").toLowerCase();
+      var dark = mode === "dark" ||
+        (mode === "system" && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches);
+      if (dark) el.setAttribute("data-theme", "hds-web-product-dark-theme");
+    })();
+  </script>
   <style>
     /* ================================================================
        GLP-ONLY OVERRIDES
@@ -463,6 +473,17 @@
     .here-glp[data-theme*="dark"] .here-whatsnew { background: #141a1e !important; }
     .here-glp[data-theme*="dark"] .here-videos { background: #111518 !important; }
 
+    /* Card backgrounds — hardcoded here so they don't flash white when the
+       external HDS stylesheet arrives late (cache miss / slow network). */
+    .here-glp[data-theme*="dark"] .hds-card--secondary-solid {
+      background-color: #1c2830 !important;
+      border-color: rgba(255,255,255,0.07) !important;
+    }
+    .here-glp[data-theme*="dark"] .hds-card--primary-solid {
+      background-color: #162028 !important;
+      border-color: rgba(255,255,255,0.07) !important;
+    }
+
     /* Text */
     .here-glp[data-theme*="dark"] .here-section-title,
     .here-glp[data-theme*="dark"] h1,
@@ -509,6 +530,145 @@
     .here-glp[data-theme*="dark"] .here-carousel__controls .hds-button--variant-secondary:hover {
       background: rgba(232, 237, 240, 0.08) !important;
       border-color: rgba(232, 237, 240, 0.45) !important;
+    }
+
+
+    /* ================================================================
+       DARK MODE — PRE-PAINT GUARD (no-flash mirror)
+       ================================================================
+       The block above keys off .here-glp[data-theme*="dark"], but
+       data-theme is only flipped to the dark value by JS, which runs
+       AFTER first paint on a /page/ route — so cards/sections briefly
+       flash their light background before the attribute updates.
+
+       These rules mirror EVERY dark rule above, keyed instead on
+       <html data-color-mode> — which ReadMe stamps BEFORE first paint,
+       exactly as the header chrome (data-color-mode block) and the
+       modals already do.  Purely additive: the data-theme rules above
+       remain as the fallback for the editor/iframe context where
+       data-color-mode lives on the parent document.
+
+       Two contexts, matching the header pattern:
+         • [data-color-mode="dark"]                         → explicit dark
+         • @media(dark) [data-color-mode="system"]          → system + OS dark
+    */
+
+    /* ── Explicit dark ── */
+    [data-color-mode="dark"] .here-glp .here-hero { background: #162028 !important; }
+    [data-color-mode="dark"] .here-glp .here-body { background: #1a1f23 !important; }
+    [data-color-mode="dark"] .here-glp .here-whatsnew { background: #141a1e !important; }
+    [data-color-mode="dark"] .here-glp .here-videos { background: #111518 !important; }
+
+    [data-color-mode="dark"] .here-glp .hds-card--secondary-solid {
+      background-color: #1c2830 !important;
+      border-color: rgba(255,255,255,0.07) !important;
+    }
+    [data-color-mode="dark"] .here-glp .hds-card--primary-solid {
+      background-color: #162028 !important;
+      border-color: rgba(255,255,255,0.07) !important;
+    }
+
+    [data-color-mode="dark"] .here-glp .here-section-title,
+    [data-color-mode="dark"] .here-glp h1,
+    [data-color-mode="dark"] .here-glp h2,
+    [data-color-mode="dark"] .here-glp h4 { color: #e8edf0 !important; }
+    [data-color-mode="dark"] .here-glp .here-hero__subtitle { color: rgba(232, 237, 240, 0.70) !important; }
+    [data-color-mode="dark"] .here-glp .hds-card p { color: rgba(232, 237, 240, 0.65) !important; }
+
+    [data-color-mode="dark"] .here-glp .here-search__kbd {
+      color: rgba(232, 237, 240, 0.45) !important;
+      border-color: rgba(255, 255, 255, 0.15) !important;
+      background: rgba(255, 255, 255, 0.05) !important;
+    }
+
+    [data-color-mode="dark"] .here-glp a.here-seeall,
+    [data-color-mode="dark"] .here-glp a.here-wn-seeall { color: #5bc8f5 !important; }
+    [data-color-mode="dark"] .here-glp a.here-seeall:hover,
+    [data-color-mode="dark"] .here-glp a.here-wn-seeall:hover { color: #8edcfa !important; }
+    [data-color-mode="dark"] .here-glp .here-wn-links a { color: #5bc8f5 !important; }
+    [data-color-mode="dark"] .here-glp .here-wn-links a:hover { color: #8edcfa !important; }
+
+    [data-color-mode="dark"] .here-glp .here-card__pills .hds-button--variant-secondary,
+    [data-color-mode="dark"] .here-glp .here-doc-grid .hds-button--variant-secondary {
+      border-color: rgba(232, 237, 240, 0.25) !important;
+      color: #c8e8f0 !important;
+      background: rgba(232, 237, 240, 0.05) !important;
+    }
+    [data-color-mode="dark"] .here-glp .here-card__pills .hds-button--variant-secondary:hover,
+    [data-color-mode="dark"] .here-glp .here-doc-grid .hds-button--variant-secondary:hover {
+      background: rgba(232, 237, 240, 0.10) !important;
+      border-color: rgba(232, 237, 240, 0.45) !important;
+    }
+
+    [data-color-mode="dark"] .here-glp .here-c-dot { background: rgba(232, 237, 240, 0.25) !important; }
+    [data-color-mode="dark"] .here-glp .here-c-dot.active { background: rgba(232, 237, 240, 0.80) !important; }
+    [data-color-mode="dark"] .here-glp .here-carousel__controls .hds-button--variant-secondary {
+      border-color: rgba(232, 237, 240, 0.25) !important;
+      color: #e8edf0 !important;
+    }
+    [data-color-mode="dark"] .here-glp .here-carousel__controls .hds-button--variant-secondary:hover {
+      background: rgba(232, 237, 240, 0.08) !important;
+      border-color: rgba(232, 237, 240, 0.45) !important;
+    }
+
+    /* ── System + OS dark ── */
+    @media (prefers-color-scheme: dark) {
+      [data-color-mode="system"] .here-glp .here-hero { background: #162028 !important; }
+      [data-color-mode="system"] .here-glp .here-body { background: #1a1f23 !important; }
+      [data-color-mode="system"] .here-glp .here-whatsnew { background: #141a1e !important; }
+      [data-color-mode="system"] .here-glp .here-videos { background: #111518 !important; }
+
+      [data-color-mode="system"] .here-glp .hds-card--secondary-solid {
+        background-color: #1c2830 !important;
+        border-color: rgba(255,255,255,0.07) !important;
+      }
+      [data-color-mode="system"] .here-glp .hds-card--primary-solid {
+        background-color: #162028 !important;
+        border-color: rgba(255,255,255,0.07) !important;
+      }
+
+      [data-color-mode="system"] .here-glp .here-section-title,
+      [data-color-mode="system"] .here-glp h1,
+      [data-color-mode="system"] .here-glp h2,
+      [data-color-mode="system"] .here-glp h4 { color: #e8edf0 !important; }
+      [data-color-mode="system"] .here-glp .here-hero__subtitle { color: rgba(232, 237, 240, 0.70) !important; }
+      [data-color-mode="system"] .here-glp .hds-card p { color: rgba(232, 237, 240, 0.65) !important; }
+
+      [data-color-mode="system"] .here-glp .here-search__kbd {
+        color: rgba(232, 237, 240, 0.45) !important;
+        border-color: rgba(255, 255, 255, 0.15) !important;
+        background: rgba(255, 255, 255, 0.05) !important;
+      }
+
+      [data-color-mode="system"] .here-glp a.here-seeall,
+      [data-color-mode="system"] .here-glp a.here-wn-seeall { color: #5bc8f5 !important; }
+      [data-color-mode="system"] .here-glp a.here-seeall:hover,
+      [data-color-mode="system"] .here-glp a.here-wn-seeall:hover { color: #8edcfa !important; }
+      [data-color-mode="system"] .here-glp .here-wn-links a { color: #5bc8f5 !important; }
+      [data-color-mode="system"] .here-glp .here-wn-links a:hover { color: #8edcfa !important; }
+
+      [data-color-mode="system"] .here-glp .here-card__pills .hds-button--variant-secondary,
+      [data-color-mode="system"] .here-glp .here-doc-grid .hds-button--variant-secondary {
+        border-color: rgba(232, 237, 240, 0.25) !important;
+        color: #c8e8f0 !important;
+        background: rgba(232, 237, 240, 0.05) !important;
+      }
+      [data-color-mode="system"] .here-glp .here-card__pills .hds-button--variant-secondary:hover,
+      [data-color-mode="system"] .here-glp .here-doc-grid .hds-button--variant-secondary:hover {
+        background: rgba(232, 237, 240, 0.10) !important;
+        border-color: rgba(232, 237, 240, 0.45) !important;
+      }
+
+      [data-color-mode="system"] .here-glp .here-c-dot { background: rgba(232, 237, 240, 0.25) !important; }
+      [data-color-mode="system"] .here-glp .here-c-dot.active { background: rgba(232, 237, 240, 0.80) !important; }
+      [data-color-mode="system"] .here-glp .here-carousel__controls .hds-button--variant-secondary {
+        border-color: rgba(232, 237, 240, 0.25) !important;
+        color: #e8edf0 !important;
+      }
+      [data-color-mode="system"] .here-glp .here-carousel__controls .hds-button--variant-secondary:hover {
+        background: rgba(232, 237, 240, 0.08) !important;
+        border-color: rgba(232, 237, 240, 0.45) !important;
+      }
     }
 
 
@@ -804,7 +964,8 @@
             </div>
             <p>Updates and announcements about the HERE platform.</p>
             <div class="here-wn-links">
-              <a href="https://www.here.com/learn/blog/april-2026-platform-release-notes" rel="noopener">April 2026</a>
+              <a href="https://www.here.com/learn/blog/may-2026-platform-release-notes" rel="noopener">May 2026</a>
+							<a href="https://www.here.com/learn/blog/april-2026-platform-release-notes" rel="noopener">April 2026</a>
               <a href="https://www.here.com/learn/blog/march-2026-platform-release-notes" rel="noopener">March 2026</a>
               <a href="https://www.here.com/learn/blog/february-2026-platform-release-notes" rel="noopener">February 2026</a>
               <a href="https://www.here.com/learn/blog/january-2026-platform-release-notes" rel="noopener">January 2026</a>
@@ -953,6 +1114,7 @@
             <p class="here-card__desc">開発ツールを使ってカスタムソリューションを構築する。</p>
             <div class="here-card__pills">
               <a class="hds-button hds-button--variant-secondary hds-button--size-small" href="/maps-api-for-js/ja/v1.0/docs/introduction-maps-api-for-javascript">HERE Maps API for JavaScript</a>
+              <a class="hds-button hds-button--variant-secondary hds-button--size-small" href="/here-sdk/ja/v4.25.5-0/docs/readme">HERE SDK</a>
             </div>
           </article>
 
@@ -991,6 +1153,7 @@
             </div>
             <p>HEREプラットフォームに関する更新情報とお知らせ (英語)</p>
             <div class="here-wn-links">
+							<a href="https://www.here.com/learn/blog/may-2026-platform-release-notes" rel="noopener">２０２６年５月</a>
 							<a href="https://www.here.com/learn/blog/april-2026-platform-release-notes" rel="noopener">２０２６年４月</a>
 							<a href="https://www.here.com/learn/blog/march-2026-platform-release-notes" rel="noopener">２０２６年３月</a>
               <a href="https://www.here.com/learn/blog/february-2026-platform-release-notes" rel="noopener">２０２６年２月</a>
@@ -1379,7 +1542,7 @@
             { label: "HERE Positioning",    href: "/here-positioning" },
             { label: "HERE Routing",        href: "/here-routing" },
             { label: "HERE Tour Planning",  href: "/here-tour-planning" },
-            { label: "HERE WeGo",           href: "/here-wego" },
+            { label: "HERE WeGo Pro",           href: "/wego-pro" },
             { label: "HERE Transit",        href: "/here-transit" },
             { label: "Tracking API",        href: "/tracking-api" },
             { label: "what3words",          href: "/what3words-diqg" },
