@@ -197,6 +197,13 @@
       gap: 8px !important;
     }
 
+    /* Contact us button — HDS secondary button component.
+       hds-button doesn't observe href; navigation is wired up on click. */
+    hds-button.here-contact-us {
+      display: inline-flex;
+      vertical-align: middle;
+    }
+
 
     /* ================================================================
        i18n VISIBILITY
@@ -214,8 +221,24 @@
        LANGUAGE ROW
        ================================================================ */
 
-    .here-lang-row { width: 100%; display: flex; justify-content: flex-end; margin-bottom: 8px; }
-    hds-switcher[data-here-lang-toggle] { display: inline-flex; }
+    .here-lang-row {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 8px;
+    }
+    .here-lang-row .here-mcp-banner { flex: 1 1 auto; margin-bottom: 0; }
+    hds-switcher[data-here-lang-toggle] { display: inline-flex; flex-shrink: 0; }
+
+    @media (max-width: 640px) {
+      .here-lang-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .here-lang-row hds-switcher[data-here-lang-toggle] { align-self: flex-end; }
+    }
 
 
     /* ================================================================
@@ -502,6 +525,87 @@
     }
     a.here-seeall { color: #2c596a !important; font-weight: 600; }
     a.here-seeall:hover { color: #092732 !important; }
+
+
+    /* ================================================================
+       MCP BANNER (sits inside the hero, above the H1)
+       ================================================================ */
+
+    .here-hero .here-mcp-banner { margin-bottom: 24px; }
+
+    .here-mcp-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 10px 16px;
+      background: rgba(255, 255, 255, 0.55);
+      border: 1px solid rgba(9, 39, 50, 0.10);
+      border-radius: 8px;
+    }
+
+    .here-mcp-banner__content {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .here-mcp-banner__icon {
+      flex-shrink: 0;
+      display: inline-flex;
+      color: #092732;
+    }
+
+    .here-mcp-banner__icon svg { width: 20px; height: 20px; }
+
+    .here-mcp-banner__text {
+      font-size: 12px;
+      color: #092732;
+      line-height: 1.5;
+    }
+
+    .here-mcp-banner__text strong { font-weight: 600; }
+
+    .here-mcp-banner__cta {
+      flex-shrink: 0;
+      font-size: 13px;
+      font-weight: 600;
+      color: #0b5fff;
+      text-decoration: none;
+      white-space: nowrap;
+      padding: 6px 12px;
+      border-radius: 6px;
+      transition: background .15s, color .15s;
+    }
+
+    .here-mcp-banner__cta:hover {
+      background: rgba(11, 95, 255, 0.06);
+      color: #0a4fe0;
+      text-decoration: underline;
+    }
+
+    @media (max-width: 640px) {
+      .here-mcp-banner {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 12px 16px;
+      }
+    }
+
+    /* Dark mode */
+    .here-glp[data-theme*="dark"] .here-mcp-banner {
+      background: rgba(255, 255, 255, 0.04) !important;
+      border-color: rgba(255, 255, 255, 0.10) !important;
+    }
+    .here-glp[data-theme*="dark"] .here-mcp-banner__icon,
+    .here-glp[data-theme*="dark"] .here-mcp-banner__text { color: #e8edf0 !important; }
+    .here-glp[data-theme*="dark"] .here-mcp-banner__cta { color: #5bc8f5 !important; }
+    .here-glp[data-theme*="dark"] .here-mcp-banner__cta:hover {
+      background: rgba(91, 200, 245, 0.08) !important;
+      color: #8edcfa !important;
+    }
   </style>
 
 
@@ -514,11 +618,28 @@
     <section class="here-hero" aria-label="Hero">
       <div class="here-wrap">
         <div class="here-lang-row" aria-label="Language">
+          <!-- ── MCP banner (inside lang row) ── -->
+          <aside class="here-mcp-banner" role="region" aria-label="AI documentation announcement">
+            <div class="here-mcp-banner__content">
+              <span class="here-mcp-banner__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="3"/>
+                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+              </span>
+              <span class="here-mcp-banner__text">
+                <strong>Working with AI?</strong> Use the HERE documentation MCP to connect your AI coding agents with HERE docs and use trusted product information and up-to-date documentation directly from your IDE.
+              </span>
+            </div>
+            <a href="https://docs.here.com/here-kb/docs/the-here-docs-mcp" target="_blank" rel="noopener" class="here-mcp-banner__cta">View documentation &#8594;</a>
+          </aside>
+
           <hds-switcher size="small" data-here-lang-toggle>
             <hds-switcher-tab selected data-lang="en">EN</hds-switcher-tab>
             <hds-switcher-tab data-lang="ja">日本語</hds-switcher-tab>
           </hds-switcher>
         </div>
+
         <div class="here-hero__wrap">
           <h1 class="hds-heading1--mega">HERE documentation</h1>
           <p class="here-hero__subtitle">Find answers to your product and technical questions</p>
@@ -766,11 +887,28 @@
     <section class="here-hero" aria-label="ヒーロー">
       <div class="here-wrap">
         <div class="here-lang-row" aria-label="言語">
+          <!-- ── MCP banner (inside lang row) ── -->
+          <aside class="here-mcp-banner" role="region" aria-label="AI ドキュメントのお知らせ">
+            <div class="here-mcp-banner__content">
+              <span class="here-mcp-banner__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="3"/>
+                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+              </span>
+              <span class="here-mcp-banner__text">
+                <strong>AI と連携していますか？</strong> HERE ドキュメント MCP を使って AI コーディングエージェントを HERE ドキュメントに接続し、信頼できる製品情報と最新のドキュメントを IDE から直接ご活用ください。
+              </span>
+            </div>
+            <a href="https://docs.here.com/here-kb/docs/the-here-docs-mcp" target="_blank" rel="noopener" class="here-mcp-banner__cta">ドキュメントを見る &#8594;</a>
+          </aside>
+
           <hds-switcher size="small" data-here-lang-toggle>
             <hds-switcher-tab data-lang="en">EN</hds-switcher-tab>
             <hds-switcher-tab selected data-lang="ja">日本語</hds-switcher-tab>
           </hds-switcher>
         </div>
+
         <div class="here-hero__wrap">
           <h1 class="hds-heading1--mega">HERE ドキュメント</h1>
           <p class="here-hero__subtitle">製品や技術に関する質問の答えを見つけましょう。より多くの内容と最新の情報については、英語版をご覧ください。
@@ -1449,6 +1587,106 @@
         new MutationObserver(function(){ bind(); })
           .observe(document.documentElement, { childList: true, subtree: true });
       } catch(e) {}
+    })();
+
+    /* ── Contact us button injector ──
+       Adds a "Contact us" button in ReadMe's header, next to Ask AI.
+       The button lives in ReadMe's chrome (outside .here-glp) so it
+       must be injected imperatively.  Uses the ReadMe header container
+       (.Header-right21PC2XTT6aMg) and inserts before the Ask AI button
+       so it appears immediately to the left of it. */
+    (function () {
+      var TAG = "__hereContactUs_v1";
+      if (window[TAG]) return;
+      window[TAG] = true;
+
+      var LINK_ID = "here-contact-us-btn";
+      var URLS = {
+        en: "https://www.here.com/contact?intref=dev_docum",
+        ja: "https://www.here.com/jp/contact"
+      };
+      var LABELS = { en: "Contact us", ja: "お問い合わせ" };
+
+      function currentLang() {
+        return /\/ja(\/|$|\?)/.test(window.location.href) ? "ja" : "en";
+      }
+
+      function currentTheme() {
+        var glp = document.querySelector(".here-glp");
+        return (glp && glp.getAttribute("data-theme")) ||
+               "hds-web-product-light-theme";
+      }
+
+      function syncTheme() {
+        var link = document.getElementById(LINK_ID);
+        if (link) link.setAttribute("data-theme", currentTheme());
+      }
+
+      function inject() {
+        // Find the Ask AI button first and use its actual parent — this
+        // survives ReadMe class-name changes and guarantees we land in
+        // the header-right cluster right next to Ask AI.
+        var askAi = document.querySelector(
+          ".rm-AskAi-button, .rm-AskAi, .Header-askai1MTDknILiJku"
+        );
+        if (!askAi) return;
+
+        // Walk up to the flex row that actually holds the Ask AI item
+        var askAiSlot =
+          askAi.closest(".Header-askai1MTDknILiJku") ||
+          askAi.closest(".rm-AskAi") ||
+          askAi;
+        var headerRight = askAiSlot.parentNode;
+        if (!headerRight) return;
+
+        var existing = document.getElementById(LINK_ID);
+        if (existing && existing.parentNode === headerRight) {
+          syncTheme();
+          return;
+        }
+
+        var lang = currentLang();
+        var url = URLS[lang] || URLS.en;
+        if (existing) existing.remove();
+
+        // <hds-button> is a real HDS web component. It renders an internal
+        // <button> and dispatches a bubbling "click" event on itself
+        // (verified in hds-webcomponents.js). It does NOT observe href,
+        // so we open the URL on click. data-styles + data-theme let HDS
+        // tokens resolve outside .here-glp.
+        var btn = document.createElement("hds-button");
+        btn.id = LINK_ID;
+        btn.className = "here-contact-us";
+        btn.setAttribute("data-styles", "hds");
+        btn.setAttribute("data-theme", currentTheme());
+        btn.setAttribute("variant", "secondary");
+        btn.setAttribute("size", "medium");
+        btn.textContent = LABELS[lang] || LABELS.en;
+        btn.addEventListener("click", function () {
+          window.open(url, "_blank", "noopener");
+        });
+
+        // Sit immediately to the LEFT of Ask AI in DOM order.
+        headerRight.insertBefore(btn, askAiSlot);
+      }
+
+      inject();
+
+      try {
+        new MutationObserver(function () { inject(); })
+          .observe(document.documentElement, { childList: true, subtree: true });
+      } catch (e) {}
+
+      // Follow dark mode: watch .here-glp's data-theme attribute
+      try {
+        var glp = document.querySelector(".here-glp");
+        if (glp) {
+          new MutationObserver(syncTheme).observe(glp, {
+            attributes: true,
+            attributeFilter: ["data-theme"]
+          });
+        }
+      } catch (e) {}
     })();
   </script>
 </section>

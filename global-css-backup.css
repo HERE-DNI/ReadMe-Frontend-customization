@@ -19,12 +19,6 @@
      15. MISC / OVERRIDES
 ====================================================================== */
 
-img[class*="Header-logo-img"] {
-  height: 50px !important;
-  width: auto;
-  margin-top: 3px !important;
-}
-
 .cl-meta { display: none; }
 
 .rm-ToC::after {

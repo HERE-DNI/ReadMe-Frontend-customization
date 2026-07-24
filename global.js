@@ -3815,9 +3815,7 @@ function stampMarkdownScopes() {
   }
 
   /* ===== CONTEXT ===== */
-  const isInReference = () =>
-    location.pathname.includes('/reference/') ||
-    !!document.querySelector('#reference-sidebar');
+  const isInReference = () => location.pathname.includes('/reference/');
   const projectRoot = () => location.pathname.replace(/\/reference.*/, '');
   const currentSlug = () => (location.pathname.match(/\/reference\/([^/?#]+)/) || [])[1] || null;
 
