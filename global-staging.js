@@ -4242,19 +4242,20 @@ function stampMarkdownScopes() {
     if (document.getElementById("here-contact-us-navbar-styles")) return;
     var s = document.createElement("style");
     s.id = "here-contact-us-navbar-styles";
-    // HDS paints the secondary-button background from a CSS variable:
-    //   background: var(--hds-button-secondary-background-default);
-    // In dark theme HDS sets that variable to #0099cc0a (rgba 0,153,204,0.04)
-    // which shows up as a visible cyan-tinted rectangle in our header row.
-    // Overriding the variable directly on our button is more reliable than
-    // trying to out-specificity HDS's own rules.
+    // High-specificity selector (#id + class + attr) so we always beat
+    // HDS's default hds-button.hds-button--variant-secondary rule regardless
+    // of load order. Applies at the html-level so it works on landing
+    // page (nested inside .here-glp on some layouts) and doc pages alike.
     s.textContent =
-      "hds-button.here-contact-us {" +
-      "  --hds-button-secondary-background-default: transparent;" +
-      "  display: inline-flex;" +
-      "  align-self: center;" +
-      "  vertical-align: middle;" +
-      "  text-decoration: none;" +
+      "html hds-button#here-contact-us-btn.here-contact-us[variant='secondary'] {" +
+      "  display: inline-flex !important;" +
+      "  align-self: center !important;" +
+      "  vertical-align: middle !important;" +
+      "  background: transparent !important;" +
+      "  background-color: transparent !important;" +
+      "  border: 0 !important;" +
+      "  box-shadow: none !important;" +
+      "  text-decoration: none !important;" +
       "}";
     document.head.appendChild(s);
   }
