@@ -4216,9 +4216,21 @@ function stampMarkdownScopes() {
   }
 
   function currentTheme() {
+    // Landing page: .here-glp[data-theme] is authoritative
     var glp = document.querySelector(".here-glp");
-    return (glp && glp.getAttribute("data-theme")) ||
-           "hds-web-product-light-theme";
+    if (glp && glp.getAttribute("data-theme")) {
+      return glp.getAttribute("data-theme");
+    }
+    // Interior doc pages: derive from ReadMe's data-color-mode
+    var mode = (document.documentElement.getAttribute("data-color-mode") || "").toLowerCase();
+    var isDark =
+      mode === "dark" ||
+      (mode === "system" &&
+        window.matchMedia &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches);
+    return isDark
+      ? "hds-web-product-dark-theme"
+      : "hds-web-product-light-theme";
   }
 
   function syncTheme() {
@@ -4233,13 +4245,12 @@ function stampMarkdownScopes() {
     s.textContent =
       "hds-button.here-contact-us {" +
       "  display: inline-flex;" +
-      "  align-items: center;" +
       "  align-self: center;" +
       "  vertical-align: middle;" +
-      "  height: 36px !important;" +
+      "  background: transparent !important;" +
+      "  border: 0 !important;" +
       "  text-decoration: none !important;" +
-      "}" +
-      "hds-button.here-contact-us::part(button) { height: 36px !important; }";
+      "}";
     document.head.appendChild(s);
   }
 
@@ -4302,8 +4313,9 @@ function stampMarkdownScopes() {
     window.__here_nav_bus_v1.onNav(run);
   }
 
-  // Follow dark mode: watch .here-glp[data-theme] on landing page, and
-  // <html data-color-mode> on interior doc pages.
+  // Follow dark mode: watch .here-glp[data-theme] on landing page,
+  // <html data-color-mode> on interior doc pages, and OS-level
+  // prefers-color-scheme changes when mode is "system".
   try {
     var glp = document.querySelector(".here-glp");
     if (glp) {
@@ -4316,5 +4328,9 @@ function stampMarkdownScopes() {
       attributes: true,
       attributeFilter: ["data-color-mode"]
     });
+    if (window.matchMedia) {
+      window.matchMedia("(prefers-color-scheme: dark)")
+        .addEventListener("change", syncTheme);
+    }
   } catch (e) {}
 })();
