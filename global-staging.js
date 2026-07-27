@@ -4242,13 +4242,19 @@ function stampMarkdownScopes() {
     if (document.getElementById("here-contact-us-navbar-styles")) return;
     var s = document.createElement("style");
     s.id = "here-contact-us-navbar-styles";
+    // High-specificity selector (#id + class + attr) so we always beat
+    // HDS's default hds-button.hds-button--variant-secondary rule regardless
+    // of load order. Applies at the html-level so it works on landing
+    // page (nested inside .here-glp on some layouts) and doc pages alike.
     s.textContent =
-      "hds-button.here-contact-us {" +
-      "  display: inline-flex;" +
-      "  align-self: center;" +
-      "  vertical-align: middle;" +
+      "html hds-button#here-contact-us-btn.here-contact-us[variant='secondary'] {" +
+      "  display: inline-flex !important;" +
+      "  align-self: center !important;" +
+      "  vertical-align: middle !important;" +
       "  background: transparent !important;" +
+      "  background-color: transparent !important;" +
       "  border: 0 !important;" +
+      "  box-shadow: none !important;" +
       "  text-decoration: none !important;" +
       "}";
     document.head.appendChild(s);
