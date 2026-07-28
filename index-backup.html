@@ -1,0 +1,1847 @@
+<!--
+  HERE Global Landing Page (ReadMe Custom Page)
+  ─────────────────────────────────────────────
+  Features: EN + JA language toggle, dark mode, search proxy, video carousel, "See All" modals
+  Context:  Rendered inside ReadMe's /page/ route (isCustomPageRoute).
+            The JS bundle does NOT stamp data-styles="hds" on /page/ routes,
+            so HDS tokens from the main CSS are NOT available here.
+            All styling is self-contained in the <style> block below.
+  Gotchas:
+    - data-styles="hds" and data-theme="..." are set manually on the <section>
+      and synced by the theme script at the bottom.
+    - HDS web components (hds-switcher, hds-hero-search, hds-card, etc.) are
+      loaded via the external hds-styles.css / hds-components bundle — they
+      work because the data-theme attribute is present on the wrapping <section>.
+    - The search proxy intercepts clicks on the hero search bar and triggers
+      ReadMe's native ⌘K search modal.  Both EN and JA need the proxy wrapper.
+    - DO NOT alter any text content (labels, titles, hrefs, Japanese strings).
+    - DARK MODE: All .here-glp internals key off .here-glp[data-theme*="dark"]
+      which the theme-sync script sets correctly for explicit dark AND
+      system+OS-dark.  Header elements (outside .here-glp) still use
+      [data-color-mode] since they are outside our control.
+-->
+<section
+  class="here-glp"
+  aria-label="HERE documentation landing"
+  data-active-lang="en"
+  data-styles="hds"
+  data-theme="hds-web-product-light-theme"
+>
+  <script>
+    (function () {
+      var el = document.currentScript && document.currentScript.parentElement;
+      if (!el) return;
+      var mode = (document.documentElement.getAttribute("data-color-mode") || "").toLowerCase();
+      var dark = mode === "dark" ||
+        (mode === "system" && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches);
+      if (dark) el.setAttribute("data-theme", "hds-web-product-dark-theme");
+    })();
+  </script>
+  <style>
+    /* ================================================================
+       GLP-ONLY OVERRIDES
+       ================================================================
+       These rules are scoped to the landing page and override ReadMe
+       chrome elements that should be hidden or restyled on this route.
+    */
+
+    /* Show footer lang picker on GLP (hidden globally in main CSS) */
+    #here-footer-lang { display: block !important; }
+
+    /* Hide elements not needed on the landing page */
+    .LangPicker17mF-TSKPUmJ { display: none !important; }
+    nav.Header-leftADQdGVqx1wqU.Header-subnavnVH8URdkgvEl { visibility: hidden !important; }
+    button.here-mm-trigger { display: none !important; }
+
+    /* Logo sizing */
+    .Header-logo-img3YvV4lcGKkeb { height: 50px; width: auto; }
+    .Header-logo1Xy41PtkzbdG { padding: 0 !important; }
+
+    /* Header layout overrides */
+    .Header-right21PC2XTT6aMg,
+    .Header-leftADQdGVqx1wqU,
+    .Header-center1qzK4IhEY8gD { padding: 0 !important; }
+    .App .rm-Container { margin-left: auto; margin-right: auto; max-width: 95%; width: 100%; }
+
+/* Swap user menu (1st child) and theme toggle (3rd child) */
+.Header-right21PC2XTT6aMg .rm-Header-top-link_login {
+  order: 3;
+}
+.Header-right21PC2XTT6aMg .ThemeToggle-wrapper1ZcciJoF3Lq3 {
+  order: 1;
+}
+    /* ================================================================
+       GLP DESIGN TOKENS (scoped to .here-glp)
+       ================================================================ */
+
+    .here-glp {
+      --ink: #092732;
+      --ink-muted: #2c596a;
+      --hero-bg: #e2fffd;
+      --body-bg: #ecf7fc;
+      --wn-bg: #ffffff;
+      --vid-bg: #e2fffd;
+      --card-bg: #ffffff;
+      --card-border: rgba(9, 39, 50, 0.10);
+      --card-shadow: 0 4px 14px rgba(9, 39, 50, 0.07);
+      --pill-border: #3f7183;
+      --pill-bg: rgba(255, 255, 255, 0.6);
+      --link: #0b5fff;
+      --link-hover: #0a4fe0;
+      --radius: 8px;
+      --radius-pill: 999px;
+      --gutter: 48px;
+      --max: 1388px;
+
+      color: var(--ink);
+      font-family: "Fira GO", "Fira Sans", system-ui, -apple-system,
+                   Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    .here-glp * { box-sizing: border-box; }
+    .here-glp .here-wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
+    .here-section-title { font-size: 26px; font-weight: 700; letter-spacing: -0.3px; margin: 0 0 20px; }
+
+
+    /* ================================================================
+       HEADER CONTROLS
+       ================================================================
+       Match the interior page header style (pill buttons, Ask AI, etc.).
+       These duplicate some rules from the main CSS but are needed here
+       because the main CSS uses var(--color-*) tokens which resolve
+       differently on /page/ routes.
+    */
+
+    .Header-bottom2eLKOFXMEmh5 {
+      background-color: #ffffff !important;
+      border-bottom: 1px solid rgba(9, 39, 50, 0.10) !important;
+    }
+
+    /* Search toggle */
+    .rm-SearchToggle {
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      width: 36px !important;
+      height: 36px !important;
+      border-radius: 999px !important;
+      border: 1px solid rgba(9, 39, 50, 0.20) !important;
+      background: transparent !important;
+      color: #092732 !important;
+      padding: 0 !important;
+      overflow: visible !important;
+    }
+    .rm-SearchToggle:hover { background: rgba(9, 39, 50, 0.06) !important; }
+    .rm-SearchToggle-placeholder,
+    .rm-SearchToggle-shortcut { display: none !important; }
+    .rm-SearchToggle .icon-search1 { font-size: 16px !important; color: #092732 !important; }
+
+    /* Ask AI button */
+    .rm-AskAi-button {
+      background: #092732 !important;
+      color: #1ef3e4 !important;
+      border: none !important;
+      border-radius: 999px !important;
+      padding: 8px 18px !important;
+      height: 36px !important;
+      min-height: 36px !important;
+      font-size: 13px !important;
+      font-weight: 700 !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 6px !important;
+      line-height: 1 !important;
+      white-space: nowrap !important;
+    }
+    .rm-AskAi-button:hover,
+    .rm-AskAi-button:focus,
+    .rm-AskAi-button:active,
+    .Header-askai1MTDknILiJku .Button:hover,
+    .Header-askai1MTDknILiJku .Button:focus,
+    .Header-askai1MTDknILiJku .Button:active,
+    .rm-AskAi .Button:hover,
+    .rm-AskAi .Button:focus,
+    .rm-AskAi .Button:active {
+      background: #0e3d50 !important;
+      border: none !important;
+      outline: none !important;
+    }
+    .rm-AskAi-button .Sparkle2v30M7Hw3dl4 path {
+      fill: #1ef3e4 !important;
+      stroke: none !important;
+    }
+
+    /* Theme toggle */
+    .rm-ThemeToggle {
+      background: transparent !important;
+      border: none !important;
+      color: #092732 !important;
+      width: 32px !important;
+      height: 32px !important;
+      padding: 0 !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+    }
+    .rm-ThemeToggle:hover { background: rgba(9, 39, 50, 0.06) !important; }
+
+    /* Login button */
+    .rm-Header-top-link_login .Button {
+      background: transparent !important;
+      border: 1px solid rgba(9, 39, 50, 0.20) !important;
+      border-radius: 999px !important;
+      width: 32px !important;
+      height: 32px !important;
+      padding: 0 !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      color: #092732 !important;
+    }
+    .rm-Header-top-link_login .Button:hover { background: rgba(9, 39, 50, 0.06) !important; }
+
+    /* Header right-side layout */
+    .Header-right21PC2XTT6aMg {
+      display: flex !important;
+      align-items: center !important;
+      gap: 8px !important;
+    }
+
+    /* Contact us button — HDS secondary button component, sized to
+       match Ask AI's 36px pill. We use size="small" (32px) and
+       inflate the outer bounding box to 36px so it aligns visually
+       without touching HDS's shadow-root internals. */
+    hds-button.here-contact-us {
+      display: inline-flex;
+      align-items: center;
+      align-self: center;
+      vertical-align: middle;
+      height: 36px !important;
+    }
+    hds-button.here-contact-us::part(button) { height: 36px !important; }
+
+
+    /* ================================================================
+       i18n VISIBILITY
+       ================================================================
+       Only the active language block is shown.  Controlled via
+       data-active-lang on .here-glp (set by the language toggle script).
+    */
+
+    .here-i18n { display: none; }
+    .here-glp[data-active-lang="en"] .here-i18n[data-lang="en"] { display: block; }
+    .here-glp[data-active-lang="ja"] .here-i18n[data-lang="ja"] { display: block; }
+
+
+    /* ================================================================
+       LANGUAGE ROW
+       ================================================================ */
+
+    .here-lang-row {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 8px;
+    }
+    .here-lang-row .here-mcp-banner { flex: 1 1 auto; margin-bottom: 0; }
+    hds-switcher[data-here-lang-toggle] { display: inline-flex; flex-shrink: 0; }
+
+    @media (max-width: 640px) {
+      .here-lang-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .here-lang-row hds-switcher[data-here-lang-toggle] { align-self: flex-end; }
+    }
+
+
+    /* ================================================================
+       HERO SECTION
+       ================================================================ */
+
+    .here-hero { background: linear-gradient(135deg, #e2fffd 0%, #c8f5f0 100%); padding: 48px 0 40px; }
+    .here-hero__wrap { display: flex; flex-direction: column; gap: 16px; align-items: flex-start; }
+    .here-hero__subtitle {
+      margin: 0; font-size: 16px; line-height: 24px;
+      font-weight: 500; color: var(--ink); opacity: 0.85;
+    }
+
+    /* Search proxy — intercepts click on HDS hero-search and opens
+       ReadMe's native ⌘K search modal instead.  The transparent overlay
+       button sits on top of the HDS component. */
+    .here-search-proxy {
+      position: relative;
+      width: min(640px, 100%);
+    }
+    .here-search-proxy hds-hero-search {
+      display: block;
+      width: 100%;
+    }
+    .here-search-proxy__overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 5;
+      background: transparent;
+      border: 0;
+      padding: 0;
+      margin: 0;
+      cursor: pointer;
+      appearance: none;
+    }
+
+    hds-hero-search[data-here-hero-search] {
+      width: min(640px, 100%);
+      display: block;
+      cursor: pointer;
+      caret-color: transparent;
+      user-select: none;
+    }
+    hds-hero-search[data-here-hero-search],
+    hds-hero-search[data-here-hero-search] * {
+      cursor: pointer !important;
+    }
+
+    .here-search__kbd {
+      font-size: 12px;
+      padding: 2px 7px;
+      border: 1px solid rgba(9, 39, 50, 0.2);
+      border-radius: 4px;
+      color: rgba(9, 39, 50, 0.5);
+      background: rgba(9, 39, 50, 0.03);
+      font-family: inherit;
+      white-space: nowrap;
+    }
+
+
+    /* ================================================================
+       DOCUMENTATION CARDS SECTION
+       ================================================================ */
+
+    .here-body { background: var(--body-bg); padding: 48px 0 56px; }
+    .here-doc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .here-doc-grid .hds-card,
+    .here-wn-grid .hds-card { display: flex; flex-direction: column; }
+    .here-card__pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+    .here-card__footer { margin-top: auto; padding-top: 20px; display: flex; justify-content: flex-end; }
+    a.here-seeall svg { width: 14px; height: 14px; }
+
+
+    /* ================================================================
+       WHAT'S NEW SECTION
+       ================================================================ */
+
+    .here-whatsnew { background: var(--wn-bg); padding: 48px 0 56px; }
+    .here-wn-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .here-wn-head { display: flex; align-items: center; gap: 10px; }
+    .here-wn-head svg { width: 20px; height: 20px; flex-shrink: 0; opacity: .85; color: var(--ink); }
+    .here-wn-links { display: flex; flex-direction: column; gap: 8px; margin-top: 4px; margin-bottom: 16px; }
+    .here-wn-links a { font-size: 12px; font-weight: 700; color: var(--link); text-decoration: none; }
+    .here-wn-links a:hover { color: var(--link-hover); text-decoration: underline; }
+    a.here-wn-seeall {
+      font-size: 13px; font-weight: 700; color: var(--link);
+      text-decoration: none; display: inline-flex; align-items: center; gap: 5px;
+    }
+    a.here-wn-seeall:hover { color: var(--link-hover); text-decoration: underline; }
+    a.here-wn-seeall svg { width: 13px; height: 13px; }
+
+
+    /* ================================================================
+       VIDEOS / CAROUSEL SECTION
+       ================================================================ */
+
+    .here-videos { background: var(--vid-bg); padding: 48px 0 56px; }
+
+    .here-carousel { position: relative; }
+    .here-carousel__track {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(380px, 1fr);
+      gap: 20px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      padding: 4px 2px 16px;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(9, 39, 50, 0.2) rgba(9, 39, 50, 0.06);
+    }
+    .here-carousel__track::-webkit-scrollbar { height: 8px; }
+    .here-carousel__track::-webkit-scrollbar-thumb { background: rgba(9, 39, 50, 0.2); border-radius: 999px; }
+    .here-carousel__track::-webkit-scrollbar-track { background: rgba(9, 39, 50, 0.06); border-radius: 999px; }
+
+    .here-vid-card {
+      scroll-snap-align: start;
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid rgba(9, 39, 50, 0.15);
+      background: #0b2b34;
+      box-shadow: 0 8px 20px rgba(9, 39, 50, 0.15);
+    }
+    .here-vid-thumb {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16/9;
+      overflow: hidden;
+      cursor: pointer;
+      background: #102f38;
+    }
+    .here-vid-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .here-vid-play {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(0, 0, 0, 0.25);
+      transition: background .15s;
+    }
+    .here-vid-thumb:hover .here-vid-play { background: rgba(0, 0, 0, 0.38); }
+    .here-vid-play svg { width: 52px; height: 52px; filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4)); }
+    .here-vid-thumb iframe {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%; border: 0; display: none;
+    }
+    .here-vid-thumb.playing img,
+    .here-vid-thumb.playing .here-vid-play { display: none; }
+    .here-vid-thumb.playing iframe { display: block; }
+    .here-vid-titlebar {
+      padding: 10px 14px; font-size: 12px; font-weight: 700;
+      color: #fff; opacity: .92; line-height: 17px;
+    }
+
+    /* Carousel controls (prev/next + dots) */
+    .here-carousel__controls {
+      display: flex; align-items: center; justify-content: center;
+      gap: 14px; padding-top: 12px;
+    }
+    .here-c-dots { display: inline-flex; align-items: center; gap: 8px; }
+    .here-c-dot {
+      width: 8px; height: 8px; border-radius: 999px; border: 0; padding: 0;
+      background: rgba(9, 39, 50, 0.18); cursor: pointer; transition: background .15s;
+    }
+    .here-c-dot.active { background: rgba(9, 39, 50, 0.75); }
+
+
+    /* ================================================================
+       RESPONSIVE BREAKPOINTS
+       ================================================================ */
+
+    @media (max-width: 1100px) {
+      .here-doc-grid,
+      .here-wn-grid { grid-template-columns: repeat(2, 1fr); }
+      .here-carousel__track { grid-auto-columns: minmax(320px, 1fr); }
+    }
+    @media (max-width: 640px) {
+      .here-glp .here-wrap { padding: 0 24px; }
+      .here-doc-grid,
+      .here-wn-grid { grid-template-columns: 1fr; }
+      .here-carousel__track { grid-auto-columns: minmax(280px, 1fr); }
+      .here-lang-row { justify-content: flex-start; }
+    }
+
+
+    /* ================================================================
+       DARK MODE — header chrome (outside .here-glp, uses data-color-mode)
+       ================================================================
+       These elements live in ReadMe's chrome outside .here-glp so they
+       cannot be targeted by the data-theme selector below.  We keep both
+       explicit-dark and system+OS-dark variants here.
+    */
+
+    [data-color-mode="dark"] .Header-bottom2eLKOFXMEmh5 { background-color: #0C0E10 !important; border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important; }
+    [data-color-mode="dark"] .rm-SearchToggle { border-color: rgba(255, 255, 255, 0.18) !important; color: #e8edf0 !important; }
+    [data-color-mode="dark"] .rm-SearchToggle .icon-search1 { color: #e8edf0 !important; }
+    [data-color-mode="dark"] .rm-ThemeToggle { border-color: rgba(255, 255, 255, 0.18) !important; color: #e8edf0 !important; }
+    [data-color-mode="dark"] .rm-Header-top-link_login .Button { border-color: rgba(255, 255, 255, 0.18) !important; color: #e8edf0 !important; }
+
+    @media (prefers-color-scheme: dark) {
+      [data-color-mode="system"] .Header-bottom2eLKOFXMEmh5 { background-color: #0C0E10 !important; border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important; }
+      [data-color-mode="system"] .rm-SearchToggle { border-color: rgba(255, 255, 255, 0.18) !important; color: #e8edf0 !important; }
+      [data-color-mode="system"] .rm-SearchToggle .icon-search1 { color: #e8edf0 !important; }
+      [data-color-mode="system"] .rm-ThemeToggle { border-color: rgba(255, 255, 255, 0.18) !important; color: #e8edf0 !important; }
+      [data-color-mode="system"] .rm-Header-top-link_login .Button { border-color: rgba(255, 255, 255, 0.18) !important; color: #e8edf0 !important; }
+    }
+
+
+    /* ================================================================
+       DARK MODE — all .here-glp internals
+       ================================================================
+       Keyed off .here-glp[data-theme*="dark"] which the theme-sync
+       script sets for ALL dark scenarios:
+         • ReadMe explicit dark  → data-theme="hds-web-product-dark-theme"
+         • ReadMe system + OS dark → same
+       Using [data-theme*="dark"] (substring match) means this block
+       fires for both and we never need a duplicate @media block for
+       anything inside .here-glp.
+    */
+
+    /* Section backgrounds */
+    .here-glp[data-theme*="dark"] .here-hero { background: #162028 !important; }
+    .here-glp[data-theme*="dark"] .here-body { background: #1a1f23 !important; }
+    .here-glp[data-theme*="dark"] .here-whatsnew { background: #141a1e !important; }
+    .here-glp[data-theme*="dark"] .here-videos { background: #111518 !important; }
+
+    /* Card backgrounds — hardcoded here so they don't flash white when the
+       external HDS stylesheet arrives late (cache miss / slow network). */
+    .here-glp[data-theme*="dark"] .hds-card--secondary-solid {
+      background-color: #1c2830 !important;
+      border-color: rgba(255,255,255,0.07) !important;
+    }
+    .here-glp[data-theme*="dark"] .hds-card--primary-solid {
+      background-color: #162028 !important;
+      border-color: rgba(255,255,255,0.07) !important;
+    }
+
+    /* Text */
+    .here-glp[data-theme*="dark"] .here-section-title,
+    .here-glp[data-theme*="dark"] h1,
+    .here-glp[data-theme*="dark"] h2,
+    .here-glp[data-theme*="dark"] h4 { color: #e8edf0 !important; }
+    .here-glp[data-theme*="dark"] .here-hero__subtitle { color: rgba(232, 237, 240, 0.70) !important; }
+    .here-glp[data-theme*="dark"] .hds-card p { color: rgba(232, 237, 240, 0.65) !important; }
+
+    /* Search kbd hint */
+    .here-glp[data-theme*="dark"] .here-search__kbd {
+      color: rgba(232, 237, 240, 0.45) !important;
+      border-color: rgba(255, 255, 255, 0.15) !important;
+      background: rgba(255, 255, 255, 0.05) !important;
+    }
+
+    /* Links */
+    .here-glp[data-theme*="dark"] a.here-seeall,
+    .here-glp[data-theme*="dark"] a.here-wn-seeall { color: #5bc8f5 !important; }
+    .here-glp[data-theme*="dark"] a.here-seeall:hover,
+    .here-glp[data-theme*="dark"] a.here-wn-seeall:hover { color: #8edcfa !important; }
+    .here-glp[data-theme*="dark"] .here-wn-links a { color: #5bc8f5 !important; }
+    .here-glp[data-theme*="dark"] .here-wn-links a:hover { color: #8edcfa !important; }
+
+    /* Pills / secondary buttons */
+    .here-glp[data-theme*="dark"] .here-card__pills .hds-button--variant-secondary,
+    .here-glp[data-theme*="dark"] .here-doc-grid .hds-button--variant-secondary {
+      border-color: rgba(232, 237, 240, 0.25) !important;
+      color: #c8e8f0 !important;
+      background: rgba(232, 237, 240, 0.05) !important;
+    }
+    .here-glp[data-theme*="dark"] .here-card__pills .hds-button--variant-secondary:hover,
+    .here-glp[data-theme*="dark"] .here-doc-grid .hds-button--variant-secondary:hover {
+      background: rgba(232, 237, 240, 0.10) !important;
+      border-color: rgba(232, 237, 240, 0.45) !important;
+    }
+
+    /* Carousel controls */
+    .here-glp[data-theme*="dark"] .here-c-dot { background: rgba(232, 237, 240, 0.25) !important; }
+    .here-glp[data-theme*="dark"] .here-c-dot.active { background: rgba(232, 237, 240, 0.80) !important; }
+    .here-glp[data-theme*="dark"] .here-carousel__controls .hds-button--variant-secondary {
+      border-color: rgba(232, 237, 240, 0.25) !important;
+      color: #e8edf0 !important;
+    }
+    .here-glp[data-theme*="dark"] .here-carousel__controls .hds-button--variant-secondary:hover {
+      background: rgba(232, 237, 240, 0.08) !important;
+      border-color: rgba(232, 237, 240, 0.45) !important;
+    }
+
+
+    /* ================================================================
+       DARK MODE — PRE-PAINT GUARD (no-flash mirror)
+       ================================================================
+       The block above keys off .here-glp[data-theme*="dark"], but
+       data-theme is only flipped to the dark value by JS, which runs
+       AFTER first paint on a /page/ route — so cards/sections briefly
+       flash their light background before the attribute updates.
+
+       These rules mirror EVERY dark rule above, keyed instead on
+       <html data-color-mode> — which ReadMe stamps BEFORE first paint,
+       exactly as the header chrome (data-color-mode block) and the
+       modals already do.  Purely additive: the data-theme rules above
+       remain as the fallback for the editor/iframe context where
+       data-color-mode lives on the parent document.
+
+       Two contexts, matching the header pattern:
+         • [data-color-mode="dark"]                         → explicit dark
+         • @media(dark) [data-color-mode="system"]          → system + OS dark
+    */
+
+    /* ── Explicit dark ── */
+    [data-color-mode="dark"] .here-glp .here-hero { background: #162028 !important; }
+    [data-color-mode="dark"] .here-glp .here-body { background: #1a1f23 !important; }
+    [data-color-mode="dark"] .here-glp .here-whatsnew { background: #141a1e !important; }
+    [data-color-mode="dark"] .here-glp .here-videos { background: #111518 !important; }
+
+    [data-color-mode="dark"] .here-glp .hds-card--secondary-solid {
+      background-color: #1c2830 !important;
+      border-color: rgba(255,255,255,0.07) !important;
+    }
+    [data-color-mode="dark"] .here-glp .hds-card--primary-solid {
+      background-color: #162028 !important;
+      border-color: rgba(255,255,255,0.07) !important;
+    }
+
+    [data-color-mode="dark"] .here-glp .here-section-title,
+    [data-color-mode="dark"] .here-glp h1,
+    [data-color-mode="dark"] .here-glp h2,
+    [data-color-mode="dark"] .here-glp h4 { color: #e8edf0 !important; }
+    [data-color-mode="dark"] .here-glp .here-hero__subtitle { color: rgba(232, 237, 240, 0.70) !important; }
+    [data-color-mode="dark"] .here-glp .hds-card p { color: rgba(232, 237, 240, 0.65) !important; }
+
+    [data-color-mode="dark"] .here-glp .here-search__kbd {
+      color: rgba(232, 237, 240, 0.45) !important;
+      border-color: rgba(255, 255, 255, 0.15) !important;
+      background: rgba(255, 255, 255, 0.05) !important;
+    }
+
+    [data-color-mode="dark"] .here-glp a.here-seeall,
+    [data-color-mode="dark"] .here-glp a.here-wn-seeall { color: #5bc8f5 !important; }
+    [data-color-mode="dark"] .here-glp a.here-seeall:hover,
+    [data-color-mode="dark"] .here-glp a.here-wn-seeall:hover { color: #8edcfa !important; }
+    [data-color-mode="dark"] .here-glp .here-wn-links a { color: #5bc8f5 !important; }
+    [data-color-mode="dark"] .here-glp .here-wn-links a:hover { color: #8edcfa !important; }
+
+    [data-color-mode="dark"] .here-glp .here-card__pills .hds-button--variant-secondary,
+    [data-color-mode="dark"] .here-glp .here-doc-grid .hds-button--variant-secondary {
+      border-color: rgba(232, 237, 240, 0.25) !important;
+      color: #c8e8f0 !important;
+      background: rgba(232, 237, 240, 0.05) !important;
+    }
+    [data-color-mode="dark"] .here-glp .here-card__pills .hds-button--variant-secondary:hover,
+    [data-color-mode="dark"] .here-glp .here-doc-grid .hds-button--variant-secondary:hover {
+      background: rgba(232, 237, 240, 0.10) !important;
+      border-color: rgba(232, 237, 240, 0.45) !important;
+    }
+
+    [data-color-mode="dark"] .here-glp .here-c-dot { background: rgba(232, 237, 240, 0.25) !important; }
+    [data-color-mode="dark"] .here-glp .here-c-dot.active { background: rgba(232, 237, 240, 0.80) !important; }
+    [data-color-mode="dark"] .here-glp .here-carousel__controls .hds-button--variant-secondary {
+      border-color: rgba(232, 237, 240, 0.25) !important;
+      color: #e8edf0 !important;
+    }
+    [data-color-mode="dark"] .here-glp .here-carousel__controls .hds-button--variant-secondary:hover {
+      background: rgba(232, 237, 240, 0.08) !important;
+      border-color: rgba(232, 237, 240, 0.45) !important;
+    }
+
+    /* ── System + OS dark ── */
+    @media (prefers-color-scheme: dark) {
+      [data-color-mode="system"] .here-glp .here-hero { background: #162028 !important; }
+      [data-color-mode="system"] .here-glp .here-body { background: #1a1f23 !important; }
+      [data-color-mode="system"] .here-glp .here-whatsnew { background: #141a1e !important; }
+      [data-color-mode="system"] .here-glp .here-videos { background: #111518 !important; }
+
+      [data-color-mode="system"] .here-glp .hds-card--secondary-solid {
+        background-color: #1c2830 !important;
+        border-color: rgba(255,255,255,0.07) !important;
+      }
+      [data-color-mode="system"] .here-glp .hds-card--primary-solid {
+        background-color: #162028 !important;
+        border-color: rgba(255,255,255,0.07) !important;
+      }
+
+      [data-color-mode="system"] .here-glp .here-section-title,
+      [data-color-mode="system"] .here-glp h1,
+      [data-color-mode="system"] .here-glp h2,
+      [data-color-mode="system"] .here-glp h4 { color: #e8edf0 !important; }
+      [data-color-mode="system"] .here-glp .here-hero__subtitle { color: rgba(232, 237, 240, 0.70) !important; }
+      [data-color-mode="system"] .here-glp .hds-card p { color: rgba(232, 237, 240, 0.65) !important; }
+
+      [data-color-mode="system"] .here-glp .here-search__kbd {
+        color: rgba(232, 237, 240, 0.45) !important;
+        border-color: rgba(255, 255, 255, 0.15) !important;
+        background: rgba(255, 255, 255, 0.05) !important;
+      }
+
+      [data-color-mode="system"] .here-glp a.here-seeall,
+      [data-color-mode="system"] .here-glp a.here-wn-seeall { color: #5bc8f5 !important; }
+      [data-color-mode="system"] .here-glp a.here-seeall:hover,
+      [data-color-mode="system"] .here-glp a.here-wn-seeall:hover { color: #8edcfa !important; }
+      [data-color-mode="system"] .here-glp .here-wn-links a { color: #5bc8f5 !important; }
+      [data-color-mode="system"] .here-glp .here-wn-links a:hover { color: #8edcfa !important; }
+
+      [data-color-mode="system"] .here-glp .here-card__pills .hds-button--variant-secondary,
+      [data-color-mode="system"] .here-glp .here-doc-grid .hds-button--variant-secondary {
+        border-color: rgba(232, 237, 240, 0.25) !important;
+        color: #c8e8f0 !important;
+        background: rgba(232, 237, 240, 0.05) !important;
+      }
+      [data-color-mode="system"] .here-glp .here-card__pills .hds-button--variant-secondary:hover,
+      [data-color-mode="system"] .here-glp .here-doc-grid .hds-button--variant-secondary:hover {
+        background: rgba(232, 237, 240, 0.10) !important;
+        border-color: rgba(232, 237, 240, 0.45) !important;
+      }
+
+      [data-color-mode="system"] .here-glp .here-c-dot { background: rgba(232, 237, 240, 0.25) !important; }
+      [data-color-mode="system"] .here-glp .here-c-dot.active { background: rgba(232, 237, 240, 0.80) !important; }
+      [data-color-mode="system"] .here-glp .here-carousel__controls .hds-button--variant-secondary {
+        border-color: rgba(232, 237, 240, 0.25) !important;
+        color: #e8edf0 !important;
+      }
+      [data-color-mode="system"] .here-glp .here-carousel__controls .hds-button--variant-secondary:hover {
+        background: rgba(232, 237, 240, 0.08) !important;
+        border-color: rgba(232, 237, 240, 0.45) !important;
+      }
+    }
+
+
+    /* ================================================================
+       LIGHT MODE HOVER POLISH
+       ================================================================ */
+
+    .here-card__pills .hds-button--variant-secondary:hover {
+      background: rgba(9, 39, 50, 0.06) !important;
+      border-color: #2c596a !important;
+    }
+    .here-carousel__controls .hds-button--variant-secondary:hover {
+      background: rgba(9, 39, 50, 0.06) !important;
+    }
+    a.here-seeall { color: #2c596a !important; font-weight: 600; }
+    a.here-seeall:hover { color: #092732 !important; }
+
+
+    /* ================================================================
+       MCP BANNER (sits inside the hero, above the H1)
+       ================================================================ */
+
+    .here-hero .here-mcp-banner { margin-bottom: 24px; }
+
+    .here-mcp-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 10px 16px;
+      background: rgba(255, 255, 255, 0.55);
+      border: 1px solid rgba(9, 39, 50, 0.10);
+      border-radius: 8px;
+    }
+
+    .here-mcp-banner__content {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .here-mcp-banner__icon {
+      flex-shrink: 0;
+      display: inline-flex;
+      color: #092732;
+    }
+
+    .here-mcp-banner__icon svg { width: 20px; height: 20px; }
+
+    .here-mcp-banner__text {
+      font-size: 12px;
+      color: #092732;
+      line-height: 1.5;
+    }
+
+    .here-mcp-banner__text strong { font-weight: 600; }
+
+    .here-mcp-banner__cta {
+      flex-shrink: 0;
+      font-size: 13px;
+      font-weight: 600;
+      color: #0b5fff;
+      text-decoration: none;
+      white-space: nowrap;
+      padding: 6px 12px;
+      border-radius: 6px;
+      transition: background .15s, color .15s;
+    }
+
+    .here-mcp-banner__cta:hover {
+      background: rgba(11, 95, 255, 0.06);
+      color: #0a4fe0;
+      text-decoration: underline;
+    }
+
+    @media (max-width: 640px) {
+      .here-mcp-banner {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 12px 16px;
+      }
+    }
+
+    /* Dark mode */
+    .here-glp[data-theme*="dark"] .here-mcp-banner {
+      background: rgba(255, 255, 255, 0.04) !important;
+      border-color: rgba(255, 255, 255, 0.10) !important;
+    }
+    .here-glp[data-theme*="dark"] .here-mcp-banner__icon,
+    .here-glp[data-theme*="dark"] .here-mcp-banner__text { color: #e8edf0 !important; }
+    .here-glp[data-theme*="dark"] .here-mcp-banner__cta { color: #5bc8f5 !important; }
+    .here-glp[data-theme*="dark"] .here-mcp-banner__cta:hover {
+      background: rgba(91, 200, 245, 0.08) !important;
+      color: #8edcfa !important;
+    }
+  </style>
+
+
+  <!-- ══════════════════════════════════════════════════════════════
+       ENGLISH
+       ══════════════════════════════════════════════════════════════ -->
+  <div class="here-i18n" data-lang="en" lang="en">
+
+    <!-- ── Hero ── -->
+    <section class="here-hero" aria-label="Hero">
+      <div class="here-wrap">
+        <div class="here-lang-row" aria-label="Language">
+          <!-- ── MCP banner (inside lang row) ── -->
+          <aside class="here-mcp-banner" role="region" aria-label="AI documentation announcement">
+            <div class="here-mcp-banner__content">
+              <span class="here-mcp-banner__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="3"/>
+                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+              </span>
+              <span class="here-mcp-banner__text">
+                <strong>Working with AI?</strong> Use the HERE documentation MCP to connect your AI coding agents with HERE docs and use trusted product information and up-to-date documentation directly from your IDE.
+              </span>
+            </div>
+            <a href="https://docs.here.com/here-kb/docs/the-here-docs-mcp" target="_blank" rel="noopener" class="here-mcp-banner__cta">View documentation &#8594;</a>
+          </aside>
+
+          <hds-switcher size="small" data-here-lang-toggle>
+            <hds-switcher-tab selected data-lang="en">EN</hds-switcher-tab>
+            <hds-switcher-tab data-lang="ja">日本語</hds-switcher-tab>
+          </hds-switcher>
+        </div>
+
+        <div class="here-hero__wrap">
+          <h1 class="hds-heading1--mega">HERE documentation</h1>
+          <p class="here-hero__subtitle">Find answers to your product and technical questions</p>
+          <!-- Search proxy: overlay button intercepts click → opens ReadMe ⌘K modal -->
+          <div class="here-search-proxy" data-here-search-proxy>
+            <hds-hero-search data-here-hero-search placeholder="Search" style="width: min(640px, 100%);">
+              <span slot="right" class="here-search__kbd" aria-hidden="true">⌘ K</span>
+            </hds-hero-search>
+            <button
+              class="here-search-proxy__overlay"
+              type="button"
+              aria-label="Open search"
+              data-here-search-overlay
+            ></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Documentation cards ── -->
+    <section class="here-body" aria-label="Documentation">
+      <div class="here-wrap">
+        <h2 class="here-section-title">Documentation</h2>
+        <div class="here-doc-grid" role="list">
+
+          <article class="hds-card hds-card--secondary-solid hds-card--uninteractive" role="listitem">
+            <h4>Dynamic map content</h4>
+            <p>Help drivers to arrive safely, comfortably and on schedule, by using dynamic content APIs in your apps and services.</p>
+            <div class="here-card__pills">
+              <a class="hds-button hds-button--variant-secondary hds-button--size-small" href="/ev-products/docs">HERE EV products</a>
+              <a class="hds-button hds-button--variant-secondary hds-button--size-small" href="/traffic-api/docs">HERE Traffic API</a>
+              <a class="hds-button hds-button--variant-secondary hds-button--size-small" href="/parking/docs">HERE Parking</a>
+              <a class="hds-button hds-button--variant-secondary hds-button--size-small" href="/destination-weather/docs">HERE Destination Weather</a>
+            </div>
+            <div class="here-card__footer">
+              <a class="here-seeall hds-button hds-button--variant-link hds-button--size-small" href="#" data-modal="dynamic-map-content">
+                See all
+                <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="m13 6 6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </a>
+            </div>
+          </article>
+
+          <article class="hds-card hds-card--secondary-solid hds-card--uninteractive" role="listitem">
+            <h4>Maps &amp; data</h4>
+            <p>Build accurate maps and custom layers using fresh location data generated by hundreds of mapping vehicles worldwide.</p>
+            <div class="here-card__pills">
+              <a class="hds-button hds-button--variant-secondary hds-button--size-small" href="/gis-data-suite/docs">HERE GIS Data Suite</a>
+              <a class="hds-button hds-button--variant-secondary hds-button--size-small" href="/indoor-map/docs">HERE Indoor Map</a>
+              <a class="hds-button hds-button--variant-secondary hds-button--size-small" href="/embedded-editor/docs">Embedded Editor</a>
+              <a class="hds-button hds-button--variant-secondary hds-button--size-small" href="/data-api/docs">Data API</a>
+            </div>
+            <div class="here-card__footer">
+              <a class="here-seeall hds-button hds-button--variant-link hds-button--size-small" href="#" data-modal="maps-data">
+                See all
+                <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="m13 6 6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </a>
+            </div>
+          </article>
+
+          <article class="hds-card hds-card--secondary-solid hds-card--uninteractive" role="listitem">
+            <h4>Location services</h4>
+            <p>Bring high-precision location awareness to your apps and devices to improve location accuracy and make journey planning easier.</p>
+            <div class="here-card__pills">
+              <a class="hds-button hds-button--variant-secondary hds-button--size-small" href="/geocoding-and-search/docs">HERE Geocoding &amp; Search</a>
+              <a class="hds-button hds-button--variant-secondary hds-button--size-small" href="/map-rendering/docs">HERE Map Rendering</a>
+              <a class="hds-button hds-button--variant-secondary hds-button--size-small" href="/positioning/docs">HERE Positioning</a>
+              <a class="hds-button hds-button--variant-secondary hds-button--size-small" href="/routing/docs">HERE Routing</a>
+              <a class="hds-button hds-button--variant-secondary hds-button--size-small" href="/tour-planning/docs">HERE Tour Planning API</a>
+            </div>
+            <div class="here-card__footer">
+              <a class="here-seeall hds-button hds-button--variant-link hds-button--size-small" href="#" data-modal="location-services">
+                See all
+                <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="m13 6 6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </a>
+            </div>
+          </article>
+
+          <article class="hds-card hds-card--secondary-solid hds-card--uninteractive" role="listitem">
+            <h4>Development enablers</h4>
+            <p>Build custom solutions with SDKs and development tools.</p>
+            <div class="here-card__pills">
+              <a class="hds-button hds-button--variant-secondary hds-button--size-small" href="/here-sdk/docs">HERE SDK</a>
+              <a class="hds-button hds-button--variant-secondary hds-button--size-small" href="/maps-api-for-js/docs">HERE Maps API for JavaScript</a>
+              <a class="hds-button hds-button--variant-secondary hds-button--size-small" href="/style-editor/docs">HERE Style Editor</a>
+              <a class="hds-button hds-button--variant-secondary hds-button--size-small" href="/anonymizer/docs">HERE Anonymization</a>
+            </div>
+            <div class="here-card__footer">
+              <a class="here-seeall hds-button hds-button--variant-link hds-button--size-small" href="#" data-modal="development-enablers">
+                See all
+                <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="m13 6 6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </a>
+            </div>
+          </article>
+
+          <article class="hds-card hds-card--secondary-solid hds-card--uninteractive" role="listitem">
+            <h4>Platform tools</h4>
+            <p>Information on authenticating, using data, and managing costs on the HERE platform.</p>
+            <div class="here-card__pills">
+              <a class="hds-button hds-button--variant-secondary hds-button--size-small" href="/identity-and-access-management/docs">Identity and access management</a>
+              <a class="hds-button hds-button--variant-secondary hds-button--size-small" href="/usage/docs">Cost management</a>
+              <a class="hds-button hds-button--variant-secondary hds-button--size-small" href="/data-sdk/docs">Data SDK</a>
+              <a class="hds-button hds-button--variant-secondary hds-button--size-small" href="/workspace/docs">Workspace</a>
+            </div>
+          </article>
+
+          <article class="hds-card hds-card--secondary-solid hds-card--uninteractive" role="listitem">
+            <h4>Platform policies</h4>
+            <p>Information related to your use of HERE products.</p>
+            <div class="here-card__pills">
+              <a class="hds-button hds-button--variant-secondary hds-button--size-small" href="/policies/docs/limits-and-quotas">Limits and quotas</a>
+              <a class="hds-button hds-button--variant-secondary hds-button--size-small" href="/policies/docs/product-lifecycle-policy">Product lifecycle policy</a>
+              <a class="hds-button hds-button--variant-secondary hds-button--size-small" href="/policies/docs/here-service-level-agreement">Service level agreement</a>
+              <a class="hds-button hds-button--variant-secondary hds-button--size-small" href="/policies/docs/incident-management-introduction">Incident management</a>
+              <a class="hds-button hds-button--variant-secondary hds-button--size-small" href="/coverage/docs">Coverage information</a>
+            </div>
+            <div class="here-card__footer">
+              <a class="here-seeall hds-button hds-button--variant-link hds-button--size-small" href="#" data-modal="platform-policies">
+                See all
+                <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="m13 6 6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </a>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ── What's New ── -->
+		<section class="here-whatsnew" aria-label="What's new">
+      <div class="here-wrap">
+        <h2 class="here-section-title">What's new</h2>
+        <div class="here-wn-grid" role="list">
+
+        <!-- Removing changelogs card until a "see all" solution is ready  
+				<article class="hds-card hds-card--primary-solid hds-card--uninteractive" role="listitem">
+            <div class="here-wn-head">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M13 8V13L9.35 15.86L8 14.25L11 12V8H13ZM12 2C10.4475 2 8.91642 2.36145 7.52786 3.05573C6.13931 3.75001 4.93147 4.75804 4 6V2H2V10H9V8H5.08C6.05383 6.32124 7.60472 5.05372 9.44375 4.43359C11.2828 3.81345 13.2845 3.88299 15.0761 4.62924C16.8677 5.37549 18.3269 6.74757 19.1818 8.48986C20.0368 10.2322 20.2293 12.2258 19.7234 14.0995C19.2175 15.9732 18.0478 17.5991 16.432 18.6743C14.8163 19.7495 12.8649 20.2007 10.9412 19.9438C9.01746 19.6869 7.25273 18.7395 5.97574 17.2781C4.69874 15.8166 3.99656 13.9408 4 12H2C2 13.9778 2.58649 15.9112 3.6853 17.5557C4.78412 19.2002 6.3459 20.4819 8.17317 21.2388C10.0004 21.9957 12.0111 22.1937 13.9509 21.8079C15.8907 21.422 17.6725 20.4696 19.0711 19.0711C20.4696 17.6725 21.422 15.8907 21.8079 13.9509C22.1937 12.0111 21.9957 10.0004 21.2388 8.17317C20.4819 6.3459 19.2002 4.78412 17.5557 3.6853C15.9112 2.58649 13.9778 2 12 2Z" fill="#092732"/>
+              </svg>
+              <h4>Changelogs</h4>
+            </div>
+            <p>Catch up on the latest changes to HERE products.</p>
+            <div class="here-wn-links">
+              <a href="#" rel="noopener">TBD</a>
+              <a href="#" rel="noopener">TBD</a>
+            </div>
+            <div class="here-wn-footer">
+              <a class="here-wn-seeall" href="#" rel="noopener">
+                See all
+                <svg viewBox="0 0 24 24" fill="none"><path d="M14 3h7v7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 14 21 3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              </a>
+            </div>
+          </article>
+					-->
+
+          <article class="hds-card hds-card--primary-solid hds-card--uninteractive" role="listitem">
+            <div class="here-wn-head">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M7.00016 20C6.69724 19.9989 6.39852 19.9291 6.12654 19.7957C5.85457 19.6623 5.61645 19.4689 5.43016 19.23L2.16016 14.15L3.84016 13.07L7.06016 18.07L18.2202 4L19.7802 5.25L8.57016 19.25C8.38185 19.4852 8.14285 19.6748 7.87099 19.8047C7.59913 19.9345 7.30144 20.0013 7.00016 20ZM22.0002 18H12.0002V20H22.0002V18ZM22.0002 14H15.0002V16H22.0002V14ZM22.0002 10H18.0002V12H22.0002V10Z" fill="#092732"/>
+              </svg>
+              <h4>Platform release notes</h4>
+            </div>
+            <p>Updates and announcements about the HERE platform.</p>
+            <div class="here-wn-links">
+              <a href="https://www.here.com/learn/blog/may-2026-platform-release-notes" rel="noopener">May 2026</a>
+							<a href="https://www.here.com/learn/blog/april-2026-platform-release-notes" rel="noopener">April 2026</a>
+              <a href="https://www.here.com/learn/blog/march-2026-platform-release-notes" rel="noopener">March 2026</a>
+              <a href="https://www.here.com/learn/blog/february-2026-platform-release-notes" rel="noopener">February 2026</a>
+              <a href="https://www.here.com/learn/blog/january-2026-platform-release-notes" rel="noopener">January 2026</a>
+              <a href="https://www.here.com/learn/blog/december-2025-platform-release-notes" rel="noopener">December 2025</a>
+            </div>
+            <div class="here-wn-footer">
+              <a class="here-wn-seeall" href="https://www.here.com/learn/developer-blog?refinementList%5Bcategory%5D%5B0%5D=Release%20notes" rel="noopener">
+                See all
+                <svg viewBox="0 0 24 24" fill="none"><path d="M14 3h7v7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 14 21 3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              </a>
+            </div>
+          </article>
+
+          <article class="hds-card hds-card--primary-solid hds-card--uninteractive" role="listitem">
+            <div class="here-wn-head">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M9 8V16.32L9.1 16.63L10.23 20H8.35L6.86 16.26L6.35 15H4V8H9ZM11 6H4C3.46957 6 2.96086 6.21071 2.58579 6.58579C2.21071 6.96086 2 7.46957 2 8V15C2 15.5304 2.21071 16.0391 2.58579 16.4142C2.96086 16.7893 3.46957 17 4 17H5L7 22H13L11 16V6ZM20 4.94V17.06C18.5279 15.8176 16.8304 14.8703 15 14.27V7.73C16.8304 7.12967 18.5279 6.18242 20 4.94ZM21 2C20.8359 2.00082 20.6744 2.04203 20.53 2.12C18.92 3 16.16 6 13 6V16C16.16 16 18.92 19 20.53 19.88C20.6822 19.961 20.8527 20.0013 21.0251 19.997C21.1974 19.9927 21.3657 19.9439 21.5136 19.8553C21.6616 19.7668 21.7841 19.6415 21.8693 19.4916C21.9545 19.3418 21.9995 19.1724 22 19V3C22 2.73478 21.8946 2.48043 21.7071 2.29289C21.5196 2.10536 21.2652 2 21 2Z" fill="#092732"/>
+              </svg>
+              <h4>Developer blog posts</h4>
+            </div>
+            <p>Latest tips, tutorials, and insights for developers.</p>
+            <div class="here-wn-links">
+              <a href="https://www.here.com/learn/blog/link-transport-logistics-here-wego-pro" rel="noopener">How LINK Transport powers just-in-time logistics with HERE WeGo Pro</a>
+              <a href="https://www.here.com/learn/blog/here-traffic-effective-polyline" rel="noopener">Requesting HERE Traffic with effective polyline corridor</a>
+              <a href="https://www.here.com/learn/blog/vibe-coding-here-app" rel="noopener">Vibe coding my first HERE app</a>
+            </div>
+            <div class="here-wn-footer">
+              <a class="here-wn-seeall" href="https://www.here.com/learn/developer-blog" rel="noopener">
+                See all
+                <svg viewBox="0 0 24 24" fill="none"><path d="M14 3h7v7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 14 21 3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              </a>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Videos ── -->
+    <section class="here-videos" aria-label="Videos">
+      <div class="here-wrap">
+        <h2 class="here-section-title">Videos</h2>
+        <div class="here-carousel" data-here-carousel>
+          <div class="here-carousel__track" data-here-track>
+            <article class="here-vid-card"><div class="here-vid-thumb" data-here-thumb><img src="https://img.youtube.com/vi/jA5wbygIJN8/mqdefault.jpg" alt="HERE SDK Licenses Explained"/><div class="here-vid-play"><svg viewBox="0 0 68 68" fill="none"><circle cx="34" cy="34" r="34" fill="rgba(0,0,0,0.55)"/><polygon points="27,20 54,34 27,48" fill="#fff"/></svg></div><iframe title="HERE SDK Licenses Explained" data-src="https://www.youtube-nocookie.com/embed/jA5wbygIJN8?autoplay=1" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div><div class="here-vid-titlebar">HERE SDK Licenses Explained</div></article>
+            <article class="here-vid-card"><div class="here-vid-thumb" data-here-thumb><img src="https://img.youtube.com/vi/nwr81PR4vJ4/mqdefault.jpg" alt="HERE Style Editor - new feature 'Modifiers'"/><div class="here-vid-play"><svg viewBox="0 0 68 68" fill="none"><circle cx="34" cy="34" r="34" fill="rgba(0,0,0,0.55)"/><polygon points="27,20 54,34 27,48" fill="#fff"/></svg></div><iframe title="HERE Style Editor - new feature 'Modifiers'" data-src="https://www.youtube-nocookie.com/embed/nwr81PR4vJ4?autoplay=1" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div><div class="here-vid-titlebar">HERE Style Editor - new feature 'Modifiers'</div></article>
+            <article class="here-vid-card"><div class="here-vid-thumb" data-here-thumb><img src="https://img.youtube.com/vi/PBRyThW3r60/mqdefault.jpg" alt="HERE Platform Coding Assistant"/><div class="here-vid-play"><svg viewBox="0 0 68 68" fill="none"><circle cx="34" cy="34" r="34" fill="rgba(0,0,0,0.55)"/><polygon points="27,20 54,34 27,48" fill="#fff"/></svg></div><iframe title="HERE Platform Coding Assistant" data-src="https://www.youtube-nocookie.com/embed/PBRyThW3r60?autoplay=1" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div><div class="here-vid-titlebar">HERE Platform Coding Assistant</div></article>
+            <article class="here-vid-card"><div class="here-vid-thumb" data-here-thumb><img src="https://img.youtube.com/vi/CJz5kkR_L9Q/mqdefault.jpg" alt="How Gabb Wireless improves kids' safety with maps - HERE Technologies"/><div class="here-vid-play"><svg viewBox="0 0 68 68" fill="none"><circle cx="34" cy="34" r="34" fill="rgba(0,0,0,0.55)"/><polygon points="27,20 54,34 27,48" fill="#fff"/></svg></div><iframe title="How Gabb Wireless improves kids' safety with maps - HERE Technologies" data-src="https://www.youtube-nocookie.com/embed/CJz5kkR_L9Q?autoplay=1" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div><div class="here-vid-titlebar">How Gabb Wireless improves kids' safety with maps - HERE Technologies</div></article>
+            <article class="here-vid-card"><div class="here-vid-thumb" data-here-thumb><img src="https://img.youtube.com/vi/mcbwkUtWtzM/mqdefault.jpg" alt="Kardinal last-mile optimization engine and HERE Matrix Routing - HERE Technologies"/><div class="here-vid-play"><svg viewBox="0 0 68 68" fill="none"><circle cx="34" cy="34" r="34" fill="rgba(0,0,0,0.55)"/><polygon points="27,20 54,34 27,48" fill="#fff"/></svg></div><iframe title="Kardinal last-mile optimization engine and HERE Matrix Routing - HERE Technologies" data-src="https://www.youtube-nocookie.com/embed/mcbwkUtWtzM?autoplay=1" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div><div class="here-vid-titlebar">Kardinal last-mile optimization engine and HERE Matrix Routing - HERE Technologies</div></article>
+            <article class="here-vid-card"><div class="here-vid-thumb" data-here-thumb><img src="https://img.youtube.com/vi/TYLS9XEaSoI/mqdefault.jpg" alt="Build weather-enabled apps with HERE Technologies"/><div class="here-vid-play"><svg viewBox="0 0 68 68" fill="none"><circle cx="34" cy="34" r="34" fill="rgba(0,0,0,0.55)"/><polygon points="27,20 54,34 27,48" fill="#fff"/></svg></div><iframe title="Build weather-enabled apps with HERE Technologies" data-src="https://www.youtube-nocookie.com/embed/TYLS9XEaSoI?autoplay=1" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div><div class="here-vid-titlebar">Build weather-enabled apps with HERE Technologies</div></article>
+            <article class="here-vid-card"><div class="here-vid-thumb" data-here-thumb><img src="https://img.youtube.com/vi/dlZY2Q_PwwM/mqdefault.jpg" alt="Getting Started with HERE APIs - HERE Technologies"/><div class="here-vid-play"><svg viewBox="0 0 68 68" fill="none"><circle cx="34" cy="34" r="34" fill="rgba(0,0,0,0.55)"/><polygon points="27,20 54,34 27,48" fill="#fff"/></svg></div><iframe title="Getting Started with HERE APIs - HERE Technologies" data-src="https://www.youtube-nocookie.com/embed/dlZY2Q_PwwM?autoplay=1" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div><div class="here-vid-titlebar">Getting Started with HERE APIs - HERE Technologies</div></article>
+            <article class="here-vid-card"><div class="here-vid-thumb" data-here-thumb><img src="https://img.youtube.com/vi/3ji7RnqVx90/mqdefault.jpg" alt="Not All Routes Are Truck-Friendly – HERE Truck Routing"/><div class="here-vid-play"><svg viewBox="0 0 68 68" fill="none"><circle cx="34" cy="34" r="34" fill="rgba(0,0,0,0.55)"/><polygon points="27,20 54,34 27,48" fill="#fff"/></svg></div><iframe title="Not All Routes Are Truck-Friendly – HERE Truck Routing" data-src="https://www.youtube-nocookie.com/embed/3ji7RnqVx90?autoplay=1" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div><div class="here-vid-titlebar">Not All Routes Are Truck-Friendly – HERE Truck Routing</div></article>        
+            <article class="here-vid-card"><div class="here-vid-thumb" data-here-thumb><img src="https://img.youtube.com/vi/Q5XD3v03z8I/mqdefault.jpg" alt="How to animate the look-at point with HERE Maps API for JS"/><div class="here-vid-play"><svg viewBox="0 0 68 68" fill="none"><circle cx="34" cy="34" r="34" fill="rgba(0,0,0,0.55)"/><polygon points="27,20 54,34 27,48" fill="#fff"/></svg></div><iframe title="How to animate the look-at point with HERE Maps API for JS" data-src="https://www.youtube-nocookie.com/embed/Q5XD3v03z8I?autoplay=1" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div><div class="here-vid-titlebar">How to animate the look-at point with HERE Maps API for JS</div></article>
+            <article class="here-vid-card"><div class="here-vid-thumb" data-here-thumb><img src="https://img.youtube.com/vi/za1Uf6IF61M/mqdefault.jpg" alt="Introduction to HERE Geocoding and Search"/><div class="here-vid-play"><svg viewBox="0 0 68 68" fill="none"><circle cx="34" cy="34" r="34" fill="rgba(0,0,0,0.55)"/><polygon points="27,20 54,34 27,48" fill="#fff"/></svg></div><iframe title="Introduction to HERE Geocoding and Search" data-src="https://www.youtube-nocookie.com/embed/za1Uf6IF61M?autoplay=1" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div><div class="here-vid-titlebar">Introduction to HERE Geocoding and Search</div></article>
+            <article class="here-vid-card"><div class="here-vid-thumb" data-here-thumb><img src="https://img.youtube.com/vi/X7tJ98maEJs/mqdefault.jpg" alt="Introduction to HERE Routing"/><div class="here-vid-play"><svg viewBox="0 0 68 68" fill="none"><circle cx="34" cy="34" r="34" fill="rgba(0,0,0,0.55)"/><polygon points="27,20 54,34 27,48" fill="#fff"/></svg></div><iframe title="Introduction to HERE Routing" data-src="https://www.youtube-nocookie.com/embed/X7tJ98maEJs?autoplay=1" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div><div class="here-vid-titlebar">Introduction to HERE Routing</div></article>                  
+          </div>
+          <div class="here-carousel__controls">
+            <button class="hds-button hds-button--variant-secondary hds-button--size-small hds-button--icononly" data-here-prev aria-label="Previous">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M15 18 9 12l6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <div class="here-c-dots" data-here-dots></div>
+            <button class="hds-button hds-button--variant-secondary hds-button--size-small hds-button--icononly" data-here-next aria-label="Next">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+  <!-- /EN -->
+
+
+  <!-- ══════════════════════════════════════════════════════════════
+       JAPANESE
+       ══════════════════════════════════════════════════════════════ -->
+  <div class="here-i18n" data-lang="ja" lang="ja">
+
+    <!-- ── Hero ── -->
+    <section class="here-hero" aria-label="ヒーロー">
+      <div class="here-wrap">
+        <div class="here-lang-row" aria-label="言語">
+          <hds-switcher size="small" data-here-lang-toggle>
+            <hds-switcher-tab data-lang="en">EN</hds-switcher-tab>
+            <hds-switcher-tab selected data-lang="ja">日本語</hds-switcher-tab>
+          </hds-switcher>
+        </div>
+
+        <div class="here-hero__wrap">
+          <h1 class="hds-heading1--mega">HERE ドキュメント</h1>
+          <p class="here-hero__subtitle">製品や技術に関する質問の答えを見つけましょう。より多くの内容と最新の情報については、英語版をご覧ください。
+</p>
+          <div class="here-search-proxy" data-here-search-proxy>
+            <hds-hero-search data-here-hero-search placeholder="検索" style="width: min(640px, 100%);">
+              <span slot="right" class="here-search__kbd" aria-hidden="true">⌘ K</span>
+            </hds-hero-search>
+            <button
+              class="here-search-proxy__overlay"
+              type="button"
+              aria-label="検索を開く"
+              data-here-search-overlay
+            ></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Documentation cards ── -->
+    <section class="here-body" aria-label="ドキュメント">
+      <div class="here-wrap">
+        <h2 class="here-section-title">ドキュメント</h2>
+        <div class="here-doc-grid" role="list">
+          
+          <article class="hds-card hds-card--secondary-solid hds-card--uninteractive" role="listitem">
+            <h4>ダイナミックマップ</h4>
+            <p>動的コンテンツ関連のAPIをアプリやサービスに活用して、ドライバーが安全・快適かつ予定どおりに目的地へ到着できるよう支援します。</p>
+            <div class="here-card__pills">
+              <a class="hds-button hds-button--variant-secondary hds-button--size-small" href="/traffic-api/ja/v1.0/docs/introduction-to-here-traffic-api-v7">HERE Traffic API</a>
+              <a class="hds-button hds-button--variant-secondary hds-button--size-small" href="/map-attributes/ja/v1.0/docs/intro-map-attributes">HERE Map Attributes</a>
+            </div>
+          </article>
+
+          <article class="hds-card hds-card--secondary-solid hds-card--uninteractive" role="listitem">
+            <h3 class="here-card__title">地図とデータ</h3>
+            <p class="here-card__desc">世界中を走行する多数のマッピング車両から得られる最新の位置情報データを活用し、精度の高い地図やカスタムレイヤーを構築できます。</p>
+            <div class="here-card__pills">
+              <a class="hds-button hds-button--variant-secondary hds-button--size-small" href="/traffic-api/ja/v1.0/docs/readme-developer-s-guide">HERE Traffic Vector Tile API</a>
+              <a class="hds-button hds-button--variant-secondary hds-button--size-small" href="/indoor-map/ja/v1.0/docs/indoor-map-readme">HERE Indoor Map</a>
+            </div>
+          </article>
+
+          <article class="hds-card hds-card--secondary-solid hds-card--uninteractive" role="listitem">
+            <h3 class="here-card__title">ロケーションサービス</h3>
+            <p class="here-card__desc">アプリやデバイスに高精度な位置情報を組み込み、測位精度の向上やルート・旅程計画をより簡単にします。</p>
+            <div class="here-card__pills">
+              <a class="hds-button hds-button--variant-secondary hds-button--size-small" href="/geocoding-and-search/ja/v1.0/docs/introduction-to-here-geocoding-search-api-v7">HERE Geocoding & Search</a>
+              <a class="hds-button hds-button--variant-secondary hds-button--size-small" href="/routing/ja/v1.0/docs/routing-intro">HERE Routing</a>
+              <a class="hds-button hds-button--variant-secondary hds-button--size-small" href="/tour-planning/ja/v1.0/docs/introduction-tour-planning">HERE Tour Planning API</a>
+              <a class="hds-button hds-button--variant-secondary hds-button--size-small" href="/map-rendering/ja/v1.0/docs/introduction-vector-tile-api">HERE Map Rendering</a>
+              <a class="hds-button hds-button--variant-secondary hds-button--size-small" href="/tracking/ja/v1.0/docs/readme">HERE Tracking API</a>
+            </div>
+          </article>
+          
+          <article class="hds-card hds-card--secondary-solid hds-card--uninteractive" role="listitem">
+            <h3 class="here-card__title">開発支援ツール</h3>
+            <p class="here-card__desc">開発ツールを使ってカスタムソリューションを構築する。</p>
+            <div class="here-card__pills">
+              <a class="hds-button hds-button--variant-secondary hds-button--size-small" href="/maps-api-for-js/ja/v1.0/docs/introduction-maps-api-for-javascript">HERE Maps API for JavaScript</a>
+              <a class="hds-button hds-button--variant-secondary hds-button--size-small" href="/here-sdk/ja/v4.25.5-0/docs/readme">HERE SDK</a>
+            </div>
+          </article>
+
+          <article class="hds-card hds-card--secondary-solid hds-card--uninteractive" role="listitem">
+            <h3 class="here-card__title">プラットフォーム管理</h3>
+            <p class="here-card__desc">認証、データ利用、コスト管理など、HERE プラットフォームの運用に関する情報。ID とアクセス管理。</p>
+            <div class="here-card__pills">
+              <a class="hds-button hds-button--variant-secondary hds-button--size-small" href="/usage/ja/v1.0/docs/cost-management-dev-guide-readme">コスト管理</a>
+              <a class="hds-button hds-button--variant-secondary hds-button--size-small" href="/identity-and-access-management/ja/v1.0/docs/readme">アイデンティティとアクセス管理</a>
+            </div>
+          </article>
+
+          <article class="hds-card hds-card--secondary-solid hds-card--uninteractive" role="listitem">
+            <h3 class="here-card__title">プラットフォーム ポリシー</h3>
+            <p class="here-card__desc">HERE 製品の利用に関する情報です。</p>
+            <div class="here-card__pills">
+              <a class="hds-button hds-button--variant-secondary hds-button--size-small" href="/policies/ja/v1.0/docs/product-lifecycle-policy">製品ライフサイクルポリシー</a>
+              <a class="hds-button hds-button--variant-secondary hds-button--size-small" href="/policies/ja/v1.0/docs/here-service-level-agreement">サービスレベル契約</a>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ── What's New ── -->
+    <section class="here-whatsnew" aria-label="最新情報">
+      <div class="here-wrap">
+        <h2 class="here-section-title">最新情報</h2>
+        <div class="here-wn-grid" role="list">
+
+          <article class="hds-card hds-card--primary-solid hds-card--uninteractive" role="listitem">
+            <div class="here-wn-head">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 11h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M9 15h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M8 3h8a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3V6a3 3 0 0 1 3-3Z" stroke="currentColor" stroke-width="2"/></svg>
+              <h4>プラットフォーム リリースノート</h4>
+            </div>
+            <p>HEREプラットフォームに関する更新情報とお知らせ (英語)</p>
+            <div class="here-wn-links">
+							<a href="https://www.here.com/learn/blog/may-2026-platform-release-notes" rel="noopener">２０２６年５月</a>
+							<a href="https://www.here.com/learn/blog/april-2026-platform-release-notes" rel="noopener">２０２６年４月</a>
+							<a href="https://www.here.com/learn/blog/march-2026-platform-release-notes" rel="noopener">２０２６年３月</a>
+              <a href="https://www.here.com/learn/blog/february-2026-platform-release-notes" rel="noopener">２０２６年２月</a>
+              <a href="https://www.here.com/learn/blog/january-2026-platform-release-notes" rel="noopener">２０２６年１月</a>
+            </div>
+          </article>
+
+          <article class="hds-card hds-card--primary-solid hds-card--uninteractive" role="listitem">
+            <div class="here-wn-head">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 11c2.5 0 2.5 6 0 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M20 7c-4 0-7 3-7 5s3 5 7 5V7Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M13 12H8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M8 9v6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              <h4>開発者向けリソース</h4>
+            </div>
+            <p>開発者に役立つ最新のヒントやチュートリアル</p>
+            <div class="here-wn-links">
+              <a href="https://www.here.com/jp/platform/developer" rel="noopener">ディベロッパーリソースを見る</a>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Videos ── -->
+    <section class="here-videos" aria-label="動画">
+      <div class="here-wrap">
+        <h2 class="here-section-title">動画</h2>
+        <div class="here-carousel" data-here-carousel>
+          <div class="here-carousel__track" data-here-track>
+            <article class="here-vid-card"><div class="here-vid-thumb" data-here-thumb><img src="https://img.youtube.com/vi/jA5wbygIJN8/mqdefault.jpg" alt="HERE SDKのライセンスについて"/><div class="here-vid-play"><svg viewBox="0 0 68 68" fill="none"><circle cx="34" cy="34" r="34" fill="rgba(0,0,0,0.55)"/><polygon points="27,20 54,34 27,48" fill="#fff"/></svg></div><iframe title="HERE SDKのライセンスについて" data-src="https://www.youtube-nocookie.com/embed/jA5wbygIJN8?autoplay=1" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div><div class="here-vid-titlebar">HERE SDKのライセンスについて</div></article>
+            <article class="here-vid-card"><div class="here-vid-thumb" data-here-thumb><img src="https://img.youtube.com/vi/nwr81PR4vJ4/mqdefault.jpg" alt="HERE Style Editor - 新機能「Modifiers」"/><div class="here-vid-play"><svg viewBox="0 0 68 68" fill="none"><circle cx="34" cy="34" r="34" fill="rgba(0,0,0,0.55)"/><polygon points="27,20 54,34 27,48" fill="#fff"/></svg></div><iframe title="HERE Style Editor - 新機能「Modifiers」" data-src="https://www.youtube-nocookie.com/embed/nwr81PR4vJ4?autoplay=1" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div><div class="here-vid-titlebar">HERE Style Editor - 新機能「Modifiers」</div></article>
+            <article class="here-vid-card"><div class="here-vid-thumb" data-here-thumb><img src="https://img.youtube.com/vi/PBRyThW3r60/mqdefault.jpg" alt="HEREプラットフォームのコーディングアシスタント"/><div class="here-vid-play"><svg viewBox="0 0 68 68" fill="none"><circle cx="34" cy="34" r="34" fill="rgba(0,0,0,0.55)"/><polygon points="27,20 54,34 27,48" fill="#fff"/></svg></div><iframe title="HEREプラットフォームのコーディングアシスタント" data-src="https://www.youtube-nocookie.com/embed/PBRyThW3r60?autoplay=1" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div><div class="here-vid-titlebar">HEREプラットフォームのコーディングアシスタント</div></article>
+            <article class="here-vid-card"><div class="here-vid-thumb" data-here-thumb><img src="https://img.youtube.com/vi/CJz5kkR_L9Q/mqdefault.jpg" alt="Gabb Wirelessが地図を活用して子どもの安全を向上させる方法 - HERE Technologies"/><div class="here-vid-play"><svg viewBox="0 0 68 68" fill="none"><circle cx="34" cy="34" r="34" fill="rgba(0,0,0,0.55)"/><polygon points="27,20 54,34 27,48" fill="#fff"/></svg></div><iframe title="Gabb Wirelessが地図を活用して子どもの安全を向上させる方法 - HERE Technologies" data-src="https://www.youtube-nocookie.com/embed/CJz5kkR_L9Q?autoplay=1" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div><div class="here-vid-titlebar">Gabb Wirelessが地図を活用して子どもの安全を向上させる方法 - HERE Technologies</div></article>
+            <article class="here-vid-card"><div class="here-vid-thumb" data-here-thumb><img src="https://img.youtube.com/vi/mcbwkUtWtzM/mqdefault.jpg" alt="Kardinalのラストマイル最適化エンジンとHERE Matrix Routing - HERE Technologies"/><div class="here-vid-play"><svg viewBox="0 0 68 68" fill="none"><circle cx="34" cy="34" r="34" fill="rgba(0,0,0,0.55)"/><polygon points="27,20 54,34 27,48" fill="#fff"/></svg></div><iframe title="Kardinalのラストマイル最適化エンジンとHERE Matrix Routing last - HERE Technologies" data-src="https://www.youtube-nocookie.com/embed/mcbwkUtWtzM?autoplay=1" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div><div class="here-vid-titlebar">Kardinalのラストマイル最適化エンジンとHERE Matrix Routing - HERE Technologies</div></article>
+            <article class="here-vid-card"><div class="here-vid-thumb" data-here-thumb><img src="https://img.youtube.com/vi/TYLS9XEaSoI/mqdefault.jpg" alt="天気対応アプリを開発する"/><div class="here-vid-play"><svg viewBox="0 0 68 68" fill="none"><circle cx="34" cy="34" r="34" fill="rgba(0,0,0,0.55)"/><polygon points="27,20 54,34 27,48" fill="#fff"/></svg></div><iframe title="天気対応アプリを開発する" data-src="https://www.youtube-nocookie.com/embed/TYLS9XEaSoI?autoplay=1" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div><div class="here-vid-titlebar">天気対応アプリを開発する</div></article>
+            <article class="here-vid-card"><div class="here-vid-thumb" data-here-thumb><img src="https://img.youtube.com/vi/dlZY2Q_PwwM/mqdefault.jpg" alt="HERE APIのはじめ方 - HERE Technologies"/><div class="here-vid-play"><svg viewBox="0 0 68 68" fill="none"><circle cx="34" cy="34" r="34" fill="rgba(0,0,0,0.55)"/><polygon points="27,20 54,34 27,48" fill="#fff"/></svg></div><iframe title="HERE APIのはじめ方 - HERE Technologies" data-src="https://www.youtube-nocookie.com/embed/dlZY2Q_PwwM?autoplay=1" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div><div class="here-vid-titlebar">HERE APIのはじめ方 - HERE Technologies</div></article>
+            <article class="here-vid-card"><div class="here-vid-thumb" data-here-thumb><img src="https://img.youtube.com/vi/3ji7RnqVx90/mqdefault.jpg" alt="トラックに最適なルートを見つる方法 – HERE Truck Routing"/><div class="here-vid-play"><svg viewBox="0 0 68 68" fill="none"><circle cx="34" cy="34" r="34" fill="rgba(0,0,0,0.55)"/><polygon points="27,20 54,34 27,48" fill="#fff"/></svg></div><iframe title="トラックに最適なルートを見つる方法 – HERE Truck Routing" data-src="https://www.youtube-nocookie.com/embed/3ji7RnqVx90?autoplay=1" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div><div class="here-vid-titlebar">トラックに最適なルートを見つる方法 – HERE Truck Routing</div></article>        
+            <article class="here-vid-card"><div class="here-vid-thumb" data-here-thumb><img src="https://img.youtube.com/vi/Q5XD3v03z8I/mqdefault.jpg" alt="HERE Maps API for JSで注視点をアニメーションさせる方法"/><div class="here-vid-play"><svg viewBox="0 0 68 68" fill="none"><circle cx="34" cy="34" r="34" fill="rgba(0,0,0,0.55)"/><polygon points="27,20 54,34 27,48" fill="#fff"/></svg></div><iframe title="HERE Maps API for JSで注視点をアニメーションさせる方法" data-src="https://www.youtube-nocookie.com/embed/Q5XD3v03z8I?autoplay=1" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div><div class="here-vid-titlebar">HERE Maps API for JSで注視点をアニメーションさせる方法</div></article>
+            <article class="here-vid-card"><div class="here-vid-thumb" data-here-thumb><img src="https://img.youtube.com/vi/za1Uf6IF61M/mqdefault.jpg" alt="HERE Geocoding and Search入門"/><div class="here-vid-play"><svg viewBox="0 0 68 68" fill="none"><circle cx="34" cy="34" r="34" fill="rgba(0,0,0,0.55)"/><polygon points="27,20 54,34 27,48" fill="#fff"/></svg></div><iframe title="HERE Geocoding and Search入門" data-src="https://www.youtube-nocookie.com/embed/za1Uf6IF61M?autoplay=1" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div><div class="here-vid-titlebar">HERE Geocoding and Search入門</div></article>
+            <article class="here-vid-card"><div class="here-vid-thumb" data-here-thumb><img src="https://img.youtube.com/vi/X7tJ98maEJs/mqdefault.jpg" alt="HERE Routing入門"/><div class="here-vid-play"><svg viewBox="0 0 68 68" fill="none"><circle cx="34" cy="34" r="34" fill="rgba(0,0,0,0.55)"/><polygon points="27,20 54,34 27,48" fill="#fff"/></svg></div><iframe title="HERE Routing入門" data-src="https://www.youtube-nocookie.com/embed/X7tJ98maEJs?autoplay=1" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div><div class="here-vid-titlebar">HERE Routing入門</div></article>                  
+           </div>
+          <div class="here-carousel__controls">
+            <button class="hds-button hds-button--variant-secondary hds-button--size-small hds-button--icononly" data-here-prev aria-label="前へ">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M15 18 9 12l6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <div class="here-c-dots" data-here-dots></div>
+            <button class="hds-button hds-button--variant-secondary hds-button--size-small hds-button--icononly" data-here-next aria-label="次へ">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+  <!-- /JA -->
+
+
+  <!-- ══════════════════════════════════════════════════════════════
+       SCRIPTS
+       ══════════════════════════════════════════════════════════════
+       All scripts use guard tags (window[TAG]) to prevent double-init
+       on ReadMe SPA navigations.  Each IIFE is self-contained.
+  -->
+  <script>
+    /* ── Theme sync ──
+       Watches ReadMe's data-color-mode on <html> and maps it to
+       the correct HDS data-theme on .here-glp.  Also listens for
+       OS prefers-color-scheme changes when mode is "system".
+       The resulting data-theme value drives ALL dark-mode CSS inside
+       .here-glp via the [data-theme*="dark"] selector. */
+    (function () {
+      var TAG = "__hereGlpTheme_v1";
+      if (window[TAG]) return;
+      window[TAG] = true;
+      var DEFAULT_THEME_LIGHT = "hds-web-product-light-theme";
+      var DEFAULT_THEME_DARK  = "hds-web-product-dark-theme";
+      function root() { return document.querySelector(".here-glp"); }
+      function getReadMeColorMode() {
+        var mode = (document.documentElement.getAttribute("data-color-mode") || "").toLowerCase();
+        if (mode === "light" || mode === "dark") return mode;
+        return "system";
+      }
+      function prefersDark() {
+        try { return !!(window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches); } catch(e) { return false; }
+      }
+      function applyTheme() {
+        var r = root(); if (!r) return;
+        var light = window.HERE_HDS_THEME_LIGHT || DEFAULT_THEME_LIGHT;
+        var dark  = window.HERE_HDS_THEME_DARK  || DEFAULT_THEME_DARK;
+        var mode  = getReadMeColorMode();
+        var theme = (mode === "dark") ? dark : (mode === "light") ? light : (prefersDark() ? dark : light);
+        r.setAttribute("data-theme", theme);
+        r.setAttribute("data-styles", "hds");
+      }
+      applyTheme();
+      try { new MutationObserver(function(){ applyTheme(); }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-color-mode","class"] }); } catch(e) {}
+      try { if (window.matchMedia) window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", applyTheme); } catch(e) {}
+    })();
+
+    /* ── Language toggle ──
+       Detects current language from URL, enforces correct tab state,
+       and navigates to the other language root on click. */
+    (function () {
+      var TAG = "__hereLang_v4";
+      if (window[TAG]) return;
+      window[TAG] = true;
+
+      function getCurrentLang() {
+        var url = window.location.href || "";
+        return /\/ja(\/|$|\?)/.test(url) ? "ja" : "en";
+      }
+
+      function navigate(lang) {
+        var target = lang === "ja"
+          ? "https://docs.here.com/ja"
+          : "https://docs.here.com/";
+        window.location.assign(target);
+      }
+
+      function enforce() {
+        var correctLang = getCurrentLang();
+        var glp = document.querySelector(".here-glp");
+        if (glp) glp.setAttribute("data-active-lang", correctLang);
+
+        document.querySelectorAll("hds-switcher[data-here-lang-toggle] hds-switcher-tab[data-lang]").forEach(function(tab) {
+          var on = tab.getAttribute("data-lang") === correctLang;
+
+          if (on) {
+            tab.setAttribute("selected", "");
+            tab.setAttribute("aria-selected", "true");
+            try { tab.selected = true; } catch (e) {}
+          } else {
+            tab.removeAttribute("selected");
+            tab.setAttribute("aria-selected", "false");
+            try { tab.selected = false; } catch (e) {}
+          }
+
+          try {
+            if (tab.shadowRoot) {
+              tab.shadowRoot.querySelectorAll("*").forEach(function(el) {
+                el.classList.toggle("active", on);
+                el.classList.toggle("selected", on);
+              });
+            }
+          } catch (e) {}
+        });
+
+        /* Sync footer lang buttons */
+        document.querySelectorAll(".here-footer__lang button[data-lang]").forEach(function(b) {
+          b.setAttribute("aria-pressed", b.getAttribute("data-lang") === correctLang ? "true" : "false");
+        });
+      }
+
+      function bindClicks() {
+        document.querySelectorAll("hds-switcher[data-here-lang-toggle]").forEach(function(sw) {
+          if (sw.__hereBound) return;
+          sw.__hereBound = true;
+
+          sw.addEventListener("click", function(e) {
+            var tab = e.target && e.target.closest
+              ? e.target.closest("hds-switcher-tab[data-lang]")
+              : null;
+            if (!tab) return;
+
+            var lang = tab.getAttribute("data-lang");
+            var currentLang = getCurrentLang();
+            if (!lang || lang === currentLang) return;
+
+            e.preventDefault();
+            e.stopPropagation();
+            navigate(lang);
+          }, true);
+        });
+      }
+
+      function bindFooter() {
+        document.querySelectorAll(".here-footer__lang button[data-lang]:not([data-fb])").forEach(function(b) {
+          b.setAttribute("data-fb", "1");
+          b.addEventListener("click", function() {
+            var lang = b.getAttribute("data-lang");
+            var currentLang = getCurrentLang();
+            if (!lang || lang === currentLang) return;
+            navigate(lang);
+          });
+        });
+      }
+
+      enforce();
+      bindClicks();
+      bindFooter();
+
+      try {
+        Promise.all([
+          customElements.whenDefined("hds-switcher"),
+          customElements.whenDefined("hds-switcher-tab")
+        ]).then(function() {
+          enforce();
+          bindClicks();
+          bindFooter();
+          setTimeout(enforce, 0);
+          setTimeout(enforce, 100);
+          setTimeout(enforce, 300);
+          setTimeout(enforce, 600);
+        });
+      } catch (e) {}
+
+      try {
+        var lock = false;
+        new MutationObserver(function() {
+          if (lock) return;
+          lock = true;
+          enforce();
+          bindClicks();
+          bindFooter();
+          requestAnimationFrame(function() { lock = false; });
+        }).observe(document.documentElement, {
+          childList: true,
+          subtree: true,
+          attributes: true,
+          attributeFilter: ["selected", "aria-selected"]
+        });
+      } catch (e) {}
+    })();
+    /* ── Search proxy ──
+       Intercepts clicks on [data-here-search-overlay] buttons and
+       triggers ReadMe's native ⌘K search modal. Tries multiple
+       strategies: direct button click, then keyboard event dispatch. */
+    (function () {
+      var TAG = "__hereSearch_v4";
+      if (window[TAG]) return;
+      window[TAG] = true;
+      function docs() {
+        var d = []; function add(x) { if (x && d.indexOf(x)===-1) d.push(x); }
+        add(document); try { add(window.top.document); } catch(e) {}
+        try { [].forEach.call(document.querySelectorAll("iframe"), function(f){ try { add(f.contentDocument||f.contentWindow.document); } catch(e){} }); } catch(e) {}
+        return d;
+      }
+      function findBtn(doc) { return doc && doc.querySelector("button.rm-SearchToggle,.rm-SearchToggle,.rm-Header-search button"); }
+      function openReadMeSearch() {
+        var ds = docs();
+        for (var i=0;i<ds.length;i++) { try { var b=findBtn(ds[i]); if(b){b.click();return;} } catch(e){} }
+        var mac = /Mac|iPhone|iPad|iPod/i.test(navigator.platform);
+        var ev = new KeyboardEvent("keydown",{key:"k",code:"KeyK",bubbles:true,cancelable:true,composed:true,metaKey:mac,ctrlKey:!mac});
+        for (var j=0;j<ds.length;j++) { try { ds[j].dispatchEvent(ev); } catch(e){} }
+        try { window.dispatchEvent(ev); } catch(e) {}
+        try { window.top && window.top.dispatchEvent(ev); } catch(e) {}
+      }
+      function bind() {
+        var root = document.querySelector(".here-glp");
+        if (!root) return;
+        root.querySelectorAll("[data-here-search-overlay]").forEach(function(el) {
+          if (el.__hereSearchBound) return;
+          el.__hereSearchBound = true;
+          el.addEventListener("click", function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            openReadMeSearch();
+          }, true);
+          el.addEventListener("keydown", function(e) {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              openReadMeSearch();
+            }
+          }, true);
+        });
+      }
+      bind();
+      try {
+        var scheduled = false;
+        new MutationObserver(function(){ if(scheduled)return; scheduled=true; requestAnimationFrame(function(){ scheduled=false; bind(); }); })
+          .observe(document.documentElement,{childList:true,subtree:true});
+      } catch(e) {}
+    })();
+
+    /* ── Video play ──
+       Lazy-loads YouTube iframes on first click (privacy-friendly). */
+    (function () {
+      function bind() {
+        document.querySelectorAll(".here-vid-thumb[data-here-thumb]:not([data-vb])").forEach(function(t) {
+          t.setAttribute("data-vb","1");
+          t.addEventListener("click", function() {
+            if (t.classList.contains("playing")) return;
+            var f = t.querySelector("iframe"); if (!f) return;
+            f.src = f.getAttribute("data-src") || "";
+            t.classList.add("playing");
+          });
+        });
+      }
+      bind();
+      try { var s=false; new MutationObserver(function(){ if(s)return; s=true; requestAnimationFrame(function(){s=false;bind();}); }).observe(document.documentElement,{childList:true,subtree:true}); } catch(e) {}
+    })();
+
+    /* ── Carousel ──
+       Horizontal snap-scroll carousel with prev/next buttons and
+       dot indicators.  Syncs on scroll events. */
+    (function () {
+      var TAG = "__hereCarousel_v3";
+      if (window[TAG]) return;
+      window[TAG] = true;
+      function clamp(n,a,b){return Math.max(a,Math.min(b,n));}
+      function initOne(root) {
+        if (!root||root.__hCB) return;
+        var track = root.querySelector("[data-here-track]"); if (!track) return;
+        root.__hCB = true;
+        var slides = Array.from(track.querySelectorAll(".here-vid-card"));
+        var n = slides.length;
+        var dotsWrap = root.querySelector("[data-here-dots]");
+        var btnP = root.querySelector("[data-here-prev]");
+        var btnN = root.querySelector("[data-here-next]");
+        var dots = [];
+        if (dotsWrap) {
+          dotsWrap.innerHTML = "";
+          for (var i=0;i<n;i++) {
+            var d=document.createElement("button");
+            d.className="here-c-dot"+(i===0?" active":""); d.type="button";
+            d.setAttribute("aria-label","Slide "+(i+1)); d.setAttribute("data-i",i);
+            dotsWrap.appendChild(d); dots.push(d);
+          }
+        }
+        function step(){ var s=slides[0]; if(!s)return 400; var g=parseFloat(window.getComputedStyle(track).columnGap||"20")||20; return s.getBoundingClientRect().width+g; }
+        function idx(){ var st=step(); return st?clamp(Math.round(track.scrollLeft/st),0,n-1):0; }
+        function sync(i){ if(btnP)btnP.disabled=i<=0; if(btnN)btnN.disabled=i>=n-1; dots.forEach(function(d,j){d.classList.toggle("active",j===i);}); }
+        function go(i){ i=clamp(i,0,n-1); try{track.scrollTo({left:i*step(),behavior:"smooth"});}catch(e){track.scrollLeft=i*step();} sync(i); }
+        if(btnP) btnP.addEventListener("click",function(){go(idx()-1);});
+        if(btnN) btnN.addEventListener("click",function(){go(idx()+1);});
+        dots.forEach(function(d){d.addEventListener("click",function(){go(+d.getAttribute("data-i"));});});
+        var raf=null;
+        track.addEventListener("scroll",function(){ if(raf)return; raf=requestAnimationFrame(function(){raf=null;sync(idx());}); },{passive:true});
+        sync(0);
+      }
+      function initAll(){ document.querySelectorAll("[data-here-carousel]").forEach(initOne); }
+      initAll();
+      try { var s=false; new MutationObserver(function(){ if(s)return; s=true; requestAnimationFrame(function(){s=false;initAll();}); }).observe(document.documentElement,{childList:true,subtree:true}); } catch(e) {}
+    })();
+
+    /* ── See All Modal ──
+       Catalogue-driven modal for "See all" links.  Renders a list
+       of navigation links in a frosted-glass overlay.  Supports
+       both EN and JA catalogues via data-modal="key" attributes. */
+    (function () {
+      var TAG = "__hereSeeAll_v1";
+      if (window[TAG]) return;
+      window[TAG] = true;
+
+      var ARROW = '<svg viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+      var CATALOGUE = {
+        /* ── ENGLISH ── */
+        "dynamic-map-content": {
+          title: "Dynamic map content",
+          items: [
+            { label: "HERE Destination Weather",          href: "/here-destination-weather" },
+            { label: "Map Attributes API",                href: "/map-attributes-api" },
+            { label: "HERE Traffic API",                  href: "/here-traffic-api" },
+            { label: "HERE Real-Time Traffic",            href: "/here-real-time-traffic" },
+            { label: "HERE Traffic Analytics Speed Data", href: "/here-traffic-analytics" },
+            { label: "HERE EV products",                  href: "/here-ev-products" },
+            { label: "HERE Fuel Prices",                  href: "/here-fuel-prices" },
+            { label: "HERE Parking",                      href: "/here-parking" },
+            { label: "HERE Safety Cameras",               href: "/here-safety-cameras" }
+          ]
+        },
+        "maps-data": {
+          title: "Map data",
+          items: [
+            { label: "Introduction to Mapping Concepts",  href: "/introduction-to-mapping-c" },
+            { label: "GIS Data Suite",                    href: "/gis-data-suite" },
+            { label: "Indoor Map",                        href: "/indoor-map-skpy" },
+            { label: "Map Content",                       href: "/map-content" },
+            { label: "Mapmaking",                         href: "/mapmaking" },
+            { label: "Data API",                          href: "/data-api-fmrg" },
+            { label: "Platform MOM",                      href: "/platform-mom" },
+            { label: "Optimized Client Map",              href: "/optimized-client-map" },
+            { label: "HD Live Map",                       href: "/hd-live-map" },
+            { label: "Map Feedback API",                  href: "/map-feedback-api" },
+            { label: "Maps XML",                          href: "/maps-xml" },
+            { label: "Embedded Editor",                   href: "/embedded-editor" },
+            { label: "Phonetic Training Data",            href: "/phonetic-training-data" }
+          ]
+        },
+        "location-services": {
+          title: "Location services",
+          items: [
+            { label: "Geocoding & Search",  href: "/geocoding-search" },
+            { label: "HERE Map Rendering",  href: "/here-map-rendering" },
+            { label: "HERE Positioning",    href: "/here-positioning" },
+            { label: "HERE Routing",        href: "/here-routing" },
+            { label: "HERE Tour Planning",  href: "/here-tour-planning" },
+            { label: "HERE WeGo Pro",           href: "/wego-pro" },
+            { label: "HERE Transit",        href: "/here-transit" },
+            { label: "Tracking API",        href: "/tracking-api" },
+            { label: "what3words",          href: "/what3words-diqg" },
+            { label: "Coverage",            href: "/coverage-kpky" }
+          ]
+        },
+        "development-enablers": {
+          title: "Development enablers",
+          items: [
+            { label: "HERE SDK",                  href: "/here-sdk" },
+            { label: "Maps API for JavaScript",   href: "/maps-api-for-js" },
+            { label: "Anonymizer",                href: "/anonymizer" },
+            { label: "HERE Style Editor",         href: "/here-style-editor" },
+            { label: "SceneXtract",               href: "/scenextract" }
+          ]
+        },
+        "platform-management": {
+          title: "Platform tools",
+          items: [
+            { label: "Identity and access management", href: "/identity-and-access-management" },
+            { label: "Cost management",                href: "/usage-api" },
+            { label: "Data SDK",                       href: "/data-sdk" },
+            { label: "Workspace",                      href: "/workspace-lvmk" }
+          ]
+        },
+        "platform-policies": {
+          title: "Policies",
+          items: [
+            { label: "Policies",                        href: "/policies" },
+            { label: "Local maps regulatory approval",  href: "/local-maps-regulatory-approval" },
+            { label: "System Status API",               href: "/system-status-api" }
+          ]
+        },
+
+        /* ── JAPANESE ── */
+        "dynamic-map-content-ja": {
+          title: "ダイナミックマップコンテンツ",
+          items: [ 
+            { label: "Map Attributes API",                href: "/map-attributes-api/ja/v1.0/docs/map-attributes-api" },
+            { label: "HERE Traffic API",                  href: "/here-traffic-api/ja/v1.0/docs/here-traffic-api" },
+            { label: "HERE Real-Time Traffic",            href: "/here-real-time-traffic/ja/v1.0/docs/here-real-time-traffic" },
+            { label: "HERE Traffic Analytics Speed Data", href: "/here-traffic-analytics/ja/v1.0/docs/here-traffic-analytics" },
+            { label: "HERE EV products",                  href: "/here-ev-products/ja/v1.0/docs/here-ev-products" },
+            { label: "HERE Fuel Prices",                  href: "/here-fuel-prices/ja/v1.0/docs/here-fuel-prices" },
+            { label: "HERE Parking",                      href: "/here-parking/ja/v1.0/docs/here-parking" },
+            { label: "HERE Safety Cameras",               href: "/here-safety-cameras/ja/v1.0/docs/here-safety-cameras" }
+          ]
+        },
+        "maps-data-ja": {
+          title: "地図データ",
+          items: [
+            { label: "マッピング概念の概要",    href: "/introduction-to-mapping-c/ja/v1.0/docs/introduction-to-mapping-concepts" },
+            { label: "GIS Data Suite",          href: "/gis-data-suite/ja/v1.0/docs/gis-data-suite" },
+            { label: "インドアマップ",          href: "/indoor-map/ja/v1.0/docs/indoor-map-readme" },
+            { label: "Map Content",             href: "/map-content/ja/v1.0/docs/map-content" },
+            { label: "Mapmaking",               href: "/mapmaking/ja/v1.0/docs/mapmaking" },
+            { label: "Data API",                href: "/data-api-fmrg/ja/v1.0/docs/data-api" },
+            { label: "Platform MOM",            href: "/platform-mom/ja/v1.0/docs/platform-mom" },
+            { label: "Optimized Client Map",    href: "/optimized-client-map/ja/v1.0/docs/optimized-client-map" },
+            { label: "HD Live Map",             href: "/hd-live-map/ja/v1.0/docs/hd-live-map" },
+            { label: "Map Feedback API",        href: "/map-feedback-api/ja/v1.0/docs/map-feedback-api" },
+            { label: "Maps XML",                href: "/maps-xml/ja/v1.0/docs/maps-xml" },
+            { label: "Embedded Editor",         href: "/embedded-editor/ja/v1.0/docs/embedded-editor" },
+            { label: "Phonetic Training Data",  href: "/phonetic-training-data/ja/v1.0/docs/phonetic-training-data" }
+          ]
+        },
+        "location-services-ja": {
+          title: "ロケーションサービス",
+          items: [
+            { label: "HERE Geocoding & Search",  href: "/geocoding-and-search/ja/v1.0/docs/overview" },
+            { label: "HERE Routing",             href: "/routing/ja/v1.0/docs/routing-intro" },
+            { label: "HERE Tour Planning API",   href: "/tour-planning/ja/v1.0/docs/introduction-tour-planning" },
+            { label: "HERE Map Rendering",       href: "/here-routing/ja/v1.0/docs/here-routing" },
+            { label: "HERE Tracking API",        href: "/tracking/ja/v1.0/docs/readme" },
+          ]
+        },
+        "development-enablers-ja": {
+          title: "開発支援",
+          items: [
+            { label: "HERE SDK",                  href: "/here-sdk/ja/v1.0/docs/here-sdk" },
+            { label: "Maps API for JavaScript",   href: "/maps-api-for-js/ja/v1.0/docs/maps-api-for-javascript" },
+            { label: "Anonymizer",                href: "/anonymizer/ja/v1.0/docs/anonymizer" },
+            { label: "HERE Style Editor",         href: "/here-style-editor/ja/v1.0/docs/here-style-editor" },
+            { label: "SceneXtract",               href: "/scenextract/ja/v1.0/docs/scenextract" }
+          ]
+        },
+        "platform-management-ja": {
+          title: "プラットフォームツール",
+          items: [
+            { label: "Identity and access management", href: "/identity-and-access-management/ja/v1.0/docs/identity-and-access-management" },
+            { label: "Cost management",                href: "/usage-api/ja/v1.0/docs/usage-api" },
+            { label: "Data SDK",                       href: "/data-sdk/ja/v1.0/docs/data-sdk" },
+            { label: "what3words",                     href: "/what3words-diqg/ja/v1.0/docs/what3words" },
+            { label: "Workspace",                      href: "/workspace-lvmk/ja/v1.0/docs/workspace" }
+          ]
+        },
+        "platform-policies-ja": {
+          title: "ポリシー",
+          items: [
+            { label: "ポリシー",                        href: "/policies/ja/v1.0/docs/policies" },
+            { label: "Local maps regulatory approval",  href: "/local-maps-regulatory-approval/ja/v1.0/docs/local-maps-regulatory-approval" },
+            { label: "System Status API",               href: "/system-status-api/ja/v1.0/docs/system-status-api" }
+          ]
+        }
+      };
+
+      /* Modal styles (injected once) */
+      var _style = document.createElement("style");
+      _style.textContent = [
+        ".here-modal-backdrop{display:none;position:fixed;inset:0;background:rgba(180,210,220,0.45);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);z-index:99999;align-items:center;justify-content:center;padding:32px;}",
+        ".here-modal-backdrop.open{display:flex;}",
+        ".here-modal{background:#fff;border-radius:16px;box-shadow:0 32px 80px rgba(9,39,50,0.16);width:100%;max-width:720px;max-height:84vh;display:flex;flex-direction:column;overflow:hidden;}",
+        ".here-modal__header{display:flex;align-items:flex-start;justify-content:space-between;padding:32px 32px 22px;border-bottom:1px solid rgba(9,39,50,0.07);flex-shrink:0;}",
+        ".here-modal__title{margin:0;font-size:28px;font-weight:700;color:#092732;font-family:'Fira GO','Fira Sans',system-ui,sans-serif;letter-spacing:-0.4px;line-height:1.2;}",
+        ".here-modal__close{background:none;border:none;cursor:pointer;color:#2c596a;font-size:26px;line-height:1;padding:2px 0 0;flex-shrink:0;transition:color .12s;}",
+        ".here-modal__close:hover{color:#092732;}",
+        ".here-modal__body{overflow-y:auto;padding:20px 28px 32px;display:flex;flex-direction:column;gap:10px;font-family:'Fira GO','Fira Sans',system-ui,sans-serif;}",
+        ".here-modal__item{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-radius:10px;border:none;background:#e8f4f7;text-decoration:none;color:#092732;font-size:15px;font-weight:500;transition:background .14s;}",
+        ".here-modal__item:hover{background:#cce6ee;color:#092732 !important;}",
+        ".here-modal__item svg{width:16px;height:16px;flex-shrink:0;color:#1a4f62;opacity:1;}",
+        /* Dark mode — explicit */
+        "[data-color-mode=dark] .here-modal{background:#162028;}",
+        "[data-color-mode=dark] .here-modal__header{border-bottom-color:rgba(255,255,255,0.07);}",
+        "[data-color-mode=dark] .here-modal__title{color:#e8edf0;}",
+        "[data-color-mode=dark] .here-modal__close{color:#7ab8cc;}",
+        "[data-color-mode=dark] .here-modal__close:hover{color:#e8edf0;}",
+        "[data-color-mode=dark] .here-modal__item{background:rgba(255,255,255,0.07);color:#e8edf0;}",
+        "[data-color-mode=dark] .here-modal__item:hover{background:rgba(255,255,255,0.13);color:#e8edf0 !important;}",
+        "[data-color-mode=dark] .here-modal__item svg{color:#5bc8f5;}",
+        "[data-color-mode=dark] .here-modal-backdrop{background:rgba(5,15,22,0.55);}",
+        /* Dark mode — system + OS dark */
+        "@media(prefers-color-scheme:dark){",
+        "[data-color-mode=system] .here-modal{background:#162028;}",
+        "[data-color-mode=system] .here-modal__header{border-bottom-color:rgba(255,255,255,0.07);}",
+        "[data-color-mode=system] .here-modal__title{color:#e8edf0;}",
+        "[data-color-mode=system] .here-modal__close{color:#7ab8cc;}",
+        "[data-color-mode=system] .here-modal__close:hover{color:#e8edf0;}",
+        "[data-color-mode=system] .here-modal__item{background:rgba(255,255,255,0.07);color:#e8edf0;}",
+        "[data-color-mode=system] .here-modal__item:hover{background:rgba(255,255,255,0.13);color:#e8edf0 !important;}",
+        "[data-color-mode=system] .here-modal__item svg{color:#5bc8f5;}",
+        "[data-color-mode=system] .here-modal-backdrop{background:rgba(5,15,22,0.55);}",
+        "}"
+      ].join("");
+      document.head.appendChild(_style);
+
+      /* Modal DOM */
+      var _el = document.createElement("div");
+      _el.innerHTML = '<div class="here-modal-backdrop" id="here-seeall-backdrop" role="dialog" aria-modal="true" aria-labelledby="here-modal-title"><div class="here-modal"><div class="here-modal__header"><h3 class="here-modal__title" id="here-modal-title"></h3><button class="here-modal__close" id="here-modal-close" aria-label="Close"><svg viewBox="0 0 24 24" fill="none"><path d="M18 6 6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></div><div class="here-modal__body" id="here-modal-body"></div></div></div>';
+      document.body.appendChild(_el.firstChild);
+
+      var backdrop   = document.getElementById("here-seeall-backdrop");
+      var modalTitle = document.getElementById("here-modal-title");
+      var modalBody  = document.getElementById("here-modal-body");
+      var closeBtn   = document.getElementById("here-modal-close");
+
+      function open(key) {
+        var data = CATALOGUE[key]; if (!data) return;
+        modalTitle.textContent = data.title;
+        modalBody.innerHTML = data.items.map(function(item) {
+          return '<a class="here-modal__item" href="' + item.href + '">' +
+            '<span>' + item.label + '</span>' + ARROW + '</a>';
+        }).join("");
+        backdrop.classList.add("open");
+        document.body.style.overflow = "hidden";
+        closeBtn.focus();
+      }
+
+      function close() {
+        backdrop.classList.remove("open");
+        document.body.style.overflow = "";
+      }
+
+      closeBtn.addEventListener("click", close);
+      backdrop.addEventListener("click", function(e) { if (e.target === backdrop) close(); });
+      document.addEventListener("keydown", function(e) { if (e.key === "Escape") close(); });
+
+      function bind() {
+        document.querySelectorAll("a.here-seeall[data-modal]").forEach(function(a) {
+          if (a.__modalBound) return;
+          a.__modalBound = true;
+          a.addEventListener("click", function(e) {
+            e.preventDefault();
+            open(a.getAttribute("data-modal"));
+          });
+        });
+      }
+      bind();
+      try {
+        new MutationObserver(function(){ bind(); })
+          .observe(document.documentElement, { childList: true, subtree: true });
+      } catch(e) {}
+    })();
+
+    /* ── Contact us button injector ──
+       Adds a "Contact us" button in ReadMe's header, next to Ask AI.
+       The button lives in ReadMe's chrome (outside .here-glp) so it
+       must be injected imperatively.  Uses the ReadMe header container
+       (.Header-right21PC2XTT6aMg) and inserts before the Ask AI button
+       so it appears immediately to the left of it. */
+    (function () {
+      var TAG = "__hereContactUs_v1";
+      if (window[TAG]) return;
+      window[TAG] = true;
+
+      var LINK_ID = "here-contact-us-btn";
+      var URLS = {
+        en: "https://www.here.com/contact?intref=dev_docum",
+        ja: "https://www.here.com/jp/contact"
+      };
+      var LABELS = { en: "Contact us", ja: "お問い合わせ" };
+
+      function currentLang() {
+        return /\/ja(\/|$|\?)/.test(window.location.href) ? "ja" : "en";
+      }
+
+      function currentTheme() {
+        var glp = document.querySelector(".here-glp");
+        return (glp && glp.getAttribute("data-theme")) ||
+               "hds-web-product-light-theme";
+      }
+
+      function syncTheme() {
+        var link = document.getElementById(LINK_ID);
+        if (link) link.setAttribute("data-theme", currentTheme());
+      }
+
+      function inject() {
+        // Find the Ask AI button first and use its actual parent — this
+        // survives ReadMe class-name changes and guarantees we land in
+        // the header-right cluster right next to Ask AI.
+        var askAi = document.querySelector(
+          ".rm-AskAi-button, .rm-AskAi, .Header-askai1MTDknILiJku"
+        );
+        if (!askAi) return;
+
+        // Walk up to the flex row that actually holds the Ask AI item
+        var askAiSlot =
+          askAi.closest(".Header-askai1MTDknILiJku") ||
+          askAi.closest(".rm-AskAi") ||
+          askAi;
+        var headerRight = askAiSlot.parentNode;
+        if (!headerRight) return;
+
+        var existing = document.getElementById(LINK_ID);
+        if (existing && existing.parentNode === headerRight) {
+          syncTheme();
+          return;
+        }
+
+        var lang = currentLang();
+        var url = URLS[lang] || URLS.en;
+        if (existing) existing.remove();
+
+        // <hds-button> is a real HDS web component. It renders an internal
+        // <button> and dispatches a bubbling "click" event on itself
+        // (verified in hds-webcomponents.js). It does NOT observe href,
+        // so we open the URL on click. data-styles + data-theme let HDS
+        // tokens resolve outside .here-glp.
+        var btn = document.createElement("hds-button");
+        btn.id = LINK_ID;
+        btn.className = "here-contact-us";
+        btn.setAttribute("data-styles", "hds");
+        btn.setAttribute("data-theme", currentTheme());
+        btn.setAttribute("variant", "secondary");
+        btn.setAttribute("size", "small");
+        btn.textContent = LABELS[lang] || LABELS.en;
+        btn.addEventListener("click", function () {
+          window.open(url, "_blank", "noopener");
+        });
+
+        // Sit immediately to the RIGHT of Ask AI in DOM order.
+        var afterAskAi = askAiSlot.nextSibling;
+        if (afterAskAi) headerRight.insertBefore(btn, afterAskAi);
+        else headerRight.appendChild(btn);
+      }
+
+      inject();
+
+      try {
+        new MutationObserver(function () { inject(); })
+          .observe(document.documentElement, { childList: true, subtree: true });
+      } catch (e) {}
+
+      // Follow dark mode: watch .here-glp's data-theme attribute
+      try {
+        var glp = document.querySelector(".here-glp");
+        if (glp) {
+          new MutationObserver(syncTheme).observe(glp, {
+            attributes: true,
+            attributeFilter: ["data-theme"]
+          });
+        }
+      } catch (e) {}
+    })();
+  </script>
+</section>
