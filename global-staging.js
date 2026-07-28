@@ -4307,11 +4307,41 @@ function stampMarkdownScopes() {
     inject();
   }
 
-  // Initial render
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", run);
-  } else {
+  // On landing page (first paint) the Ask AI button often isn't in the
+  // DOM yet when this script first executes. Poll briefly, and also
+  // observe body mutations so we catch a late mount — either wins,
+  // whichever fires first.
+  function startInitial() {
     run();
+    if (document.getElementById(LINK_ID)) return; // already placed
+    var attempts = 0;
+    var poll = setInterval(function () {
+      run();
+      attempts++;
+      if (document.getElementById(LINK_ID) || attempts > 40) {
+        clearInterval(poll);
+      }
+    }, 250); // ~10 seconds worst-case
+
+    // Also observe body: as soon as Ask AI shows up anywhere, try again.
+    var mo = new MutationObserver(function () {
+      if (document.querySelector(".rm-AskAi-button, .rm-AskAi, .Header-askai1MTDknILiJku")) {
+        run();
+        if (document.getElementById(LINK_ID)) {
+          mo.disconnect();
+          clearInterval(poll);
+        }
+      }
+    });
+    try {
+      mo.observe(document.body, { childList: true, subtree: true });
+    } catch (e) {}
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", startInitial);
+  } else {
+    startInitial();
   }
 
   // Follow ReadMe SPA nav — re-inject when route changes.
