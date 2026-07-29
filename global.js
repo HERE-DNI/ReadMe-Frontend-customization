@@ -1087,6 +1087,11 @@ function stampMarkdownScopes() {
       label: { en: "Development enablers", ja: "開発支援" },
       items: [
         {
+          text: { en: "HERE Location Reasoning", ja: "HERE Location Reasoning" },
+          href: { en: "/location-reasoning", ja: "/location-reasoning" },
+          showInJa: false,
+        },
+        {
           text: { en: "HERE SDK", ja: "HERE SDK" },
           href: { en: "/here-sdk", ja: "/here-sdk/ja/v1.0/docs" },
           showInJa: true,
