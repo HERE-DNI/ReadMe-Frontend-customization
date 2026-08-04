@@ -1,30 +1,36 @@
 <!--
-  HERE Global Landing Page — ReadMe Shell
-  ────────────────────────────────────────
-  Purpose: replace the large landing-page markup with a thin shell that
-  fetches the real content from GitHub Pages at runtime. Enables a
-  "staging" preview via ?stagingGLP=true without impacting normal
-  visitors.
+  HERE Global Landing Page — TEST-ONLY Custom Page shell
+  ────────────────────────────────────────────────────────
+  Scope: this file is scoped to THIS custom page only. Nothing here
+  should be copied into global Body/Footer Custom Code — that runs on
+  every route and would affect all pages.
 
-  Pattern based on the Miro developer portal example provided by ReadMe
-  support:
-    - Live: https://developers.miro.com/
-    - Content: https://miroapp.github.io/developer-homepage/
+  Why not just paste a <script> like before: ReadMe Custom Pages inject
+  their HTML body through React (dangerouslySetInnerHTML-equivalent),
+  and per HTML spec, browsers do NOT execute inline <script> tags that
+  arrive via innerHTML. That's why the old shell never fired the fetch.
 
-  Files this shell selects between:
-    - Production:  index.html          (what visitors normally see)
-    - Staging:     index-staging.html  (work-in-progress preview)
-
-  Both are served from the same GitHub Pages repo:
-    https://here-dni.github.io/ReadMe-Frontend-customization/
+  Fix used here (still page-scoped, no global changes):
+    1. Loader logic is defined as an external .js file
+       (index-glp-loader.js) hosted on the same GitHub Pages repo, and
+       referenced via <script src="...">. External script tags DO get
+       fetched + executed even when injected via innerHTML, because the
+       browser treats src-based scripts differently from inline ones.
+    2. As a belt-and-suspenders fallback (in case this ReadMe project's
+       sanitizer strips ALL <script> tags including src-based ones), an
+       inline DOM event handler attribute (onerror on a 1x1 tracking
+       pixel) also triggers the mount. Inline event handler attributes
+       are NOT <script> tags, so they are not subject to the same
+       injection restriction and do execute.
 
   Trigger the staging version by adding ?stagingGLP=true to any URL:
-    https://docs.here.com/?stagingGLP=true
+    https://docs.here.com/test-doptools/page/test-glp?stagingGLP=true
 
-  IMPORTANT: paste this entire block into ReadMe's Custom Page editor
-  (replacing the current large index.html contents). Once installed you
-  will rarely need to touch it again — all real changes happen in the
-  external index.html / index-staging.html files.
+  Files this shell selects between (served from GitHub Pages):
+    - Production:  index.html
+    - Staging:     index-staging.html
+  Base URL:
+    https://here-dni.github.io/ReadMe-Frontend-customization/
 -->
 
 <section id="here-glp-mount"
@@ -36,7 +42,7 @@
 </section>
 
 <style>
-  /* Minimal shell styling. Kept scoped so it doesn't leak. Real page
+  /* Minimal shell styling, kept scoped so it doesn't leak. Real page
      styles live in the fetched HTML. */
   .here-glp-shell { min-height: 60vh; }
   .here-glp-shell__loading {
@@ -76,111 +82,19 @@
   }
 </style>
 
-<script>
-(function () {
-  "use strict";
+<!-- Primary: external script — executes even when injected via innerHTML. -->
+<script src="https://here-dni.github.io/ReadMe-Frontend-customization/index-glp-loader.js" defer></script>
 
-  // Idempotency guard — ReadMe SPA can execute this snippet more than
-  // once on client-side route changes. Bail if we've already mounted.
-  var TAG = "__here_glp_shell_v1";
-  if (window[TAG]) return;
-  window[TAG] = true;
-
-  var BASE = "https://here-dni.github.io/ReadMe-Frontend-customization/";
-  var PROD_URL = BASE + "index.html";
-  var STAGING_URL = BASE + "index-staging.html";
-  var PARAM = "stagingGLP";
-
-  function isStaging() {
-    // Look for stagingGLP=true across the URL search + hash so a bookmark
-    // like docs.here.com/#stagingGLP=true also works.
-    var raw = (window.location.search || "") + "&" + (window.location.hash || "").replace(/^#/, "");
-    return new RegExp("(?:^|[?&#])" + PARAM + "=true(?:&|$)").test(raw);
-  }
-
-  function bust(u) {
-    // Skip cache on staging so previews are always fresh. Production is
-    // fine to cache — GitHub Pages sets short TTLs already.
-    return isStaging() ? u + (u.indexOf("?") === -1 ? "?" : "&") + "t=" + Date.now() : u;
-  }
-
-  function showError(mount, message, err) {
-    mount.setAttribute("aria-busy", "false");
-    mount.innerHTML =
-      '<div class="here-glp-shell__error">' +
-      "<strong>Landing page failed to load</strong>" +
-      message +
-      (err ? "<br /><br />Error: <code>" + String(err.message || err) + "</code>" : "") +
-      "</div>";
-  }
-
-  function reExecuteScripts(root) {
-    // innerHTML injection does not execute inline <script> tags by spec.
-    // Clone each into a fresh element so the browser evaluates it.
-    root.querySelectorAll("script").forEach(function (oldEl) {
-      var s = document.createElement("script");
-      Array.prototype.slice.call(oldEl.attributes).forEach(function (a) {
-        s.setAttribute(a.name, a.value);
-      });
-      s.text = oldEl.textContent;
-      oldEl.replaceWith(s);
-    });
-  }
-
-  function mount() {
-    var target = document.getElementById("here-glp-mount");
-    if (!target) return;
-
-    var url = isStaging() ? STAGING_URL : PROD_URL;
-
-    fetch(bust(url), { cache: isStaging() ? "no-store" : "default" })
-      .then(function (r) {
-        if (!r.ok) throw new Error("HTTP " + r.status + " for " + url);
-        return r.text();
-      })
-      .then(function (html) {
-        // Strip anything that would break re-injection into this document:
-        //   - <!DOCTYPE>, <html>, <head>, <body> if present
-        html = html
-          .replace(/<!DOCTYPE[^>]*>/gi, "")
-          .replace(/<\/?html[^>]*>/gi, "")
-          .replace(/<head[\s\S]*?<\/head>/gi, "")
-          .replace(/<\/?body[^>]*>/gi, "");
-
-        target.innerHTML = html;
-        target.setAttribute("aria-busy", "false");
-
-        // If staging, add a small badge so previewers know the page is
-        // NOT what other visitors see.
-        if (isStaging() && !document.getElementById("here-glp-stagingbadge")) {
-          var b = document.createElement("div");
-          b.id = "here-glp-stagingbadge";
-          b.textContent = "STAGING PREVIEW";
-          b.style.cssText =
-            "position:fixed;right:16px;bottom:16px;z-index:999999;" +
-            "padding:8px 12px;border-radius:999px;" +
-            "background:#dc2626;color:#fff;" +
-            "font:700 12px/1 system-ui,sans-serif;" +
-            "box-shadow:0 6px 18px rgba(0,0,0,.25);pointer-events:none;";
-          document.body.appendChild(b);
-        }
-
-        reExecuteScripts(target);
-      })
-      .catch(function (err) {
-        console.error("[here-glp-shell] fetch failed:", err);
-        showError(
-          target,
-          "Refresh the page. If the problem persists, contact the docs team.",
-          err
-        );
-      });
-  }
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", mount);
-  } else {
-    mount();
-  }
-})();
-</script>
+<!--
+  Fallback: only fires if the <script src> above got stripped by a
+  sanitizer. Harmless no-op if the loader already ran (guarded by
+  data-here-glp-mounted on the mount node). The 1x1 pixel's onerror
+  fires immediately since "x" is not a real image URL.
+-->
+<img src="x" alt="" width="1" height="1" style="position:absolute;width:1px;height:1px;opacity:0;"
+     onerror="(function(el){
+       var s=document.createElement('script');
+       s.src='https://here-dni.github.io/ReadMe-Frontend-customization/index-glp-loader.js';
+       document.body.appendChild(s);
+       el.remove();
+     })(this)" />
