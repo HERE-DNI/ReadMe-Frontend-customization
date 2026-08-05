@@ -1277,16 +1277,37 @@
       if (window[TAG]) return;
       window[TAG] = true;
 
+      // On the real production GLP, EN/JA are separate ReadMe routes
+      // ("/" and "/ja"), so switching languages there means a real
+      // navigation. On any other route (e.g. a test Custom Page that
+      // fetches this same content via the shell/loader), there is no
+      // "/ja" equivalent to navigate to — so we toggle the language
+      // in place instead, without leaving the page.
+      var langOverride = null;
+
+      function isProductionRoute() {
+        var path = (window.location.pathname || "/").replace(/\/+$/, "") || "/";
+        return path === "/" || path === "/ja";
+      }
+
       function getCurrentLang() {
+        if (langOverride) return langOverride;
         var url = window.location.href || "";
         return /\/ja(\/|$|\?)/.test(url) ? "ja" : "en";
       }
 
       function navigate(lang) {
-        var target = lang === "ja"
-          ? "https://docs.here.com/ja"
-          : "https://docs.here.com/";
-        window.location.assign(target);
+        if (isProductionRoute()) {
+          var target = lang === "ja"
+            ? "https://docs.here.com/ja"
+            : "https://docs.here.com/";
+          window.location.assign(target);
+          return;
+        }
+
+        // Non-production route (e.g. test Custom Page): toggle in place.
+        langOverride = lang;
+        enforce();
       }
 
       function enforce() {
