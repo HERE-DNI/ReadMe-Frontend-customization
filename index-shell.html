@@ -80,6 +80,16 @@
     border-color: rgba(254, 202, 202, 0.25);
     color: #fecaca;
   }
+
+  /* Hide the ReadMe Custom Page title/header chrome on THIS test page
+     only. This CSS lives inside the Custom Page body, so it is scoped
+     to this page's rendered DOM and does not touch global styles. */
+  [class^="SuperHubCustomPage-content-header"] {
+    display: none;
+  }
+  [class^="SuperHubCustomPage-content"] {
+    padding: 0;
+  }
 </style>
 
 <!-- Primary: external script — executes even when injected via innerHTML. -->
