@@ -250,11 +250,35 @@
        HERO SECTION
        ================================================================ */
 
-    .here-hero { background: linear-gradient(135deg, #e2fffd 0%, #c8f5f0 100%); padding: 48px 0 40px; }
-    .here-hero__wrap { display: flex; flex-direction: column; gap: 16px; align-items: flex-start; }
+    .here-hero { background: #ECF7FC; padding: 80px 0 80px; }
+    .here-hero__wrap { display: flex; flex-direction: column; gap: 16px; align-items: center; }
     .here-hero__subtitle {
-      margin: 0; font-size: 16px; line-height: 24px;
-      font-weight: 500; color: var(--ink); opacity: 0.85;
+      margin: 0; font-size: 24px; line-height: 30px;
+      font-weight: 400; color: #2C596A; opacity: 1;
+      text-align: center;
+    }
+
+    /* Popular searches row below hero search */
+    .here-popular-searches {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 16px;
+    }
+    .here-popular-searches__label {
+      font-size: 16px;
+      line-height: 24px;
+      letter-spacing: -0.0125em;
+      color: #2C596A;
+      white-space: nowrap;
+    }
+    .here-popular-searches__links {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
     }
 
     /* Search proxy — intercepts click on HDS hero-search and opens
@@ -796,11 +820,11 @@
         </div>
 
         <div class="here-hero__wrap">
-          <h1 class="hds-heading1--mega">HERE documentation</h1>
-          <p class="here-hero__subtitle">Find answers to your product and technical questions</p>
+          <h1 class="hds-heading1--mega">HERE Documentation</h1>
+          <p class="here-hero__subtitle">Build location-based apps with HERE. Find APIs, guides, and examples to get started.</p>
           <!-- Search proxy: overlay button intercepts click → opens ReadMe ⌘K modal -->
           <div class="here-search-proxy" data-here-search-proxy>
-            <hds-hero-search data-here-hero-search placeholder="Search" style="width: min(640px, 100%);">
+            <hds-hero-search data-here-hero-search placeholder="Search documentation…" style="width: min(740px, 100%);">
               <span slot="right" class="here-search__kbd" aria-hidden="true">⌘ K</span>
             </hds-hero-search>
             <button
@@ -809,6 +833,16 @@
               aria-label="Open search"
               data-here-search-overlay
             ></button>
+          </div>
+          <!-- Popular searches -->
+          <div class="here-popular-searches" aria-label="Popular searches">
+            <span class="here-popular-searches__label">Popular searches:</span>
+            <div class="here-popular-searches__links">
+              <a class="hds-button hds-button--variant-secondary hds-button--size-extra-small" href="/geocoding-and-search/docs">Geocoding and search</a>
+              <a class="hds-button hds-button--variant-secondary hds-button--size-extra-small" href="/routing-api/docs">HERE Routing API v8</a>
+              <a class="hds-button hds-button--variant-secondary hds-button--size-extra-small" href="/maps-api-for-js/docs">Maps API for JavaScript</a>
+              <a class="hds-button hds-button--variant-secondary hds-button--size-extra-small" href="/here-sdk/docs">HERE SDK for Android</a>
+            </div>
           </div>
         </div>
       </div>

@@ -22,6 +22,7 @@
 //   9. Ask AI — Active Chat Header Title ~line 2728  Renames "Assistant" header in active chat
 //  10. Ask AI — Active Chat Header Chip  ~line 2808  Injects chip icon in active chat header
 //  11. Swagger / OAS Download Button  ~line 3579   Adds "Download Spec" button on Reference pages
+//  12. Contact us Button (site-wide)  end-of-file  Adds Contact us pill next to Ask AI on every page
 //
 // ─────────────────────────────────────────────────────────────────────────────
 // 1. SHARED SPA NAV BUS
@@ -4182,4 +4183,190 @@ function stampMarkdownScopes() {
   }
 
   bindObservers();
+})();
+
+
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 12. CONTACT US BUTTON (site-wide)
+//     Adds a "Contact us" HDS secondary pill in ReadMe's header, immediately
+//     to the RIGHT of Ask AI. Runs on every doc page (not just the landing
+//     page). Language-aware: opens the JP contact URL under /ja routes.
+//
+//     Mirrors the same-name script that lives inside index.html for the
+//     landing page. Kept in staging first so it can be tested with
+//     ?staging-js=true before promoting to global.js.
+// ─────────────────────────────────────────────────────────────────────────────
+(function () {
+  "use strict";
+
+  var TAG = "__here_contact_us_navbar_v1";
+  if (window[TAG]) return;
+  window[TAG] = true;
+
+  var LINK_ID = "here-contact-us-btn";
+  var URLS = {
+    en: "https://www.here.com/contact?intref=dev_docum",
+    ja: "https://www.here.com/jp/contact"
+  };
+  var LABELS = { en: "Contact us", ja: "お問い合わせ" };
+
+  function currentLang() {
+    return /\/ja(\/|$|\?)/.test(window.location.href) ? "ja" : "en";
+  }
+
+  function currentTheme() {
+    // Landing page: .here-glp[data-theme] is authoritative
+    var glp = document.querySelector(".here-glp");
+    if (glp && glp.getAttribute("data-theme")) {
+      return glp.getAttribute("data-theme");
+    }
+    // Interior doc pages: derive from ReadMe's data-color-mode
+    var mode = (document.documentElement.getAttribute("data-color-mode") || "").toLowerCase();
+    var isDark =
+      mode === "dark" ||
+      (mode === "system" &&
+        window.matchMedia &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches);
+    return isDark
+      ? "hds-web-product-dark-theme"
+      : "hds-web-product-light-theme";
+  }
+
+  function syncTheme() {
+    var btn = document.getElementById(LINK_ID);
+    if (btn) btn.setAttribute("data-theme", currentTheme());
+  }
+
+  function injectStyles() {
+    if (document.getElementById("here-contact-us-navbar-styles")) return;
+    var s = document.createElement("style");
+    s.id = "here-contact-us-navbar-styles";
+    // High-specificity selector (#id + class + attr) so we always beat
+    // HDS's default hds-button.hds-button--variant-secondary rule regardless
+    // of load order. Applies at the html-level so it works on landing
+    // page (nested inside .here-glp on some layouts) and doc pages alike.
+    s.textContent =
+      "html hds-button#here-contact-us-btn.here-contact-us[variant='secondary'] {" +
+      "  display: inline-flex !important;" +
+      "  align-self: center !important;" +
+      "  vertical-align: middle !important;" +
+      "  background: transparent !important;" +
+      "  background-color: transparent !important;" +
+      "  border: 0 !important;" +
+      "  box-shadow: none !important;" +
+      "  text-decoration: none !important;" +
+      "}";
+    document.head.appendChild(s);
+  }
+
+  function inject() {
+    // Find Ask AI in the header and land right after it.
+    var askAi = document.querySelector(
+      ".rm-AskAi-button, .rm-AskAi, .Header-askai1MTDknILiJku"
+    );
+    if (!askAi) return;
+
+    var askAiSlot =
+      askAi.closest(".Header-askai1MTDknILiJku") ||
+      askAi.closest(".rm-AskAi") ||
+      askAi;
+    var headerRight = askAiSlot.parentNode;
+    if (!headerRight) return;
+
+    var existing = document.getElementById(LINK_ID);
+    if (existing && existing.parentNode === headerRight) {
+      syncTheme();
+      return;
+    }
+    if (existing) existing.remove();
+
+    var lang = currentLang();
+    var url = URLS[lang] || URLS.en;
+
+    var btn = document.createElement("hds-button");
+    btn.id = LINK_ID;
+    btn.className = "here-contact-us";
+    btn.setAttribute("data-styles", "hds");
+    btn.setAttribute("data-theme", currentTheme());
+    btn.setAttribute("variant", "secondary");
+    btn.setAttribute("size", "small");
+    btn.textContent = LABELS[lang] || LABELS.en;
+    btn.addEventListener("click", function () {
+      window.open(url, "_blank", "noopener");
+    });
+
+    // Sit immediately to the RIGHT of Ask AI in DOM order.
+    var afterAskAi = askAiSlot.nextSibling;
+    if (afterAskAi) headerRight.insertBefore(btn, afterAskAi);
+    else headerRight.appendChild(btn);
+  }
+
+  function run() {
+    injectStyles();
+    inject();
+  }
+
+  // On landing page (first paint) the Ask AI button often isn't in the
+  // DOM yet when this script first executes. Poll briefly, and also
+  // observe body mutations so we catch a late mount — either wins,
+  // whichever fires first.
+  function startInitial() {
+    run();
+    if (document.getElementById(LINK_ID)) return; // already placed
+    var attempts = 0;
+    var poll = setInterval(function () {
+      run();
+      attempts++;
+      if (document.getElementById(LINK_ID) || attempts > 40) {
+        clearInterval(poll);
+      }
+    }, 250); // ~10 seconds worst-case
+
+    // Also observe body: as soon as Ask AI shows up anywhere, try again.
+    var mo = new MutationObserver(function () {
+      if (document.querySelector(".rm-AskAi-button, .rm-AskAi, .Header-askai1MTDknILiJku")) {
+        run();
+        if (document.getElementById(LINK_ID)) {
+          mo.disconnect();
+          clearInterval(poll);
+        }
+      }
+    });
+    try {
+      mo.observe(document.body, { childList: true, subtree: true });
+    } catch (e) {}
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", startInitial);
+  } else {
+    startInitial();
+  }
+
+  // Follow ReadMe SPA nav — re-inject when route changes.
+  if (window.__here_nav_bus_v1 && window.__here_nav_bus_v1.onNav) {
+    window.__here_nav_bus_v1.onNav(run);
+  }
+
+  // Follow dark mode: watch .here-glp[data-theme] on landing page,
+  // <html data-color-mode> on interior doc pages, and OS-level
+  // prefers-color-scheme changes when mode is "system".
+  try {
+    var glp = document.querySelector(".here-glp");
+    if (glp) {
+      new MutationObserver(syncTheme).observe(glp, {
+        attributes: true,
+        attributeFilter: ["data-theme"]
+      });
+    }
+    new MutationObserver(syncTheme).observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-color-mode"]
+    });
+    if (window.matchMedia) {
+      window.matchMedia("(prefers-color-scheme: dark)")
+        .addEventListener("change", syncTheme);
+    }
+  } catch (e) {}
 })();

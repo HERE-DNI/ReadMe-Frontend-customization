@@ -1,0 +1,16 @@
+# Dependencies
+node_modules/
+
+# IDE / Editor settings
+.vscode/
+.kiro/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# npm
+package-lock.json
+
+# Logs
+*.log
