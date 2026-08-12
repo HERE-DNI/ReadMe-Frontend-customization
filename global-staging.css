@@ -4,6 +4,7 @@
    Section index:
      1.  DESIGN TOKENS (:root, dark, system)
      2.  LAYOUT / CONTAINER
+     2a. GLOBAL LANDING PAGE (GLP) — HERO AREA
      3.  HEADER / TOP NAV
      4.  SEARCH
      5.  SIDEBAR (light + dark + system dark)
@@ -415,6 +416,106 @@ font-size: 14px !important;
     --md-code-copy-text: #BEDFEB;
     --md-code-line-number: rgba(190, 223, 235, 0.46);
   }
+}
+
+
+/* ======================================================================
+   2a) GLOBAL LANDING PAGE (GLP) — HERO AREA
+   ----------------------------------------------------------------------
+   Source: Figma "Documentation site 2026" — node 1177:68164 (Hero area)
+   Targets: .here-glp .here-hero and its children, rendered by
+            index-staging.html (staging) / index.html (production).
+   Why: 2026 redesign of the GLP hero. These rules REPLACE the hero
+        styles that used to live in the GLP HTML <style> block, so the
+        HTML no longer carries hero styling of its own.
+   Gotchas:
+     - !important is required because the GLP HTML <style> block is
+       injected after this stylesheet by the loader.
+     - Only applies inside .here-glp, so no other ReadMe route is
+       affected.
+     - Search field width is owned here (740px per Figma). Do not
+       re-add width rules in the HTML.
+   Promotion: copy this whole section verbatim into global.css under the
+        same heading when the redesign ships.
+   ====================================================================== */
+
+/* Hero section container */
+.here-glp .here-hero {
+  background: #ECF7FC !important;
+  padding: 80px 0 !important;
+}
+
+/* Hero inner wrapper — centered column layout */
+.here-glp .here-hero__wrap {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 16px !important;
+  align-items: center !important;
+}
+
+/* Hero title */
+.here-glp .here-hero__wrap h1 {
+  text-align: center !important;
+}
+
+/* Hero subtitle */
+.here-glp .here-hero__subtitle {
+  margin: 0 !important;
+  font-size: 24px !important;
+  line-height: 30px !important;
+  font-weight: 400 !important;
+  color: #2C596A !important;
+  opacity: 1 !important;
+  text-align: center !important;
+}
+
+/* Search field — 740px per Figma (replaces the old 640px HTML rules) */
+.here-glp .here-search-proxy,
+.here-glp hds-hero-search[data-here-hero-search] {
+  width: min(740px, 100%) !important;
+}
+
+/* Popular searches row */
+.here-glp .here-popular-searches {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.here-glp .here-popular-searches__label {
+  font-family: "FiraGO", "Fira GO", "Fira Sans", system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.0125em;
+  color: #2C596A;
+  white-space: nowrap;
+}
+
+.here-glp .here-popular-searches__links {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 900px) {
+  .here-glp .here-hero__subtitle {
+    font-size: 18px !important;
+    line-height: 26px !important;
+  }
+}
+
+/* Dark mode — hero surface + text */
+.here-glp[data-theme*="dark"] .here-hero {
+  background: #162028 !important;
+}
+
+.here-glp[data-theme*="dark"] .here-hero__subtitle,
+.here-glp[data-theme*="dark"] .here-popular-searches__label {
+  color: rgba(232, 237, 240, 0.70) !important;
 }
 
 
