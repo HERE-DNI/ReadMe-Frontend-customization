@@ -22,9 +22,42 @@
   var MOUNT_ID = "here-glp-mount";
   var STATE_ATTR = "data-here-glp-mounted"; // "pending" | "1"
 
+  function urlHasStagingParam(url) {
+    if (!url) return false;
+    try {
+      var parsed = new URL(url, window.location.origin);
+      var raw = (parsed.search || "") + "&" + (parsed.hash || "").replace(/^#/, "");
+      return new RegExp("(?:^|[?&#])" + PARAM + "=true(?:&|$)").test(raw);
+    } catch (e) {
+      return false;
+    }
+  }
+
   function isStaging() {
-    var raw = (window.location.search || "") + "&" + (window.location.hash || "").replace(/^#/, "");
-    return new RegExp("(?:^|[?&#])" + PARAM + "=true(?:&|$)").test(raw);
+    // 1. This document's own URL (works when not embedded in an iframe).
+    if (urlHasStagingParam(window.location.href)) return true;
+
+    // 2. ReadMe renders custom-page content inside an iframe whose own
+    //    location is unrelated to the outer docs.here.com URL (e.g.
+    //    "?isFramePreview=true"), so the param the user actually set only
+    //    exists on the parent/top document. Check those too, guarded for
+    //    cross-origin access (throws if blocked, which is expected).
+    try {
+      if (window.top && window.top !== window && urlHasStagingParam(window.top.location.href)) {
+        return true;
+      }
+    } catch (e) {}
+
+    try {
+      if (window.parent && window.parent !== window && urlHasStagingParam(window.parent.location.href)) {
+        return true;
+      }
+    } catch (e) {}
+
+    // 3. Last resort for browsers that block cross-origin frame access.
+    if (urlHasStagingParam(document.referrer)) return true;
+
+    return false;
   }
 
   function bust(u) {
