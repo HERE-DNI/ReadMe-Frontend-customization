@@ -5,6 +5,7 @@
      1.  DESIGN TOKENS (:root, dark, system)
      2.  LAYOUT / CONTAINER
      2a. GLOBAL LANDING PAGE (GLP) — HERO AREA
+     2b. GLOBAL LANDING PAGE (GLP) — BODY SECTIONS
      3.  HEADER / TOP NAV
      4.  SEARCH
      5.  SIDEBAR (light + dark + system dark)
@@ -516,6 +517,586 @@ font-size: 14px !important;
 .here-glp[data-theme*="dark"] .here-hero__subtitle,
 .here-glp[data-theme*="dark"] .here-popular-searches__label {
   color: rgba(232, 237, 240, 0.70) !important;
+}
+
+
+/* ======================================================================
+   2b) GLOBAL LANDING PAGE (GLP) — BODY SECTIONS
+   ----------------------------------------------------------------------
+   Source: Figma "Documentation site 2026" — node 1875:52836
+   Targets: .here-glp body sections rendered by index-staging.html —
+            .here-resources, .here-usecases, .here-policies plus updated
+            .here-whatsnew and .here-videos headings.
+   Why: 2026 redesign — replaces the old 3-column card grid with a
+        4-column technical-resources category grid, adds a use-case
+        carousel and a two-column policies list.
+   Gotchas:
+     - !important on colours because the GLP HTML <style> block is
+       injected AFTER this stylesheet by the loader.
+     - Scoped under .here-glp so no other ReadMe route is affected.
+     - Card sub-lists reuse HDS solid list-item look with a light
+       tinted row background (Figma fill_c22b0d29).
+   ====================================================================== */
+
+/* --- Explore technical resources (Figma 2101:82535) ------------------
+   Section container: padding 56px 0, background white, gap 16 between
+   head, filter bar, and grid rows. Head has 4px between title/sub.
+   Grid: 4 equal columns, 16px gutter. Each card is a white surface
+   (fill_658ab2fa) with 1px border rgba(0,129,177,0.25), radius 4,
+   padding 16, gap 16 vertically.
+   ------------------------------------------------------------------ */
+.here-glp .here-resources {
+  background: #FFFFFF !important;
+  padding: 56px 0 !important;
+}
+
+.here-glp .here-resources__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.here-glp .here-resources__head {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.here-glp .here-resources__head h2 {
+  font-size: 36px !important;
+  line-height: 44px !important;
+  letter-spacing: -0.0278em !important;
+  font-weight: 500 !important;
+  color: #051920 !important;
+  margin: 0 !important;
+}
+
+.here-glp .here-resources__sub {
+  font-family: "FiraGO", "Fira GO", "Fira Sans", system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.0125em;
+  color: #2C596A;
+  margin: 0;
+}
+
+/* --- Filter bar ------------------------------------------------------
+   Row of controls with 12px gap. The individual controls are real HDS
+   web components (hds-button, hds-chip, hds-toggle) — this rule only
+   arranges them and pushes the toggle to the right.
+   Mock-only (no filter/sort logic wired up).
+   ------------------------------------------------------------------ */
+.here-glp .here-resources__filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Toggle sits at the right end, before the divider + sort select */
+.here-glp .here-resources__filters hds-toggle {
+  margin-left: auto;
+}
+
+/* Vertical divider between the toggle and the sort select
+   (Figma "_Rule Inner" 1x24 rgba(0,129,177,0.25))
+   Kept bespoke because HDS does not ship a standalone divider WC. */
+.here-glp .here-filter-divider {
+  width: 1px;
+  height: 24px;
+  background: rgba(0, 129, 177, 0.25);
+  align-self: center;
+}
+
+/* --- 4-column category grid ----------------------------------------- */
+.here-glp .here-resources__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+
+/* --- Category card (Figma 5e2e9c0e) --------------------------------- */
+.here-glp .here-res-card {
+  background: #FFFFFF !important;
+  border: 1px solid rgba(0, 129, 177, 0.25) !important;
+  border-radius: 4px !important;
+  padding: 16px !important;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.here-glp .here-res-card__head {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+/* Icon well — 32x32 with white bg, 1px border, radius 4 (per Figma).
+   Wraps an <hds-icon size="24"> inside. */
+.here-glp .here-res-card__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 4px;
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 129, 177, 0.25);
+  border-radius: 4px;
+  flex-shrink: 0;
+  color: #051920;
+  --hds-icon-color: #051920;
+}
+
+.here-glp .here-res-card__heading {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+}
+
+.here-glp .here-res-card__title {
+  font-size: 24px !important;
+  line-height: 28px !important;
+  font-weight: 500 !important;
+  color: #051920 !important;
+  margin: 0 !important;
+}
+
+.here-glp .here-res-card__intro {
+  font-family: "FiraGO", "Fira GO", "Fira Sans", system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.0125em;
+  color: #2C596A;
+  margin: 0;
+}
+
+/* --- Product list (List-Item solid extended) ------------------------ */
+.here-glp .here-res-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.here-glp .here-res-list__item {
+  background: rgba(0, 148, 215, 0.07);
+  border-radius: 4px;
+  padding: 8px 8px 12px;
+}
+
+.here-glp .here-res-list__item a {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-decoration: none;
+  color: inherit;
+  padding: 0 8px;
+}
+
+.here-glp .here-res-list__item a:hover .here-res-list__title-text {
+  text-decoration: underline;
+}
+
+.here-glp .here-res-list__title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 32px;
+}
+
+.here-glp .here-res-list__title-text {
+  font-family: "FiraGO", "Fira GO", "Fira Sans", system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.0125em;
+  font-weight: 500;
+  color: #051920;
+}
+
+/* Lock hds-icon sits at the end of the title row.
+   HDS ships the icon; we only push it to the right and dim it. */
+.here-glp .here-res-list__title hds-icon {
+  margin-left: auto;
+  flex-shrink: 0;
+  --hds-icon-color: rgba(5, 25, 32, 0.7);
+}
+
+/* Beta flag uses <hds-flag>. Only override left/margin so it hugs the
+   title text and doesn't stretch the row. */
+.here-glp .here-res-list__title hds-flag {
+  margin-left: 4px;
+  flex-shrink: 0;
+}
+
+.here-glp .here-res-list__desc {
+  font-family: "FiraGO", "Fira GO", "Fira Sans", system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: -0.0286em;
+  color: #2C596A;
+}
+
+/* --- Get started by use case (Figma 2101:82551) ---------------------
+   Section: light cyan #E2FFFD, padding 56px 0 32px, gap 16.
+   Head is left-aligned inside the 1388-wide slot (Figma centers the
+   slot inside the 2054 canvas via alignItems:center — for us, the
+   parent .here-wrap already centers the content, so head stays left).
+   Cards use image-slot + content layout: 240-tall media band, then
+   24x32 padded body with gap 16.
+   ------------------------------------------------------------------ */
+.here-glp .here-usecases {
+  background: #E2FFFD !important;
+  padding: 56px 0 32px !important;
+}
+
+.here-glp .here-usecases__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.here-glp .here-usecases__head {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.here-glp .here-usecases__head h2 {
+  font-size: 36px !important;
+  line-height: 44px !important;
+  letter-spacing: -0.0278em !important;
+  font-weight: 500 !important;
+  color: #051920 !important;
+  margin: 0 !important;
+}
+
+.here-glp .here-usecases__sub {
+  font-family: "FiraGO", "Fira GO", "Fira Sans", system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.0125em;
+  color: #2C596A;
+  margin: 0;
+}
+
+/* --- 4-card row ----------------------------------------------------- */
+.here-glp .here-usecase-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  align-items: stretch;
+}
+
+/* Card (Figma 2043:70999 "Card with image slot") */
+.here-glp .here-usecase-card {
+  background: #FFFFFF;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow:
+    0 5px 5px 0 rgba(0, 25, 75, 0.05),
+    0 0 8px 0 rgba(0, 25, 75, 0.05),
+    0 2.5px 2.5px 0 rgba(0, 25, 75, 0.05),
+    0 0 2px 2px rgba(0, 25, 75, 0.05);
+}
+
+/* Image slot — 240 tall, fill via background-image inline on the element */
+.here-glp .here-usecase-card__media {
+  height: 240px;
+  background-color: #F6E8FE;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+/* Content block (Figma layout_13f65ee9) */
+.here-glp .here-usecase-card__body {
+  padding: 24px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+}
+
+/* Tag uses <hds-flag variant="subtle" size="small">, we only align it. */
+.here-glp .here-usecase-card__tag {
+  align-self: flex-start;
+}
+
+/* Title (Figma Desktop/Headlines/headline-05: 16/24 500 weight) */
+.here-glp .here-usecase-card__title {
+  font-family: "FiraGO", "Fira GO", "Fira Sans", system-ui, sans-serif;
+  font-size: 16px !important;
+  line-height: 24px !important;
+  font-weight: 500 !important;
+  color: #092732 !important;
+  margin: 0 !important;
+}
+
+/* Description */
+.here-glp .here-usecase-card__desc {
+  font-family: "FiraGO", "Fira GO", "Fira Sans", system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.0125em;
+  color: #2C596A;
+  margin: 0;
+  flex: 1;
+}
+
+/* CTA button — uses <hds-button variant="secondary" size="small"
+   icon-right="arrow-right">. Only need alignment. */
+.here-glp .here-usecase-card__cta {
+  align-self: flex-start;
+}
+
+/* --- Carousel controls (dot pagination) ----------------------------- */
+.here-glp .here-usecases__controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.here-glp .here-usecases__dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.here-glp .here-usecases__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  border: 0;
+  padding: 0;
+  background: rgba(9, 39, 50, 0.2);
+  cursor: pointer;
+  transition: background .15s;
+}
+
+.here-glp .here-usecases__dot--active {
+  background: rgba(9, 39, 50, 0.75);
+}
+
+/* Arrow buttons: use <hds-button variant="subtle" size="small"
+   icon-only>. No extra CSS needed here. */
+
+/* --- Policies (Figma 2101:82573) ------------------------------------
+   Section container: 56px vertical padding, transparent (parent Body
+   is already white). Head has 4px between title/sub.
+   Container wraps two 4-column rows in a white bordered card.
+   Each row is 4 equal cells at min-height 92px per Figma.
+   ------------------------------------------------------------------ */
+.here-glp .here-policies {
+  background: transparent !important;
+  padding: 56px 0 !important;
+}
+
+.here-glp .here-policies__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.here-glp .here-policies__head {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.here-glp .here-policies__head h2 {
+  font-size: 36px !important;
+  line-height: 44px !important;
+  letter-spacing: -0.0278em !important;
+  font-weight: 500 !important;
+  color: #051920 !important;
+  margin: 0 !important;
+}
+
+.here-glp .here-policies__sub {
+  font-family: "FiraGO", "Fira GO", "Fira Sans", system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.0125em;
+  color: #2C596A;
+  margin: 0;
+}
+
+/* White card wrapping the two rows */
+.here-glp .here-policies__container {
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 129, 177, 0.25);
+  border-radius: 4px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Each row: 4 equal columns per Figma */
+.here-glp .here-policies__row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  align-items: stretch;
+}
+
+/* Individual policy cell */
+.here-glp .here-policy-item {
+  background: rgba(0, 148, 215, 0.07);
+  border-radius: 4px;
+  padding: 8px 8px 12px;
+  min-height: 92px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.here-glp .here-policy-item a {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-decoration: none;
+  color: inherit;
+  padding: 0 8px;
+}
+
+.here-glp .here-policy-item a:hover .here-policy-item__title-text {
+  text-decoration: underline;
+}
+
+.here-glp .here-policy-item__title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 24px;
+}
+
+.here-glp .here-policy-item__title-text {
+  font-family: "Fira GO", "FiraGO", "Fira Sans", system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.0125em;
+  font-weight: 500;
+  color: #051920;
+}
+
+/* Lock hds-icon at the end of the policy title row. */
+.here-glp .here-policy-item__title hds-icon {
+  margin-left: auto;
+  flex-shrink: 0;
+  --hds-icon-color: rgba(5, 25, 32, 0.7);
+}
+
+.here-glp .here-policy-item__desc {
+  font-family: "FiraGO", "Fira GO", "Fira Sans", system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: -0.0286em;
+  color: #2C596A;
+}
+
+/* Empty grid cell placeholder (Figma opacity-0 slots that preserve the
+   4-column rhythm on rows with fewer items) */
+.here-glp .here-policy-item--empty {
+  background: transparent;
+  min-height: 0;
+  pointer-events: none;
+}
+
+/* --- Section-heading level bump for 2026 (h2 → h3 heading-03 style) --- */
+.here-glp .here-whatsnew h2.here-section-title,
+.here-glp .here-videos h2.here-section-title {
+  font-size: 36px !important;
+  line-height: 44px !important;
+  letter-spacing: -0.0278em !important;
+  font-weight: 500 !important;
+  color: #051920 !important;
+}
+
+/* --- Responsive ------------------------------------------------------ */
+@media (max-width: 1100px) {
+  .here-glp .here-resources__grid,
+  .here-glp .here-usecase-grid,
+  .here-glp .here-policies__row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .here-glp .here-resources__grid,
+  .here-glp .here-usecase-grid,
+  .here-glp .here-policies__row {
+    grid-template-columns: 1fr;
+  }
+  .here-glp .here-policy-item--empty { display: none; }
+  .here-glp .here-resources__head h2,
+  .here-glp .here-usecases__head h2,
+  .here-glp .here-policies__head h2,
+  .here-glp .here-whatsnew h2.here-section-title,
+  .here-glp .here-videos h2.here-section-title {
+    font-size: 28px !important;
+    line-height: 34px !important;
+  }
+}
+
+/* --- Dark mode ------------------------------------------------------- */
+.here-glp[data-theme*="dark"] .here-resources { background: #1a1f23 !important; }
+.here-glp[data-theme*="dark"] .here-resources__head h2,
+.here-glp[data-theme*="dark"] .here-res-card__title,
+.here-glp[data-theme*="dark"] .here-res-list__title {
+  color: #ECF7FC !important;
+}
+.here-glp[data-theme*="dark"] .here-resources__sub,
+.here-glp[data-theme*="dark"] .here-res-card__intro,
+.here-glp[data-theme*="dark"] .here-res-list__desc {
+  color: #BEDFEB !important;
+}
+.here-glp[data-theme*="dark"] .here-res-card {
+  background: #162028 !important;
+  border-color: rgba(0, 118, 160, 0.35) !important;
+}
+.here-glp[data-theme*="dark"] .here-res-list__item {
+  background: rgba(0, 148, 206, 0.12);
+}
+
+.here-glp[data-theme*="dark"] .here-usecases { background: #1E4554 !important; }
+.here-glp[data-theme*="dark"] .here-usecases__head h2 { color: #ECF7FC !important; }
+.here-glp[data-theme*="dark"] .here-usecases__sub { color: #BEDFEB !important; }
+.here-glp[data-theme*="dark"] .here-usecase-card { background: #162028; }
+.here-glp[data-theme*="dark"] .here-usecase-card__title { color: #ECF7FC; }
+.here-glp[data-theme*="dark"] .here-usecase-card__desc { color: #BEDFEB; }
+.here-glp[data-theme*="dark"] .here-usecase-card__tag {
+  background: rgba(0, 148, 206, 0.12);
+  color: #ECF7FC;
+}
+
+.here-glp[data-theme*="dark"] .here-policies { background: #051920 !important; }
+.here-glp[data-theme*="dark"] .here-policies__head h2 { color: #ECF7FC !important; }
+.here-glp[data-theme*="dark"] .here-policies__sub { color: #BEDFEB !important; }
+.here-glp[data-theme*="dark"] .here-policies__grid {
+  background: #162028;
+  border-color: rgba(0, 118, 160, 0.35);
+}
+.here-glp[data-theme*="dark"] .here-policy-item {
+  background: rgba(0, 148, 206, 0.12);
+}
+.here-glp[data-theme*="dark"] .here-policy-item__title { color: #ECF7FC; }
+.here-glp[data-theme*="dark"] .here-policy-item__desc { color: #BEDFEB; }
+
+.here-glp[data-theme*="dark"] .here-whatsnew h2.here-section-title,
+.here-glp[data-theme*="dark"] .here-videos h2.here-section-title {
+  color: #ECF7FC !important;
 }
 
 
