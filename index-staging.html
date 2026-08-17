@@ -815,7 +815,7 @@
           <div class="here-resources__filters" role="group" aria-label="Filters">
             <hds-button variant="secondary" size="small" icon-right="chevron-down">Show all products &amp; services</hds-button>
             <hds-chip size="small">Show APIs</hds-chip>
-            <hds-toggle checked aria-label="Show all descriptions">Show all descriptions</hds-toggle>
+            <hds-toggle aria-label="Show all descriptions" data-here-desc-toggle>Show all descriptions</hds-toggle>
             <span class="here-filter-divider" aria-hidden="true"></span>
             <hds-button variant="subtle" size="small" icon-right="chevron-down">Sort by: Most viewed</hds-button>
           </div>
@@ -1239,7 +1239,7 @@
           <div class="here-resources__filters" role="group" aria-label="フィルター">
             <hds-button variant="secondary" size="small" icon-right="chevron-down">すべての製品・サービスを表示</hds-button>
             <hds-chip size="small">API を表示</hds-chip>
-            <hds-toggle checked aria-label="説明を表示">説明を表示</hds-toggle>
+            <hds-toggle aria-label="説明を表示" data-here-desc-toggle>説明を表示</hds-toggle>
             <span class="here-filter-divider" aria-hidden="true"></span>
             <hds-button variant="subtle" size="small" icon-right="chevron-down">並び順: 閲覧数順</hds-button>
           </div>
@@ -1708,6 +1708,46 @@
         });
       } catch (e) {}
     })();
+    /* ── Show all descriptions toggle ──
+       Explore technical resources section only. Default state is
+       compact / title-only (descriptions hidden); flipping the
+       <hds-toggle> reveals descriptions on all product list items.
+       EN and JA each have their own .here-resources section + toggle
+       (only one is visible at a time via .here-i18n), but they are
+       kept in sync so switching language preserves the chosen state. */
+    (function () {
+      var TAG = "__hereDescToggle_v1";
+      if (window[TAG]) return;
+      window[TAG] = true;
+
+      function sections() {
+        return Array.prototype.slice.call(document.querySelectorAll(".here-resources"));
+      }
+
+      function setState(showDesc) {
+        sections().forEach(function (section) {
+          section.setAttribute("data-show-desc", showDesc ? "1" : "0");
+          var toggle = section.querySelector("[data-here-desc-toggle]");
+          if (toggle && toggle.checked !== showDesc) toggle.checked = showDesc;
+        });
+      }
+
+      function bind() {
+        document.querySelectorAll("[data-here-desc-toggle]").forEach(function (toggle) {
+          if (toggle.__hereDescBound) return;
+          toggle.__hereDescBound = true;
+          toggle.addEventListener("change", function (e) {
+            setState(!!(e.detail && e.detail.checked));
+          });
+        });
+      }
+
+      bind();
+      try {
+        new MutationObserver(bind).observe(document.documentElement, { childList: true, subtree: true });
+      } catch (e) {}
+    })();
+
     /* ── Search proxy ──
        Intercepts clicks on [data-here-search-overlay] buttons and
        triggers ReadMe's native ⌘K search modal. Tries multiple

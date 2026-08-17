@@ -688,6 +688,13 @@ font-size: 14px !important;
 .here-glp .here-res-list__item {
   background: rgba(0, 148, 215, 0.07);
   border-radius: 4px;
+  padding: 8px;
+}
+
+/* Extended variant (descriptions visible) needs extra bottom padding to
+   balance the description line. Driven by the "Show all descriptions"
+   toggle — see .here-resources[data-show-desc] below. */
+.here-glp .here-resources[data-show-desc="1"] .here-res-list__item {
   padding: 8px 8px 12px;
 }
 
@@ -741,6 +748,14 @@ font-size: 14px !important;
   line-height: 20px;
   letter-spacing: -0.0286em;
   color: #2C596A;
+}
+
+/* Compact / title-only variant (default) — description hidden.
+   Controlled by the "Show all descriptions" <hds-toggle> in the
+   Explore technical resources filter bar; toggled on sets
+   data-show-desc="1" on the section (see script near bottom of file). */
+.here-glp .here-resources:not([data-show-desc="1"]) .here-res-list__desc {
+  display: none;
 }
 
 /* --- Get started by use case (Figma 2101:82551) ---------------------
