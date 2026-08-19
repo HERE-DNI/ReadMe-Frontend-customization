@@ -620,8 +620,9 @@ font-size: 14px !important;
 }
 
 /* Override HDS ul li { list-style-type: disc !important } from section 7.
-   !important is required because HDS's rule uses it at higher specificity. */
-.here-glp .here-resources__grid li {
+   !important is required because HDS's rule uses it at higher specificity.
+   Selector includes .here-res-list to beat HDS's (0,2,2) specificity. */
+.here-glp .here-resources__grid .here-res-list li {
   list-style: none !important;
 }
 
