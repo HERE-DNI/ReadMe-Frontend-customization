@@ -614,6 +614,15 @@ font-size: 14px !important;
   grid-template-columns: repeat(4, 1fr);
   gap: 16px;
   align-items: start;
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+/* Override HDS ul li { list-style-type: disc !important } from section 7.
+   !important is required because HDS's rule uses it at higher specificity. */
+.here-glp .here-resources__grid li {
+  list-style: none !important;
 }
 
 /* --- Category card (Figma 5e2e9c0e) --------------------------------- */
