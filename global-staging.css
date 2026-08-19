@@ -619,11 +619,19 @@ font-size: 14px !important;
   margin: 0;
 }
 
-/* Override HDS ul li { list-style-type: disc !important } from section 7.
-   !important is required because HDS's rule uses it at higher specificity.
-   Selector includes .here-res-list to beat HDS's (0,2,2) specificity. */
-.here-glp .here-resources__grid .here-res-list li {
+/* Remove list bullets from the resource lists.
+   Targets the BEM classes directly so it works regardless of ancestor
+   nesting. !important + the doubled class beat HDS's
+   `.rm-Markdown[data-styles="hds"] ul li { list-style-type: disc !important }`. */
+.here-res-list,
+.here-res-list__item,
+.here-res-list .here-res-list__item {
   list-style: none !important;
+}
+.here-res-list .here-res-list__item::before,
+.here-res-list .here-res-list__item::marker {
+  content: none !important;
+  display: none !important;
 }
 
 /* --- Category card (Figma 5e2e9c0e) --------------------------------- */
