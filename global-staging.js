@@ -772,436 +772,466 @@ function stampMarkdownScopes() {
 
   // ── Menu data ────────────────────────────────────────────────────────────
 
+  // Structure below mirrors Figma "Menu [Desktop]" (node 2329:85647):
+  // 7 columns — Maps, Location data, Navigation, Development tools,
+  // Start here, What's new for developers, Policies. Hrefs reuse the
+  // already-verified paths used elsewhere on the GLP page (Explore
+  // technical resources cards, use-case CTAs, Policies section) rather
+  // than the previous ad-hoc grouping/labels.
   var COLUMNS = [
     {
-      label: { en: "Dynamic map content", ja: "ダイナミックマップ" },
+      label: { en: "Maps", ja: "地図" },
       items: [
         {
-          text: { en: "HERE Destination Weather", ja: "HERE Destination Weather" },
+          text: { en: "Map Rendering", ja: "Map Rendering" },
           href: {
-            en: "/here-destination-weather",
-            ja: "/here-destination-weather/ja/v1.0/docs/here-destination-weather",
+            en: "/map-rendering/docs",
+            ja: "/map-rendering/ja/v1.0/docs/introduction-vector-tile-api",
           },
-          showInJa: false,
+          showInJa: true,
         },
         {
-          text: { en: "Map Attributes API", ja: "HERE Map Attributes" },
+          text: { en: "Map Attributes API", ja: "Map Attributes API" },
           href: {
-            en: "/map-attributes-api",
+            en: "/map-attributes/docs",
             ja: "/map-attributes/ja/v1.0/docs/intro-map-attributes",
           },
           showInJa: true,
         },
         {
-          text: { en: "HERE Traffic API", ja: "HERE Traffic API" },
-          href: {
-            en: "/here-traffic-api",
-            ja: "/traffic-api/ja/v1.0/docs/introduction-to-here-traffic-api-v7",
-          },
-          showInJa: true,
-        },
-        {
-          text: { en: "HERE Real-Time Traffic", ja: "HERE Real-Time Traffic" },
-          href: {
-            en: "/here-real-time-traffic",
-            ja: "/here-real-time-traffic/ja/v1.0/docs/here-real-time-traffic",
-          },
+          text: { en: "HD Live Map", ja: "HD Live Map" },
+          href: { en: "/hd-live-map/docs", ja: "/hd-live-map/docs" },
           showInJa: false,
-        },
-        {
-          text: {
-            en: "HERE Traffic Analytics Speed Data",
-            ja: "HERE Traffic Analytics Speed Data",
-          },
-          href: {
-            en: "/here-traffic-analytics",
-            ja: "/here-traffic-analytics/ja/v1.0/docs/here-traffic-analytics",
-          },
-          showInJa: false,
-        },
-        {
-          text: { en: "HERE EV products", ja: "HERE EV products" },
-          href: {
-            en: "/here-ev-products",
-            ja: "/here-ev-products/ja/v1.0/docs/here-ev-products",
-          },
-          showInJa: false,
-        },
-        {
-          text: { en: "HERE Fuel Prices", ja: "HERE Fuel Prices" },
-          href: {
-            en: "/here-fuel-prices",
-            ja: "/here-fuel-prices/ja/v1.0/docs/here-fuel-prices",
-          },
-          showInJa: false,
-        },
-        {
-          text: { en: "HERE Parking", ja: "HERE Parking" },
-          href: {
-            en: "/here-parking",
-            ja: "/here-parking/ja/v1.0/docs/here-parking",
-          },
-          showInJa: false,
-        },
-        {
-          text: { en: "HERE Safety Cameras", ja: "HERE Safety Cameras" },
-          href: {
-            en: "/here-safety-cameras",
-            ja: "/here-safety-cameras/ja/v1.0/docs/here-safety-cameras",
-          },
-          showInJa: false,
-        },
-      ],
-    },
-    {
-      label: { en: "Map data", ja: "地図とデータ" },
-      items: [
-        {
-          text: {
-            en: "Introduction to Mapping Concepts",
-            ja: "HERE Traffic Vector Tile API",
-          },
-          href: {
-            en: "/introduction-to-mapping-c",
-            ja: "/traffic-api/ja/v1.0/docs/readme-developer-s-guide",
-          },
-          showInJa: true,
-        },
-        {
-          text: { en: "GIS Data Suite", ja: "GIS Data Suite" },
-          href: {
-            en: "/gis-data-suite",
-            ja: "/gis-data-suite/ja/v1.0/docs/gis-data-suite",
-          },
-          showInJa: false,
-        },
-        {
-          text: { en: "Indoor Map", ja: "HERE Indoor Map" },
-          href: {
-            en: "/indoor-map-skpy",
-            ja: "/indoor-map/ja/v1.0/docs/indoor-map-readme",
-          },
-          showInJa: true,
         },
         {
           text: { en: "Map Content", ja: "Map Content" },
-          href: {
-            en: "/map-content",
-            ja: "/map-content/ja/v1.0/docs/map-content",
-          },
-          showInJa: false,
-        },
-        {
-          text: { en: "Mapmaking", ja: "Mapmaking" },
-          href: { en: "/mapmaking", ja: "/mapmaking/ja/v1.0/docs/mapmaking" },
-          showInJa: false,
-        },
-        {
-          text: { en: "Data API", ja: "Data API" },
-          href: {
-            en: "/data-api-fmrg",
-            ja: "/data-api-fmrg/ja/v1.0/docs/data-api",
-          },
-          showInJa: false,
-        },
-        {
-          text: { en: "Platform MOM", ja: "Platform MOM" },
-          href: {
-            en: "/platform-mom",
-            ja: "/platform-mom/ja/v1.0/docs/platform-mom",
-          },
+          href: { en: "/map-content/docs", ja: "/map-content/docs" },
           showInJa: false,
         },
         {
           text: { en: "Optimized Client Map", ja: "Optimized Client Map" },
           href: {
-            en: "/optimized-client-map",
-            ja: "/optimized-client-map/ja/v1.0/docs/optimized-client-map",
-          },
-          showInJa: false,
-        },
-        {
-          text: { en: "HD Live Map", ja: "HD Live Map" },
-          href: {
-            en: "/hd-live-map",
-            ja: "/hd-live-map/ja/v1.0/docs/hd-live-map",
-          },
-          showInJa: false,
-        },
-        {
-          text: { en: "Map Feedback API", ja: "Map Feedback API" },
-          href: {
-            en: "/map-feedback-api",
-            ja: "/map-feedback-api/ja/v1.0/docs/map-feedback-api",
+            en: "/optimized-client-map/docs",
+            ja: "/optimized-client-map/docs",
           },
           showInJa: false,
         },
         {
           text: { en: "Maps XML", ja: "Maps XML" },
-          href: { en: "/maps-xml", ja: "/maps-xml/ja/v1.0/docs/maps-xml" },
+          href: { en: "/maps-xml/docs", ja: "/maps-xml/docs" },
           showInJa: false,
         },
         {
-          text: { en: "Embedded Editor", ja: "Embedded Editor" },
+          text: { en: "Indoor Maps", ja: "Indoor Maps" },
           href: {
-            en: "/embedded-editor",
-            ja: "/embedded-editor/ja/v1.0/docs/embedded-editor",
+            en: "/indoor-map/docs",
+            ja: "/indoor-map/ja/v1.0/docs/indoor-map-readme",
+          },
+          showInJa: true,
+        },
+        {
+          text: { en: "Map Feedback API", ja: "Map Feedback API" },
+          href: { en: "/map-feedback/docs", ja: "/map-feedback/docs" },
+          showInJa: false,
+        },
+        {
+          text: {
+            en: "Introduction to Mapping Concepts",
+            ja: "Introduction to Mapping Concepts",
+          },
+          href: { en: "/mapping-concepts/docs", ja: "/mapping-concepts/docs" },
+          showInJa: false,
+        },
+        {
+          text: { en: "Mapmaking", ja: "Mapmaking" },
+          href: { en: "/mapmaking/docs", ja: "/mapmaking/docs" },
+          showInJa: false,
+        },
+        {
+          text: { en: "Automated Driving Zones", ja: "Automated Driving Zones" },
+          href: {
+            en: "/automated-driving-zones/docs",
+            ja: "/automated-driving-zones/docs",
           },
           showInJa: false,
         },
         {
-          text: { en: "Phonetic Training Data", ja: "Phonetic Training Data" },
+          text: { en: "NDS.Live", ja: "NDS.Live" },
+          href: { en: "/nds-live/docs", ja: "/nds-live/docs" },
+          showInJa: false,
+        },
+        {
+          text: { en: "Custom Attributes", ja: "Custom Attributes" },
           href: {
-            en: "/phonetic-training-data",
-            ja: "/phonetic-training-data/ja/v1.0/docs/phonetic-training-data",
+            en: "/custom-attributes/docs",
+            ja: "/custom-attributes/docs",
           },
           showInJa: false,
         },
       ],
     },
     {
-      label: { en: "Location services", ja: "ロケーションサービス" },
+      label: { en: "Location data", ja: "位置データ" },
       items: [
         {
-          text: { en: "HERE Geocoding & Search", ja: "HERE Geocoding & Search" },
+          text: { en: "Geocoding & Search", ja: "Geocoding & Search" },
           href: {
-            en: "/geocoding-search",
+            en: "/geocoding-and-search/docs",
             ja: "/geocoding-and-search/ja/v1.0/docs/introduction-to-here-geocoding-search-api-v7",
           },
           showInJa: true,
         },
         {
-          text: { en: "HERE Routing", ja: "HERE Routing" },
+          text: { en: "GIS Data Suite", ja: "GIS Data Suite" },
+          href: { en: "/gis-data-suite/docs", ja: "/gis-data-suite/docs" },
+          showInJa: false,
+        },
+        {
+          text: { en: "HERE SDK", ja: "HERE SDK" },
           href: {
-            en: "/here-routing",
-            ja: "/routing/ja/v1.0/docs",
+            en: "/here-sdk/docs",
+            ja: "/here-sdk/ja/v4.25.5-0/docs/readme",
           },
           showInJa: true,
         },
         {
-          text: { en: "HERE Map Rendering", ja: "HERE Map Rendering" },
+          text: { en: "Destination Weather", ja: "Destination Weather" },
           href: {
-            en: "/here-map-rendering",
-            ja: "/map-rendering/ja/v1.0/docs",
-          },
-          showInJa: true,
-        },
-        {
-          text: { en: "HERE Positioning", ja: "HERE Positioning" },
-          href: {
-            en: "/positioning",
-            ja: "/positioning/ja/v1.0/docs",
-          },
-          showInJa: false,
-        },
-        
-        // Erik-requested additional JP items
-        {
-          text: { en: "HERE Geofencing API", ja: "HERE Geofencing API" },
-          href: {
-            en: "/here-routing",
-            ja: "/routing/ja/v1.0/docs/intro-geofencing",
-          },
-          showInJa: false,
-          showInEn: false,
-        },
-        {
-          text: { en: "HERE Matrix Routing API", ja: "HERE Matrix Routing API" },
-          href: {
-            en: "/here-routing",
-            ja: "/routing/ja/v1.0/docs/intro-matrix-routing",
-          },
-          showInJa: false,
-          showInEn: false,
-        },
-        {
-          text: { en: "HERE Tracking API", ja: "HERE Tracking API" },
-          href: {
-            en: "/tracking-api",
-            ja: "/tracking/ja/v1.0/docs/",
-          },
-          showInJa: true,
-          showInEn: false,
-        },
-        {
-          text: { en: "HERE Waypoints Sequence", ja: "HERE Waypoints Sequence" },
-          href: {
-            en: "/here-routing",
-            ja: "/routing/ja/v1.0/docs/intro-waypoints-sequence",
-          },
-          showInJa: false,
-          showInEn: false,
-        },
-
-        {
-          text: { en: "HERE Tour Planning", ja: "HERE Tour Planning" },
-          href: {
-            en: "/here-tour-planning",
-            ja: "/here-tour-planning/ja/v1.0/docs",
-          },
-          showInJa: true,
-        },
-        {
-          text: { en: "HERE WeGo Pro", ja: "HERE WeGo Pro" },
-          href: {
-            en: "/wego-pro",
-            ja: "/here-wego/ja/v1.0/docs/here-wego",
-          },
-          showInJa: false,
-        },
-        {
-          text: { en: "HERE Transit", ja: "HERE Transit" },
-          href: {
-            en: "/here-transit",
-            ja: "/here-transit/ja/v1.0/docs/here-transit",
+            en: "/destination-weather/docs",
+            ja: "/destination-weather/docs",
           },
           showInJa: false,
         },
         {
           text: { en: "Tracking API", ja: "Tracking API" },
           href: {
-            en: "/tracking-api",
-            ja: "/tracking-api/ja/v1.0/docs/readme",
+            en: "/tracking/docs",
+            ja: "/tracking/ja/v1.0/docs/readme",
+          },
+          showInJa: true,
+        },
+        {
+          text: { en: "Traffic Analytics", ja: "Traffic Analytics" },
+          href: {
+            en: "/traffic-analytics/docs",
+            ja: "/traffic-analytics/docs",
           },
           showInJa: false,
         },
         {
-          text: { en: "what3words", ja: "what3words" },
+          text: { en: "Positioning", ja: "Positioning" },
+          href: { en: "/positioning/docs", ja: "/positioning/docs" },
+          showInJa: false,
+        },
+        {
+          text: { en: "Parking", ja: "Parking" },
+          href: { en: "/parking/docs", ja: "/parking/docs" },
+          showInJa: false,
+        },
+        {
+          text: { en: "Fuel Prices API", ja: "Fuel Prices API" },
+          href: { en: "/fuel-prices/docs", ja: "/fuel-prices/docs" },
+          showInJa: false,
+        },
+        {
+          text: { en: "Data SDK", ja: "Data SDK" },
+          href: { en: "/data-sdk/docs", ja: "/data-sdk/docs" },
+          showInJa: false,
+        },
+        {
+          text: { en: "Phonetic Training Data", ja: "Phonetic Training Data" },
           href: {
-            en: "/what3words-diqg",
-            ja: "/what3words-diqg/ja/v1.0/docs/what3words",
+            en: "/phonetic-training-data/docs",
+            ja: "/phonetic-training-data/docs",
           },
           showInJa: false,
         },
         {
-          text: { en: "Coverage", ja: "Coverage" },
+          text: { en: "Data API", ja: "Data API" },
+          href: { en: "/data-api/docs", ja: "/data-api/docs" },
+          showInJa: false,
+        },
+        {
+          text: {
+            en: "HERE-hosted what3words API",
+            ja: "HERE-hosted what3words API",
+          },
+          href: { en: "/what3words/docs", ja: "/what3words/docs" },
+          showInJa: false,
+        },
+        {
+          text: { en: "Road Alerts", ja: "Road Alerts" },
+          href: { en: "/road-alerts/docs", ja: "/road-alerts/docs" },
+          showInJa: false,
+        },
+      ],
+    },
+    {
+      label: { en: "Navigation", ja: "ナビゲーション" },
+      items: [
+        {
+          text: { en: "EV Charge Points API", ja: "EV Charge Points API" },
           href: {
-            en: "/coverage-kpky",
-            ja: "/coverage-kpky/ja/v1.0/docs/coverage",
+            en: "/ev-charge-points/docs",
+            ja: "/ev-charge-points/docs",
+          },
+          showInJa: false,
+        },
+        {
+          text: { en: "Tour Planning API", ja: "Tour Planning API" },
+          href: {
+            en: "/tour-planning/docs",
+            ja: "/tour-planning/ja/v1.0/docs/introduction-tour-planning",
+          },
+          showInJa: true,
+        },
+        {
+          text: { en: "HERE WeGo Pro", ja: "HERE WeGo Pro" },
+          href: {
+            en: "/here-wego-pro/docs",
+            ja: "/here-wego-pro/docs",
+          },
+          showInJa: false,
+        },
+        {
+          text: { en: "Routing APIs", ja: "Routing APIs" },
+          href: {
+            en: "/routing-api/docs",
+            ja: "/routing/ja/v1.0/docs/routing-intro",
+          },
+          showInJa: true,
+        },
+        {
+          text: { en: "Traffic API", ja: "Traffic API" },
+          href: {
+            en: "/traffic-api/docs",
+            ja: "/traffic-api/ja/v1.0/docs/introduction-to-here-traffic-api-v7",
+          },
+          showInJa: true,
+        },
+        {
+          text: { en: "Real-Time Traffic", ja: "Real-Time Traffic" },
+          href: {
+            en: "/real-time-traffic/docs",
+            ja: "/real-time-traffic/docs",
+          },
+          showInJa: false,
+        },
+        {
+          text: { en: "Transit APIs", ja: "Transit APIs" },
+          href: { en: "/transit/docs", ja: "/transit/docs" },
+          showInJa: false,
+        },
+        {
+          text: { en: "Safety Cameras API", ja: "Safety Cameras API" },
+          href: { en: "/safety-cameras/docs", ja: "/safety-cameras/docs" },
+          showInJa: false,
+        },
+        {
+          text: { en: "Behavioral Maneuvers", ja: "Behavioral Maneuvers" },
+          href: {
+            en: "/behavioral-maneuvers/docs",
+            ja: "/behavioral-maneuvers/docs",
+          },
+          showInJa: false,
+        },
+        {
+          text: { en: "Last Meter Guidance", ja: "Last Meter Guidance" },
+          href: {
+            en: "/last-meter-guidance/docs",
+            ja: "/last-meter-guidance/docs",
           },
           showInJa: false,
         },
       ],
     },
     {
-      label: { en: "Development enablers", ja: "開発支援" },
+      label: { en: "Development tools", ja: "開発ツール" },
       items: [
-        {
-          text: { en: "HERE Location Reasoning", ja: "HERE Location Reasoning" },
-          href: { en: "/location-reasoning", ja: "/location-reasoning" },
-          showInJa: false,
-        },
-        {
-          text: { en: "HERE SDK", ja: "HERE SDK" },
-          href: { en: "/here-sdk", ja: "/here-sdk/ja/v1.0/docs" },
-          showInJa: true,
-        },
         {
           text: {
             en: "Maps API for JavaScript",
             ja: "Maps API for JavaScript",
           },
           href: {
-            en: "/maps-api-for-js",
-            ja: "/maps-api-for-js/ja/v1.0/docs",
+            en: "/maps-api-for-js/docs",
+            ja: "/maps-api-for-js/ja/v1.0/docs/introduction-maps-api-for-javascript",
           },
           showInJa: true,
         },
         {
-          text: { en: "Anonymizer", ja: "Anonymizer" },
-          href: {
-            en: "/anonymizer",
-            ja: "/anonymizer/ja/v1.0/docs/anonymizer",
-          },
-          showInJa: false,
-        },
-        {
-          text: { en: "HERE Style Editor", ja: "HERE Style Editor" },
-          href: {
-            en: "/here-style-editor",
-            ja: "/here-style-editor/ja/v1.0/docs/here-style-editor",
-          },
+          text: { en: "Style Editor", ja: "Style Editor" },
+          href: { en: "/style-editor/docs", ja: "/style-editor/docs" },
           showInJa: false,
         },
         {
           text: { en: "SceneXtract", ja: "SceneXtract" },
-          href: {
-            en: "/scenextract",
-            ja: "/scenextract/ja/v1.0/docs/scenextract",
-          },
+          href: { en: "/scenextract/docs", ja: "/scenextract/docs" },
           showInJa: false,
         },
-      ],
-    },
-    {
-      label: { en: "Platform tools", ja: "プラットフォーム管理" },
-      items: [
+        {
+          text: { en: "Anonymizer", ja: "Anonymizer" },
+          href: { en: "/anonymizer/docs", ja: "/anonymizer/docs" },
+          showInJa: false,
+        },
         {
           text: {
-            en: "Identity and access management",
-            ja: "アイデンティティとアクセス管理",
+            en: "Identity & Access Management",
+            ja: "Identity & Access Management",
           },
           href: {
-            en: "/identity-and-access-management",
+            en: "/identity-and-access-management/docs",
             ja: "/identity-and-access-management/ja/v1.0/docs/readme",
           },
           showInJa: true,
         },
         {
-          text: { en: "Cost management", ja: "コスト管理" },
+          text: { en: "Workspace", ja: "Workspace" },
+          href: { en: "/workspace/docs", ja: "/workspace/docs" },
+          showInJa: false,
+        },
+        {
+          text: { en: "System Status API", ja: "System Status API" },
+          href: { en: "/system-status/docs", ja: "/system-status/docs" },
+          showInJa: false,
+        },
+        {
+          text: { en: "Embedded Editor", ja: "Embedded Editor" },
+          href: { en: "/embedded-editor/docs", ja: "/embedded-editor/docs" },
+          showInJa: false,
+        },
+        {
+          text: { en: "Cost Management", ja: "Cost Management" },
           href: {
-            en: "/usage-api",
+            en: "/usage/docs",
             ja: "/usage/ja/v1.0/docs/cost-management-dev-guide-readme",
           },
           showInJa: true,
         },
         {
-          text: { en: "Data SDK", ja: "Data SDK" },
-          href: {
-            en: "/data-sdk",
-            ja: "/data-sdk/ja/v1.0/docs/data-sdk",
-          },
-          showInJa: false,
-        },
-        {
-          text: { en: "Workspace", ja: "Workspace" },
-          href: {
-            en: "/workspace-lvmk",
-            ja: "/workspace-lvmk/ja/v1.0/docs/workspace",
-          },
+          text: { en: "Location Reasoning", ja: "Location Reasoning" },
+          href: { en: "/location-reasoning", ja: "/location-reasoning" },
           showInJa: false,
         },
       ],
     },
     {
-      label: { en: "Policies", ja: "プラットフォーム ポリシー" },
+      label: { en: "Start here", ja: "はじめる" },
       items: [
         {
-          text: { en: "Policies", ja: "製品ライフサイクルポリシー" },
+          text: { en: "Set up your HERE account", ja: "HERE アカウントを設定する" },
+          href: { en: "/getting-started/docs", ja: "/getting-started/docs" },
+          showInJa: true,
+        },
+        {
+          text: { en: "Start with EV products", ja: "EV 製品から始める" },
+          href: { en: "/ev-products/docs", ja: "/ev-products/docs" },
+          showInJa: true,
+        },
+        {
+          text: {
+            en: "Search for a place and show it on a map",
+            ja: "場所を検索して地図に表示する",
+          },
           href: {
-            en: "/policies",
-            ja: "/policies/ja/v1.0/docs/product-lifecycle-policy",
+            en: "/geocoding-and-search/docs",
+            ja: "/geocoding-and-search/docs",
           },
           showInJa: true,
         },
         {
           text: {
-            en: "Local maps regulatory approval",
-            ja: "サービスレベル契約",
+            en: "Create a route between two locations",
+            ja: "2 地点間のルートを作成する",
+          },
+          href: { en: "/routing-api/docs", ja: "/routing-api/docs" },
+          showInJa: true,
+        },
+        {
+          text: {
+            en: "Connect your AI agent with HERE documentation MCP",
+            ja: "AI エージェントを HERE ドキュメント MCP に接続する",
           },
           href: {
-            en: "/local-maps-regulatory-approval",
+            en: "https://docs.here.com/here-kb/docs/the-here-docs-mcp",
+            ja: "https://docs.here.com/here-kb/docs/the-here-docs-mcp",
+          },
+          showInJa: true,
+        },
+      ],
+    },
+    {
+      label: { en: "What's new for developers", ja: "開発者向けの最新情報" },
+      items: [
+        {
+          text: {
+            en: "Go to all releases on the developer blog",
+            ja: "開発者ブログでリリース情報をすべて見る",
+          },
+          href: {
+            en: "https://www.here.com/learn/developer-blog?refinementList%5Bcategory%5D%5B0%5D=Release%20notes",
+            ja: "https://www.here.com/learn/developer-blog?refinementList%5Bcategory%5D%5B0%5D=Release%20notes",
+          },
+          showInJa: true,
+        },
+      ],
+    },
+    {
+      label: { en: "Policies", ja: "ポリシー" },
+      items: [
+        {
+          text: { en: "Limits and quotas", ja: "上限とカバレッジ" },
+          href: {
+            en: "/coverage/docs",
+            ja: "/coverage/ja/v1.0/docs/",
+          },
+          showInJa: true,
+        },
+        {
+          text: { en: "Service level agreement", ja: "サービスレベル契約" },
+          href: {
+            en: "/policies/docs/here-service-level-agreement",
             ja: "/policies/ja/v1.0/docs/here-service-level-agreement",
           },
           showInJa: true,
         },
         {
-          text: { en: "System Status API", ja: "System Status API" },
+          text: { en: "Incident management", ja: "インシデント管理" },
           href: {
-            en: "/system-status-api",
-            ja: "/system-status-api/ja/v1.0/docs/system-status-api",
+            en: "/policies/docs/incident-management-introduction",
+            ja: "/policies/ja/v1.0/docs/incident-management-introduction",
           },
-          showInJa: false,
+          showInJa: true,
+        },
+        {
+          text: {
+            en: "Product lifecycle policy API",
+            ja: "製品ライフサイクルポリシー",
+          },
+          href: {
+            en: "/policies/docs/product-lifecycle-policy",
+            ja: "/policies/ja/v1.0/docs/product-lifecycle-policy",
+          },
+          showInJa: true,
+        },
+        {
+          text: { en: "Essential data processing", ja: "必須データ処理" },
+          href: {
+            en: "/policies/docs/essential-data-processing",
+            ja: "/policies/ja/v1.0/docs/essential-data-processing",
+          },
+          showInJa: true,
+        },
+        {
+          text: {
+            en: "Local Maps Regulatory Approval",
+            ja: "ローカル地図の規制承認",
+          },
+          href: {
+            en: "/policies/docs/local-maps-regulatory-approval",
+            ja: "/policies/ja/v1.0/docs/local-maps-regulatory-approval",
+          },
+          showInJa: true,
         },
       ],
     },
@@ -1282,7 +1312,7 @@ function stampMarkdownScopes() {
       "[data-color-mode='dark'] button.here-mm-trigger .here-mm-chevron { border-right-color:#e0edf0 !important; border-bottom-color:#e0edf0 !important; }",
       "@media (prefers-color-scheme:dark) { [data-color-mode='system'] button.here-mm-trigger .here-mm-chevron { border-right-color:#e0edf0 !important; border-bottom-color:#e0edf0 !important; } }",
       "button.here-mm-trigger.here-mm-open .here-mm-chevron { transform:rotate(-135deg) !important; top:2px !important; }",
-      "div#here-mm-panel { display:none !important; position:fixed !important; min-width:0 !important; max-width:90vw !important; overflow-x:auto !important; background:#ffffff !important; border-width:0 1px 1px 1px !important; border-style:solid !important; border-color:rgba(0,129,177,0.25) !important; border-radius:0 0 4px 4px !important; padding:8px 16px 16px !important; z-index:99999 !important; box-shadow:0 4px 12px rgba(0,0,0,0.08) !important; }",
+      "div#here-mm-panel { display:none !important; position:fixed !important; min-width:0 !important; max-width:95vw !important; max-height:80vh !important; overflow-x:auto !important; overflow-y:auto !important; background:#ffffff !important; border-width:0 1px 1px 1px !important; border-style:solid !important; border-color:rgba(0,129,177,0.25) !important; border-radius:0 0 4px 4px !important; padding:8px 16px 16px !important; z-index:99999 !important; box-shadow:0 4px 12px rgba(0,0,0,0.08) !important; }",
       "[data-color-mode='dark'] div#here-mm-panel { background:#1a2b30 !important; border-color:rgba(0,129,177,0.35) !important; box-shadow:0 4px 12px rgba(0,0,0,0.32) !important; }",
       "@media (prefers-color-scheme:dark) { [data-color-mode='system'] div#here-mm-panel { background:#1a2b30 !important; border-color:rgba(0,129,177,0.35) !important; box-shadow:0 4px 12px rgba(0,0,0,0.32) !important; } }",
       "div#here-mm-panel.here-mm-open { display:flex !important; }",
@@ -1388,17 +1418,26 @@ function stampMarkdownScopes() {
     );
     var r = (nav || btn).getBoundingClientRect();
     var vpW = window.innerWidth;
-    var maxW = Math.min(panel.scrollWidth || 900, vpW * 0.9);
+    var vpH = window.innerHeight;
+    var maxW = Math.min(panel.scrollWidth || 900, vpW * 0.95);
     var left = Math.min(
       btn.getBoundingClientRect().left,
       vpW - maxW - vpW * 0.05
     );
     left = Math.max(left, vpW * 0.05);
 
+    // Height adapts to however much vertical space is actually left below
+    // the trigger, so adding more columns/items later (or opening on a
+    // short viewport) never causes the panel to run off-screen — it will
+    // scroll internally (overflow-y: auto, set in injectStyles) instead.
+    var availableH = vpH - r.bottom - vpH * 0.05;
+    var maxH = Math.max(Math.min(availableH, vpH * 0.8), 200);
+
     panel.style.top = r.bottom + "px";
     panel.style.left = Math.round(left) + "px";
     panel.style.right = "auto";
     panel.style.maxWidth = Math.round(maxW) + "px";
+    panel.style.maxHeight = Math.round(maxH) + "px";
   }
 
   // ── Open / close ─────────────────────────────────────────────────────────
