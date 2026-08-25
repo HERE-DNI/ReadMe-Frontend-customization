@@ -704,7 +704,11 @@ function stampMarkdownScopes() {
 })();
 
 (function () {
-  var TAG = "__here_megamenu_v2";
+  // NOTE: distinct tag from production global.js's "__here_megamenu_v2" so
+  // that loading both scripts together (e.g. via ?staging-js=true while
+  // global.js also runs unconditionally) doesn't cause one to silently
+  // no-op due to the other's guard already being set.
+  var TAG = "__here_megamenu_v2_staging";
   if (window[TAG]) return;
   window[TAG] = true;
 
