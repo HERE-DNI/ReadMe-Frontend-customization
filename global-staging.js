@@ -848,6 +848,14 @@ function stampMarkdownScopes() {
           showInJa: false,
         },
         {
+          text: { en: "Map Object Model", ja: "Map Object Model" },
+          href: {
+            en: "/map-object-model/docs",
+            ja: "/map-object-model/docs",
+          },
+          showInJa: false,
+        },
+        {
           text: { en: "Automated Driving Zones", ja: "Automated Driving Zones" },
           href: {
             en: "/automated-driving-zones/docs",
