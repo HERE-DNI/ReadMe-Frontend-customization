@@ -1662,18 +1662,23 @@ function stampMarkdownScopes() {
   function inject() {
     if (document.getElementById(WRAPPER_ID)) return true; // already present
 
-    var logo = document.querySelector(".Header-logo1Xy41PtkzbdG");
-    if (!logo) return false;
+    // Anchor off the mega-menu's subnav element rather than
+    // .Header-logo1Xy41PtkzbdG directly — ReadMe renders TWO elements with
+    // that class on this page (one inside a hidden .rm-Header-top compact
+    // bar, one inside the real visible .Header-bottom bar). querySelector
+    // would silently grab the first (hidden) one. The subnav selector below
+    // is already proven unique/correct — the mega menu injector above uses
+    // the same selector successfully — so its previous sibling is
+    // guaranteed to be the logo wrapper in the VISIBLE header bar.
+    var subnav = document.querySelector(
+      "nav[aria-label='Primary navigation'], .Header-subnavnVH8URdkgvEl"
+    );
+    if (!subnav) return false;
 
-    // Insert as a sibling of the logo's OWN wrapper div
-    // (.Header-left_logo / .Header-leftADQdGVqx1wqU), not inside it — that
-    // wrapper is a narrow layout container sized just for the logo and
-    // clips/hides anything else appended inside it. The correct slot is
-    // between that wrapper and the following <nav aria-label="Primary
-    // navigation"> (the mega-menu subnav), matching Figma's
-    // "Logo | divider | Documentation | Explore" order.
-    var logoWrapper = logo.closest(".Header-left_logo, [class*='Header-left']") || logo.parentNode;
-    var insertionParent = logoWrapper.parentNode;
+    var logoWrapper = subnav.previousElementSibling;
+    if (!logoWrapper) return false;
+
+    var insertionParent = subnav.parentNode;
     if (!insertionParent) return false;
 
     injectStyles();
