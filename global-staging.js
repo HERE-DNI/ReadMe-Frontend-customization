@@ -1635,40 +1635,32 @@ function stampMarkdownScopes() {
   if (window[TAG]) return;
   window[TAG] = true;
 
-  var WORDMARK_TEXT = { en: "Documentation", ja: "Documentation" };
+  // Same text for every locale today ("Documentation" per Figma) — no
+  // per-locale lookup needed. If a Japanese label is ever wanted, this
+  // is the one line to change.
+  var WORDMARK_TEXT = "Documentation";
   var WRAPPER_ID = "here-header-wordmark";
-
-  function detectLocale() {
-    var match = (window.location.pathname || "").match(/\/([a-z]{2})(?:\/|$)/i);
-    if (match && match[1].toLowerCase() === "ja") return "ja";
-    return "en";
-  }
-
-  function resolveText(locale) {
-    return WORDMARK_TEXT[locale] || WORDMARK_TEXT.en;
-  }
 
   function injectStyles() {
     if (document.getElementById("here-header-wordmark-styles")) return;
     var s = document.createElement("style");
     s.id = "here-header-wordmark-styles";
+    // No !important needed: this is new markup under a unique ID with no
+    // pre-existing ReadMe rule to out-rank. flex-shrink:0 overrides the
+    // browser's default flex-shrink:1 (not an author rule, so nothing to
+    // fight) — that default is what was collapsing this element to 0x0.
     s.textContent = [
-      "#" + WRAPPER_ID + " { display:inline-flex !important; align-items:center !important; gap:16px !important; padding:10px 10px 10px 0 !important; margin-left:8px !important; }",
-      "#" + WRAPPER_ID + " .here-header-wordmark__divider { display:inline-block !important; width:1px !important; height:24px !important; background:rgba(0,129,177,0.25) !important; border-radius:0.5px !important; }",
-      "#" + WRAPPER_ID + " .here-header-wordmark__text { font-family:'FiraGO-Regular','Fira Sans',sans-serif !important; font-size:18px !important; line-height:24px !important; color:#051920 !important; white-space:nowrap !important; }",
-      "[data-color-mode='dark'] #" + WRAPPER_ID + " .here-header-wordmark__text { color:#e0edf0 !important; }",
-      "@media (prefers-color-scheme:dark) { [data-color-mode='system'] #" + WRAPPER_ID + " .here-header-wordmark__text { color:#e0edf0 !important; } }",
+      "#" + WRAPPER_ID + " { display:inline-flex; flex-shrink:0; align-items:center; gap:16px; padding:10px 10px 10px 0; margin-left:8px; }",
+      "#" + WRAPPER_ID + " .here-header-wordmark__divider { display:inline-block; width:1px; height:24px; background:rgba(0,129,177,0.25); border-radius:0.5px; }",
+      "#" + WRAPPER_ID + " .here-header-wordmark__text { font-family:'FiraGO-Regular','Fira Sans',sans-serif; font-size:18px; line-height:24px; color:#051920; white-space:nowrap; }",
+      "[data-color-mode='dark'] #" + WRAPPER_ID + " .here-header-wordmark__text { color:#e0edf0; }",
+      "@media (prefers-color-scheme:dark) { [data-color-mode='system'] #" + WRAPPER_ID + " .here-header-wordmark__text { color:#e0edf0; } }",
     ].join("\n");
     (document.head || document.documentElement).appendChild(s);
   }
 
   function inject() {
-    if (document.getElementById(WRAPPER_ID)) {
-      // Already present — just keep the text in sync with locale on SPA nav.
-      var existingText = document.querySelector("#" + WRAPPER_ID + " .here-header-wordmark__text");
-      if (existingText) existingText.textContent = resolveText(detectLocale());
-      return true;
-    }
+    if (document.getElementById(WRAPPER_ID)) return true; // already present
 
     var logo = document.querySelector(".Header-logo1Xy41PtkzbdG");
     if (!logo) return false;
@@ -1695,7 +1687,7 @@ function stampMarkdownScopes() {
 
     var text = document.createElement("span");
     text.className = "here-header-wordmark__text";
-    text.textContent = resolveText(detectLocale());
+    text.textContent = WORDMARK_TEXT;
 
     wrap.appendChild(divider);
     wrap.appendChild(text);
