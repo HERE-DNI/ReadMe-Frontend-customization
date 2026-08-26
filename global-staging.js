@@ -1508,22 +1508,13 @@ function stampMarkdownScopes() {
   // ── Injection ────────────────────────────────────────────────────────────
 
   function inject(doc) {
-    // TEMP DIAGNOSTIC LOGGING — remove once mega menu mounting is confirmed.
     var subnav = doc.querySelector(
       "nav[aria-label='Primary navigation'], .Header-subnavnVH8URdkgvEl"
     );
-    if (!subnav) {
-      console.log("[here-mm-debug] FAIL: subnav container not found (checked nav[aria-label='Primary navigation'] and .Header-subnavnVH8URdkgvEl)");
-      return false;
-    }
-    console.log("[here-mm-debug] OK: subnav container found", subnav);
+    if (!subnav) return false;
 
     var rmContainer = subnav.querySelector("[data-testid='dropdown-container']");
-    if (!rmContainer) {
-      console.log("[here-mm-debug] FAIL: [data-testid='dropdown-container'] not found inside subnav", subnav);
-      return false;
-    }
-    console.log("[here-mm-debug] OK: dropdown-container found", rmContainer);
+    if (!rmContainer) return false;
 
     var existingWrap = subnav.querySelector("#here-mm-wrapper");
     var existingPanel = doc.getElementById("here-mm-panel");
@@ -1539,7 +1530,6 @@ function stampMarkdownScopes() {
         DEFAULT_LOCALE;
 
       if (existingLocale === locale) {
-        console.log("[here-mm-debug] OK: re-wiring existing menu markup (already injected once)");
         injectStyles(doc);
         bindGlobalEvents(doc);
 
@@ -1557,12 +1547,11 @@ function stampMarkdownScopes() {
 
     // For a fresh inject, wait until ReadMe's project picker is actually present
     // so we know this is the right container and not a different dropdown.
-    var projectPicker = rmContainer.querySelector(".rm-ProjectPicker, [class*='ProjectPicker']");
-    if (!projectPicker) {
-      console.log("[here-mm-debug] FAIL: .rm-ProjectPicker / [class*='ProjectPicker'] not found inside dropdown-container", rmContainer);
+    if (
+      !rmContainer.querySelector(".rm-ProjectPicker, [class*='ProjectPicker']")
+    ) {
       return false;
     }
-    console.log("[here-mm-debug] OK: project picker found, proceeding to build+inject menu", projectPicker);
 
     injectStyles(doc);
     bindGlobalEvents(doc);
@@ -1590,7 +1579,6 @@ function stampMarkdownScopes() {
       toggleMenu();
     });
 
-    console.log("[here-mm-debug] SUCCESS: menu built and inserted into DOM", built.wrap);
     return true;
   }
 

@@ -54,6 +54,12 @@
        button.here-mm-trigger) used to be hidden here, but the GLP page now
        shows the top "Documentation | Explore" bar per Figma — do not re-hide
        these without checking with design first. */
+    /* Hide the stock Home/Guides/Recipes/API Reference/Changelog/Discussions
+       tab links per Figma target (logo + "Explore" mega-menu trigger only).
+       Anchor-tag selector only — does NOT match the .rm-ProjectPicker
+       <button> (replaced by the mega-menu trigger) which also carries the
+       shared .rm-Header-bottom-link class. */
+    a.rm-Header-bottom-link { display: none !important; }
 
     /* Logo sizing */
     .Header-logo-img3YvV4lcGKkeb { height: 50px; width: auto; }
