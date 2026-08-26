@@ -1673,6 +1673,17 @@ function stampMarkdownScopes() {
     var logo = document.querySelector(".Header-logo1Xy41PtkzbdG");
     if (!logo) return false;
 
+    // Insert as a sibling of the logo's OWN wrapper div
+    // (.Header-left_logo / .Header-leftADQdGVqx1wqU), not inside it — that
+    // wrapper is a narrow layout container sized just for the logo and
+    // clips/hides anything else appended inside it. The correct slot is
+    // between that wrapper and the following <nav aria-label="Primary
+    // navigation"> (the mega-menu subnav), matching Figma's
+    // "Logo | divider | Documentation | Explore" order.
+    var logoWrapper = logo.closest(".Header-left_logo, [class*='Header-left']") || logo.parentNode;
+    var insertionParent = logoWrapper.parentNode;
+    if (!insertionParent) return false;
+
     injectStyles();
 
     var wrap = document.createElement("span");
@@ -1688,7 +1699,7 @@ function stampMarkdownScopes() {
 
     wrap.appendChild(divider);
     wrap.appendChild(text);
-    logo.parentNode.insertBefore(wrap, logo.nextSibling);
+    insertionParent.insertBefore(wrap, logoWrapper.nextSibling);
 
     return true;
   }
