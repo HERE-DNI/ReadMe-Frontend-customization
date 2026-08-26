@@ -1662,17 +1662,25 @@ function stampMarkdownScopes() {
   function inject() {
     if (document.getElementById(WRAPPER_ID)) return true; // already present
 
-    // Anchor off the mega-menu's subnav element rather than
-    // .Header-logo1Xy41PtkzbdG directly — ReadMe renders TWO elements with
-    // that class on this page (one inside a hidden .rm-Header-top compact
-    // bar, one inside the real visible .Header-bottom bar). querySelector
-    // would silently grab the first (hidden) one. The subnav selector below
-    // is already proven unique/correct — the mega menu injector above uses
-    // the same selector successfully — so its previous sibling is
-    // guaranteed to be the logo wrapper in the VISIBLE header bar.
-    var subnav = document.querySelector(
+    // ReadMe renders TWO header rows in the DOM at once (a "top" bar and a
+    // "bottom" bar — used for sticky/compact header states), each with its
+    // own logo + nav[aria-label='Primary navigation']. Only one copy is
+    // actually visible at a time; document.querySelector() would just grab
+    // whichever copy happens to come first in DOM order, which is not
+    // reliably the visible one. Pick the one with real rendered size
+    // instead of the first match.
+    var subnav = null;
+    var candidates = document.querySelectorAll(
       "nav[aria-label='Primary navigation'], .Header-subnavnVH8URdkgvEl"
     );
+    for (var i = 0; i < candidates.length; i++) {
+      var rect = candidates[i].getBoundingClientRect();
+      if (rect.width > 0 && rect.height > 0) {
+        subnav = candidates[i];
+        break;
+      }
+    }
+    if (!subnav) subnav = candidates[0] || null;
     if (!subnav) return false;
 
     var logoWrapper = subnav.previousElementSibling;
