@@ -1249,17 +1249,12 @@ function stampMarkdownScopes() {
     },
   ];
 
-  // ── Trigger label (shows current project name) ───────────────────────────
+  // ── Trigger label ──────────────────────────────────────────────────────
+  // Static label everywhere — per Figma, the mega-menu trigger reads
+  // "Explore" site-wide (previously showed the current project's name,
+  // read from the og:site_name meta tag; that lookup is no longer needed).
 
-  function getProjectNameFromMeta(doc) {
-    try {
-      var m = doc.querySelector('meta[property="og:site_name"]');
-      if (!m) return "";
-      return (m.getAttribute("content") || "").replace(/\s+/g, " ").trim();
-    } catch (e) {
-      return "";
-    }
-  }
+  var TRIGGER_LABEL = { en: "Explore", ja: "Explore" };
 
   function setTriggerLabel(text) {
     if (!_btn) return;
@@ -1270,11 +1265,13 @@ function stampMarkdownScopes() {
   }
 
   function updateTriggerFromMeta(doc) {
-    var name = getProjectNameFromMeta(doc);
-    if (name) setTriggerLabel(name);
+    setTriggerLabel(resolveLocalizedValue(TRIGGER_LABEL, getCurrentLocale()));
   }
 
   // Watch for ReadMe SPA meta updates to keep the trigger label in sync.
+  // (Kept for locale changes on SPA nav — label text itself is now static,
+  // not derived from project meta, but the observer still re-applies it if
+  // ReadMe's header re-renders and wipes our text.)
   function startMetaObserver(doc) {
     if (_metaObsStarted) return;
     _metaObsStarted = true;
@@ -1283,15 +1280,10 @@ function stampMarkdownScopes() {
       var head = doc.head || doc.documentElement;
       if (!head) return;
 
-      var last = getProjectNameFromMeta(doc);
-      if (last) setTriggerLabel(last);
+      setTriggerLabel(resolveLocalizedValue(TRIGGER_LABEL, getCurrentLocale()));
 
       new MutationObserver(function () {
-        var next = getProjectNameFromMeta(doc);
-        if (next && next !== last) {
-          last = next;
-          setTriggerLabel(next);
-        }
+        setTriggerLabel(resolveLocalizedValue(TRIGGER_LABEL, getCurrentLocale()));
       }).observe(head, {
         childList: true,
         subtree: true,
@@ -1370,7 +1362,9 @@ function stampMarkdownScopes() {
     btn.setAttribute("aria-expanded", "false");
     btn.setAttribute("type", "button");
     btn.innerHTML =
-      '<span class="here-mm-label">Introduction to Mapping Concepts</span><span class="here-mm-chevron" aria-hidden="true"></span>';
+      '<span class="here-mm-label">' +
+      resolveLocalizedValue(TRIGGER_LABEL, locale) +
+      '</span><span class="here-mm-chevron" aria-hidden="true"></span>';
     wrap.appendChild(btn);
 
     var panel = doc.createElement("div");
@@ -1625,6 +1619,105 @@ function stampMarkdownScopes() {
   });
 })();
 
+// ─────────────────────────────────────────────────────────────────────────────
+// 3b. HEADER "DOCUMENTATION" WORDMARK
+//    Adds a static "Documentation" text label next to the site logo,
+//    matching Figma "Navbar Top - wide [Desktop]" (node 2329:84632):
+//    Logo | divider | "Documentation" text. Site-wide, same scope as the
+//    mega menu it sits beside. Re-injects on SPA nav via the same nav bus.
+//
+//    LOW RISK — purely additive DOM insertion; does not remove or replace
+//    any existing header element (unlike the mega menu, which replaces the
+//    native project picker).
+// ─────────────────────────────────────────────────────────────────────────────
+(function () {
+  var TAG = "__here_header_wordmark_v1_staging";
+  if (window[TAG]) return;
+  window[TAG] = true;
+
+  var WORDMARK_TEXT = { en: "Documentation", ja: "Documentation" };
+  var WRAPPER_ID = "here-header-wordmark";
+
+  function detectLocale() {
+    var match = (window.location.pathname || "").match(/\/([a-z]{2})(?:\/|$)/i);
+    if (match && match[1].toLowerCase() === "ja") return "ja";
+    return "en";
+  }
+
+  function resolveText(locale) {
+    return WORDMARK_TEXT[locale] || WORDMARK_TEXT.en;
+  }
+
+  function injectStyles() {
+    if (document.getElementById("here-header-wordmark-styles")) return;
+    var s = document.createElement("style");
+    s.id = "here-header-wordmark-styles";
+    s.textContent = [
+      "#" + WRAPPER_ID + " { display:inline-flex !important; align-items:center !important; gap:16px !important; padding:10px 10px 10px 0 !important; margin-left:8px !important; }",
+      "#" + WRAPPER_ID + " .here-header-wordmark__divider { display:inline-block !important; width:1px !important; height:24px !important; background:rgba(0,129,177,0.25) !important; border-radius:0.5px !important; }",
+      "#" + WRAPPER_ID + " .here-header-wordmark__text { font-family:'FiraGO-Regular','Fira Sans',sans-serif !important; font-size:18px !important; line-height:24px !important; color:#051920 !important; white-space:nowrap !important; }",
+      "[data-color-mode='dark'] #" + WRAPPER_ID + " .here-header-wordmark__text { color:#e0edf0 !important; }",
+      "@media (prefers-color-scheme:dark) { [data-color-mode='system'] #" + WRAPPER_ID + " .here-header-wordmark__text { color:#e0edf0 !important; } }",
+    ].join("\n");
+    (document.head || document.documentElement).appendChild(s);
+  }
+
+  function inject() {
+    if (document.getElementById(WRAPPER_ID)) {
+      // Already present — just keep the text in sync with locale on SPA nav.
+      var existingText = document.querySelector("#" + WRAPPER_ID + " .here-header-wordmark__text");
+      if (existingText) existingText.textContent = resolveText(detectLocale());
+      return true;
+    }
+
+    var logo = document.querySelector(".Header-logo1Xy41PtkzbdG");
+    if (!logo) return false;
+
+    injectStyles();
+
+    var wrap = document.createElement("span");
+    wrap.id = WRAPPER_ID;
+
+    var divider = document.createElement("span");
+    divider.className = "here-header-wordmark__divider";
+    divider.setAttribute("aria-hidden", "true");
+
+    var text = document.createElement("span");
+    text.className = "here-header-wordmark__text";
+    text.textContent = resolveText(detectLocale());
+
+    wrap.appendChild(divider);
+    wrap.appendChild(text);
+    logo.parentNode.insertBefore(wrap, logo.nextSibling);
+
+    return true;
+  }
+
+  function tryInject() {
+    if (inject()) return;
+
+    var deadline = Date.now() + 10000;
+    var obs = new MutationObserver(function () {
+      if (inject() || Date.now() > deadline) obs.disconnect();
+    });
+    try {
+      obs.observe(document.body || document.documentElement, {
+        childList: true,
+        subtree: true,
+      });
+    } catch (e) {}
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", tryInject);
+  } else {
+    tryInject();
+  }
+
+  window.__here_nav_bus_v1.onNav(function () {
+    tryInject();
+  });
+})();
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 4. IMAGE ALT → CAPTION BAR v2
