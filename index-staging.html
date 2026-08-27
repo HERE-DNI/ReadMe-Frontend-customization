@@ -88,7 +88,7 @@
       --hero-bg: #e2fffd;
       --body-bg: #ecf7fc;
       --wn-bg: #ffffff;
-      --vid-bg: #e2fffd;
+      --vid-bg: #ecf7fc;
       --card-bg: #ffffff;
       --card-border: rgba(9, 39, 50, 0.10);
       --card-shadow: 0 4px 14px rgba(9, 39, 50, 0.07);
@@ -314,6 +314,14 @@
        ================================================================ */
 
     .here-wn-grid .hds-card { display: flex; flex-direction: column; }
+
+    /* Outline-only cards, no fill (per Figma) — hardcoded here so they
+       don't flash solid-filled while the external HDS stylesheet is
+       still loading, same reasoning as the dark-mode overrides below. */
+    .here-wn-grid .hds-card--primary-solid {
+      background-color: transparent !important;
+      border-color: var(--card-border) !important;
+    }
 
     .here-whatsnew { background: var(--wn-bg); padding: 48px 0 56px; }
     .here-wn-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }

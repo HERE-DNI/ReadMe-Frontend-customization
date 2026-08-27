@@ -457,6 +457,7 @@ font-size: 14px !important;
 /* Hero title */
 .here-glp .here-hero__wrap h1 {
   text-align: center !important;
+  font-weight: 600 !important;
 }
 
 /* Hero subtitle */
@@ -566,7 +567,7 @@ font-size: 14px !important;
   font-size: 36px !important;
   line-height: 44px !important;
   letter-spacing: -0.0278em !important;
-  font-weight: 500 !important;
+  font-weight: 600 !important;
   color: #051920 !important;
   margin: 0 !important;
 }
@@ -805,7 +806,7 @@ font-size: 14px !important;
   font-size: 36px !important;
   line-height: 44px !important;
   letter-spacing: -0.0278em !important;
-  font-weight: 500 !important;
+  font-weight: 600 !important;
   color: #051920 !important;
   margin: 0 !important;
 }
@@ -951,7 +952,7 @@ font-size: 14px !important;
   font-size: 36px !important;
   line-height: 44px !important;
   letter-spacing: -0.0278em !important;
-  font-weight: 500 !important;
+  font-weight: 600 !important;
   color: #051920 !important;
   margin: 0 !important;
 }
@@ -1020,7 +1021,7 @@ font-size: 14px !important;
   font-size: 16px;
   line-height: 24px;
   letter-spacing: -0.0125em;
-  font-weight: 500;
+  font-weight: 700;
   color: #051920;
 }
 
@@ -1053,7 +1054,7 @@ font-size: 14px !important;
   font-size: 36px !important;
   line-height: 44px !important;
   letter-spacing: -0.0278em !important;
-  font-weight: 500 !important;
+  font-weight: 600 !important;
   color: #051920 !important;
 }
 
