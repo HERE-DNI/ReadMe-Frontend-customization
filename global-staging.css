@@ -506,15 +506,20 @@ font-size: 14px !important;
 /* Pill links (Figma: Secondary / Button Secondary Default) —
    background #0099CC @4%, border #3F7183, text foreground-primary
    #051920 500 weight. Hardcoded so pills don't flash the plain HDS
-   default secondary-button look before the external stylesheet loads. */
-.here-glp .here-popular-searches__links a.hds-button--variant-secondary {
+   default secondary-button look before the external stylesheet loads.
+   Selector includes [href] to out-specificity the generic
+   ".markdown-body:not([data-styles='hds']) a[href]" blue-link rule
+   (§13) that this /page/ route also matches — both rules use
+   !important at equal specificity otherwise, so source order would
+   decide instead of intent. */
+.here-glp .here-popular-searches__links a.hds-button--variant-secondary[href] {
   background-color: rgba(0, 153, 204, 0.04) !important;
   border-color: #3F7183 !important;
   color: #051920 !important;
   font-weight: 500 !important;
 }
 
-.here-glp .here-popular-searches__links a.hds-button--variant-secondary:hover {
+.here-glp .here-popular-searches__links a.hds-button--variant-secondary[href]:hover {
   background-color: rgba(0, 153, 204, 0.08) !important;
 }
 
@@ -757,7 +762,7 @@ font-size: 14px !important;
   font-size: 16px;
   line-height: 24px;
   letter-spacing: -0.0125em;
-  font-weight: 500;
+  font-weight: 700;
   color: #051920;
 }
 
