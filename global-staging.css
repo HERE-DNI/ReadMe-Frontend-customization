@@ -503,6 +503,21 @@ font-size: 14px !important;
   flex-wrap: wrap;
 }
 
+/* Pill links (Figma: Secondary / Button Secondary Default) —
+   background #0099CC @4%, border #3F7183, text foreground-primary
+   #051920 500 weight. Hardcoded so pills don't flash the plain HDS
+   default secondary-button look before the external stylesheet loads. */
+.here-glp .here-popular-searches__links a.hds-button--variant-secondary {
+  background-color: rgba(0, 153, 204, 0.04) !important;
+  border-color: #3F7183 !important;
+  color: #051920 !important;
+  font-weight: 500 !important;
+}
+
+.here-glp .here-popular-searches__links a.hds-button--variant-secondary:hover {
+  background-color: rgba(0, 153, 204, 0.08) !important;
+}
+
 @media (max-width: 900px) {
   .here-glp .here-hero__subtitle {
     font-size: 18px !important;
