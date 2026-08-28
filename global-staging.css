@@ -762,8 +762,15 @@ font-size: 14px !important;
   font-size: 16px;
   line-height: 24px;
   letter-spacing: -0.0125em;
-  font-weight: 700;
+  font-weight: 400;
   color: #051920;
+}
+
+/* Expanded ("Show all descriptions" ON) state uses the body-strong
+   token (weight 500) per Figma — compact state stays at body/400.
+   See .here-resources[data-show-desc="1"] above for the toggle wiring. */
+.here-glp .here-resources[data-show-desc="1"] .here-res-list__title-text {
+  font-weight: 500;
 }
 
 /* Lock hds-icon sits at the end of the title row.
