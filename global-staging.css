@@ -770,7 +770,7 @@ font-size: 14px !important;
    token (weight 500) per Figma — compact state stays at body/400.
    See .here-resources[data-show-desc="1"] above for the toggle wiring. */
 .here-glp .here-resources[data-show-desc="1"] .here-res-list__title-text {
-  font-weight: 500;
+  font-weight: 600;
 }
 
 /* Lock hds-icon sits at the end of the title row.
