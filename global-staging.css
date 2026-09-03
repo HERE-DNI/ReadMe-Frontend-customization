@@ -530,14 +530,70 @@ font-size: 14px !important;
   }
 }
 
-/* Dark mode — hero surface + text */
+/* Dark mode — hero surface + text. Bg pattern image is dark-only for now; light-mode version pending (Figma rate-limited). */
 .here-glp[data-theme*="dark"] .here-hero {
-  background: #162028 !important;
+  background-color: #153947 !important;
+  background-image: url('https://here-dni.github.io/ReadMe-Frontend-customization/assets/images/hero-bg/hero-bg-pattern-dark.png') !important;
+  background-repeat: no-repeat !important;
+  background-position: center top !important;
+  background-size: cover !important;
 }
 
 .here-glp[data-theme*="dark"] .here-hero__subtitle,
 .here-glp[data-theme*="dark"] .here-popular-searches__label {
   color: rgba(232, 237, 240, 0.70) !important;
+}
+.here-glp[data-theme*="dark"] .here-popular-searches__links a.hds-button--variant-secondary[href] {
+  background-color: rgba(232, 237, 240, 0.05) !important;
+  border-color: rgba(232, 237, 240, 0.25) !important;
+  color: #ECF7FC !important;
+}
+.here-glp[data-theme*="dark"] .here-popular-searches__links a.hds-button--variant-secondary[href]:hover {
+  background-color: rgba(232, 237, 240, 0.10) !important;
+}
+
+/* Pre-paint guard mirror (no-flash) — .here-hero. Mirrors the post-paint block above; keep both in sync whenever this section changes. */
+[data-color-mode="dark"] .here-glp .here-hero {
+  background-color: #153947 !important;
+  background-image: url('https://here-dni.github.io/ReadMe-Frontend-customization/assets/images/hero-bg/hero-bg-pattern-dark.png') !important;
+  background-repeat: no-repeat !important;
+  background-position: center top !important;
+  background-size: cover !important;
+}
+[data-color-mode="dark"] .here-glp .here-hero__subtitle,
+[data-color-mode="dark"] .here-glp .here-popular-searches__label {
+  color: rgba(232, 237, 240, 0.70) !important;
+}
+[data-color-mode="dark"] .here-glp .here-popular-searches__links a.hds-button--variant-secondary[href] {
+  background-color: rgba(232, 237, 240, 0.05) !important;
+  border-color: rgba(232, 237, 240, 0.25) !important;
+  color: #ECF7FC !important;
+}
+[data-color-mode="dark"] .here-glp .here-popular-searches__links a.hds-button--variant-secondary[href]:hover {
+  background-color: rgba(232, 237, 240, 0.10) !important;
+}
+
+/* System-mode mirror (no-flash) — .here-hero. Keep in sync with the two blocks above whenever this section changes. */
+@media (prefers-color-scheme: dark) {
+  [data-color-mode="system"] .here-glp .here-hero {
+    background-color: #153947 !important;
+    background-image: url('https://here-dni.github.io/ReadMe-Frontend-customization/assets/images/hero-bg/hero-bg-pattern-dark.png') !important;
+    background-repeat: no-repeat !important;
+    background-position: center top !important;
+    background-size: cover !important;
+  }
+  [data-color-mode="system"] .here-glp .here-hero__subtitle,
+  [data-color-mode="system"] .here-glp .here-popular-searches__label {
+    color: rgba(232, 237, 240, 0.70) !important;
+  }
+  [data-color-mode="system"] .here-glp .here-popular-searches__links a.hds-button--variant-secondary[href] {
+    background-color: rgba(232, 237, 240, 0.05) !important;
+    border-color: rgba(232, 237, 240, 0.25) !important;
+    color: #ECF7FC !important;
+  }
+  [data-color-mode="system"] .here-glp .here-popular-searches__links a.hds-button--variant-secondary[href]:hover {
+    background-color: rgba(232, 237, 240, 0.10) !important;
+  }
 }
 
 
@@ -1113,15 +1169,7 @@ font-size: 14px !important;
 
 /* --- Dark mode ------------------------------------------------------- */
 
-/* --- 2026 redesign dark palette tokens (Figma-accurate) --------------
-   Source: Figma "Documentation Landingpage - closed product
-   descriptions - dark mode" — node 2101:88136 (file NPjbYsEIIbYuH4OSlkPM83).
-   These extend (do not replace) the ad hoc hardcoded dark colors already
-   used above/below for the older 3-card layout — new dark-mode rules for
-   .here-resources / .here-usecases / .here-policies should reference
-   these vars instead of hardcoding hex/rgba values.
-   Scoped to .here-glp[data-theme*="dark"] so they cascade into every
-   descendant rule below via var(--token-name-dark). */
+/* 2026 redesign dark palette tokens (Figma-accurate, node 2101:88136) — extends the tokens below, doesn't replace them; new dark rules should use these vars instead of hardcoding hex/rgba. */
 .here-glp[data-theme*="dark"] {
   --ink-dark: #051920;
   --ink-muted-dark: #89B9CB;
@@ -1136,10 +1184,11 @@ font-size: 14px !important;
   --focus-hover-dark: rgba(0, 153, 204, 0.04);
 }
 
-.here-glp[data-theme*="dark"] .here-resources { background: #1a1f23 !important; }
+.here-glp[data-theme*="dark"] .here-resources { background: transparent !important; }
 .here-glp[data-theme*="dark"] .here-resources__head h2,
 .here-glp[data-theme*="dark"] .here-res-card__title,
-.here-glp[data-theme*="dark"] .here-res-list__title {
+.here-glp[data-theme*="dark"] .here-res-list__title,
+.here-glp[data-theme*="dark"] .here-res-list__title-text {
   color: #ECF7FC !important;
 }
 .here-glp[data-theme*="dark"] .here-resources__sub,
@@ -1148,27 +1197,25 @@ font-size: 14px !important;
   color: #BEDFEB !important;
 }
 .here-glp[data-theme*="dark"] .here-res-card {
-  background: #162028 !important;
+  background: #092732 !important;
   border-color: rgba(0, 118, 160, 0.35) !important;
+}
+.here-glp[data-theme*="dark"] .here-res-card__icon {
+  background: #092732;
+  border-color: rgba(0, 118, 160, 0.35);
+  color: #ECF7FC;
+  --hds-icon-color: #ECF7FC;
 }
 .here-glp[data-theme*="dark"] .here-res-list__item {
   background: rgba(0, 148, 206, 0.12);
 }
 
-/* ── Pre-paint guard mirror (no-flash) — .here-resources ──
-   Keyed on <html data-color-mode="dark">, which ReadMe stamps BEFORE
-   first paint, unlike .here-glp[data-theme*="dark"] above which is only
-   set by the inline theme-sync script AFTER DOM parse. Mirrors the
-   post-paint block above verbatim (same hardcoded values, not
-   var(--card-fill-dark) etc., since those tokens are themselves scoped
-   to .here-glp[data-theme*="dark"] and would not yet be defined during
-   this pre-paint window) — matches the existing PRE-PAINT GUARD
-   convention used for .here-hero/.here-whatsnew/.here-videos in
-   index-staging.html. */
-[data-color-mode="dark"] .here-glp .here-resources { background: #1a1f23 !important; }
+/* Pre-paint guard mirror (no-flash) — .here-resources. Mirrors the post-paint block above; keep both in sync whenever this section changes. */
+[data-color-mode="dark"] .here-glp .here-resources { background: transparent !important; }
 [data-color-mode="dark"] .here-glp .here-resources__head h2,
 [data-color-mode="dark"] .here-glp .here-res-card__title,
-[data-color-mode="dark"] .here-glp .here-res-list__title {
+[data-color-mode="dark"] .here-glp .here-res-list__title,
+[data-color-mode="dark"] .here-glp .here-res-list__title-text {
   color: #ECF7FC !important;
 }
 [data-color-mode="dark"] .here-glp .here-resources__sub,
@@ -1177,29 +1224,31 @@ font-size: 14px !important;
   color: #BEDFEB !important;
 }
 [data-color-mode="dark"] .here-glp .here-res-card {
-  background: #162028 !important;
+  background: #092732 !important;
   border-color: rgba(0, 118, 160, 0.35) !important;
+}
+[data-color-mode="dark"] .here-glp .here-res-card__icon {
+  background: #092732;
+  border-color: rgba(0, 118, 160, 0.35);
+  color: #ECF7FC;
+  --hds-icon-color: #ECF7FC;
 }
 [data-color-mode="dark"] .here-glp .here-res-list__item {
   background: rgba(0, 148, 206, 0.12);
 }
 
-/* Lock hds-icon color only — margin-left/flex-shrink are layout, not
-   color, and already correct via the light-mode base rule above. */
+/* Lock icon color only (margin-left/flex-shrink stay in the light-mode base rule). */
 [data-color-mode="dark"] .here-glp .here-res-list__title hds-icon {
   --hds-icon-color: rgba(190, 223, 235, 0.7);
 }
 
-/* ── System-mode mirror (no-flash) — .here-resources ──
-   Same rules as the [data-color-mode="dark"] pre-paint guard block above,
-   applied when data-color-mode="system" AND the OS reports dark, matching
-   the existing @media(prefers-color-scheme:dark) convention used for
-   .here-hero/.here-whatsnew/.here-videos. */
+/* System-mode mirror (no-flash) — .here-resources. Keep in sync with the two blocks above whenever this section changes. */
 @media (prefers-color-scheme: dark) {
-  [data-color-mode="system"] .here-glp .here-resources { background: #1a1f23 !important; }
+  [data-color-mode="system"] .here-glp .here-resources { background: transparent !important; }
   [data-color-mode="system"] .here-glp .here-resources__head h2,
   [data-color-mode="system"] .here-glp .here-res-card__title,
-  [data-color-mode="system"] .here-glp .here-res-list__title {
+  [data-color-mode="system"] .here-glp .here-res-list__title,
+  [data-color-mode="system"] .here-glp .here-res-list__title-text {
     color: #ECF7FC !important;
   }
   [data-color-mode="system"] .here-glp .here-resources__sub,
@@ -1208,15 +1257,20 @@ font-size: 14px !important;
     color: #BEDFEB !important;
   }
   [data-color-mode="system"] .here-glp .here-res-card {
-    background: #162028 !important;
+    background: #092732 !important;
     border-color: rgba(0, 118, 160, 0.35) !important;
+  }
+  [data-color-mode="system"] .here-glp .here-res-card__icon {
+    background: #092732;
+    border-color: rgba(0, 118, 160, 0.35);
+    color: #ECF7FC;
+    --hds-icon-color: #ECF7FC;
   }
   [data-color-mode="system"] .here-glp .here-res-list__item {
     background: rgba(0, 148, 206, 0.12);
   }
 
-  /* Lock hds-icon color only — margin-left/flex-shrink are layout, not
-     color, and already correct via the light-mode base rule above. */
+  /* Lock icon color only (margin-left/flex-shrink stay in the light-mode base rule). */
   [data-color-mode="system"] .here-glp .here-res-list__title hds-icon {
     --hds-icon-color: rgba(190, 223, 235, 0.7);
   }
@@ -1225,7 +1279,7 @@ font-size: 14px !important;
 .here-glp[data-theme*="dark"] .here-usecases { background: #1E4554 !important; }
 .here-glp[data-theme*="dark"] .here-usecases__head h2 { color: #ECF7FC !important; }
 .here-glp[data-theme*="dark"] .here-usecases__sub { color: #BEDFEB !important; }
-.here-glp[data-theme*="dark"] .here-usecase-card { background: #162028; }
+.here-glp[data-theme*="dark"] .here-usecase-card { background: #092732; }
 .here-glp[data-theme*="dark"] .here-usecase-card__title { color: #ECF7FC; }
 .here-glp[data-theme*="dark"] .here-usecase-card__desc { color: #BEDFEB; }
 .here-glp[data-theme*="dark"] .here-usecase-card__tag {
@@ -1233,20 +1287,11 @@ font-size: 14px !important;
   color: #ECF7FC;
 }
 
-/* ── Pre-paint guard mirror (no-flash) — .here-usecases ──
-   Keyed on <html data-color-mode="dark">, which ReadMe stamps BEFORE
-   first paint, unlike .here-glp[data-theme*="dark"] above which is only
-   set by the inline theme-sync script AFTER DOM parse. Mirrors the
-   post-paint block above verbatim (same hardcoded values, not
-   var(--carousel-bg-dark) etc., since that token is itself scoped
-   to .here-glp[data-theme*="dark"] and would not yet be defined during
-   this pre-paint window) — matches the existing PRE-PAINT GUARD
-   convention used for .here-hero/.here-whatsnew/.here-videos in
-   index-staging.html. */
+/* Pre-paint guard mirror (no-flash) — .here-usecases. Mirrors the post-paint block above; keep both in sync whenever this section changes. */
 [data-color-mode="dark"] .here-glp .here-usecases { background: #1E4554 !important; }
 [data-color-mode="dark"] .here-glp .here-usecases__head h2 { color: #ECF7FC !important; }
 [data-color-mode="dark"] .here-glp .here-usecases__sub { color: #BEDFEB !important; }
-[data-color-mode="dark"] .here-glp .here-usecase-card { background: #162028; }
+[data-color-mode="dark"] .here-glp .here-usecase-card { background: #092732; }
 [data-color-mode="dark"] .here-glp .here-usecase-card__title { color: #ECF7FC; }
 [data-color-mode="dark"] .here-glp .here-usecase-card__desc { color: #BEDFEB; }
 [data-color-mode="dark"] .here-glp .here-usecase-card__tag {
@@ -1254,16 +1299,12 @@ font-size: 14px !important;
   color: #ECF7FC;
 }
 
-/* ── System-mode mirror (no-flash) — .here-usecases ──
-   Same rules as the [data-color-mode="dark"] pre-paint guard block above,
-   applied when data-color-mode="system" AND the OS reports dark, matching
-   the existing @media(prefers-color-scheme:dark) convention used for
-   .here-hero/.here-whatsnew/.here-videos. */
+/* System-mode mirror (no-flash) — .here-usecases. Keep in sync with the two blocks above whenever this section changes. */
 @media (prefers-color-scheme: dark) {
   [data-color-mode="system"] .here-glp .here-usecases { background: #1E4554 !important; }
   [data-color-mode="system"] .here-glp .here-usecases__head h2 { color: #ECF7FC !important; }
   [data-color-mode="system"] .here-glp .here-usecases__sub { color: #BEDFEB !important; }
-  [data-color-mode="system"] .here-glp .here-usecase-card { background: #162028; }
+  [data-color-mode="system"] .here-glp .here-usecase-card { background: #092732; }
   [data-color-mode="system"] .here-glp .here-usecase-card__title { color: #ECF7FC; }
   [data-color-mode="system"] .here-glp .here-usecase-card__desc { color: #BEDFEB; }
   [data-color-mode="system"] .here-glp .here-usecase-card__tag {
@@ -1272,69 +1313,57 @@ font-size: 14px !important;
   }
 }
 
-.here-glp[data-theme*="dark"] .here-policies { background: #051920 !important; }
+.here-glp[data-theme*="dark"] .here-policies { background: transparent !important; }
 .here-glp[data-theme*="dark"] .here-policies__head h2 { color: #ECF7FC !important; }
 .here-glp[data-theme*="dark"] .here-policies__sub { color: #BEDFEB !important; }
-.here-glp[data-theme*="dark"] .here-policies__grid {
-  background: #162028;
+.here-glp[data-theme*="dark"] .here-policies__container {
+  background: #092732;
   border-color: rgba(0, 118, 160, 0.35);
 }
 .here-glp[data-theme*="dark"] .here-policy-item {
   background: rgba(0, 148, 206, 0.12);
 }
-.here-glp[data-theme*="dark"] .here-policy-item__title { color: #ECF7FC; }
+.here-glp[data-theme*="dark"] .here-policy-item__title,
+.here-glp[data-theme*="dark"] .here-policy-item__title-text { color: #ECF7FC; }
 .here-glp[data-theme*="dark"] .here-policy-item__desc { color: #BEDFEB; }
 
-/* ── Pre-paint guard mirror (no-flash) — .here-policies ──
-   Keyed on <html data-color-mode="dark">, which ReadMe stamps BEFORE
-   first paint, unlike .here-glp[data-theme*="dark"] above which is only
-   set by the inline theme-sync script AFTER DOM parse. Mirrors the
-   post-paint block above verbatim (same hardcoded values, not
-   var(--section-ink-bg-dark) etc., since that token is itself scoped
-   to .here-glp[data-theme*="dark"] and would not yet be defined during
-   this pre-paint window) — matches the existing PRE-PAINT GUARD
-   convention used for .here-hero/.here-whatsnew/.here-videos in
-   index-staging.html. */
-[data-color-mode="dark"] .here-glp .here-policies { background: #051920 !important; }
+/* Pre-paint guard mirror (no-flash) — .here-policies. Mirrors the post-paint block above; keep both in sync whenever this section changes. */
+[data-color-mode="dark"] .here-glp .here-policies { background: transparent !important; }
 [data-color-mode="dark"] .here-glp .here-policies__head h2 { color: #ECF7FC !important; }
 [data-color-mode="dark"] .here-glp .here-policies__sub { color: #BEDFEB !important; }
-[data-color-mode="dark"] .here-glp .here-policies__grid {
-  background: #162028;
+[data-color-mode="dark"] .here-glp .here-policies__container {
+  background: #092732;
   border-color: rgba(0, 118, 160, 0.35);
 }
 [data-color-mode="dark"] .here-glp .here-policy-item {
   background: rgba(0, 148, 206, 0.12);
 }
-[data-color-mode="dark"] .here-glp .here-policy-item__title { color: #ECF7FC; }
+[data-color-mode="dark"] .here-glp .here-policy-item__title,
+[data-color-mode="dark"] .here-glp .here-policy-item__title-text { color: #ECF7FC; }
 [data-color-mode="dark"] .here-glp .here-policy-item__desc { color: #BEDFEB; }
 
-/* Lock hds-icon color only — margin-left/flex-shrink are layout, not
-   color, and already correct via the light-mode base rule above. */
+/* Lock icon color only (margin-left/flex-shrink stay in the light-mode base rule). */
 [data-color-mode="dark"] .here-glp .here-policy-item__title hds-icon {
   --hds-icon-color: rgba(190, 223, 235, 0.7);
 }
 
-/* ── System-mode mirror (no-flash) — .here-policies ──
-   Same rules as the [data-color-mode="dark"] pre-paint guard block above,
-   applied when data-color-mode="system" AND the OS reports dark, matching
-   the existing @media(prefers-color-scheme:dark) convention used for
-   .here-hero/.here-whatsnew/.here-videos. */
+/* System-mode mirror (no-flash) — .here-policies. Keep in sync with the two blocks above whenever this section changes. */
 @media (prefers-color-scheme: dark) {
-  [data-color-mode="system"] .here-glp .here-policies { background: #051920 !important; }
+  [data-color-mode="system"] .here-glp .here-policies { background: transparent !important; }
   [data-color-mode="system"] .here-glp .here-policies__head h2 { color: #ECF7FC !important; }
   [data-color-mode="system"] .here-glp .here-policies__sub { color: #BEDFEB !important; }
-  [data-color-mode="system"] .here-glp .here-policies__grid {
-    background: #162028;
+  [data-color-mode="system"] .here-glp .here-policies__container {
+    background: #092732;
     border-color: rgba(0, 118, 160, 0.35);
   }
   [data-color-mode="system"] .here-glp .here-policy-item {
     background: rgba(0, 148, 206, 0.12);
   }
-  [data-color-mode="system"] .here-glp .here-policy-item__title { color: #ECF7FC; }
+  [data-color-mode="system"] .here-glp .here-policy-item__title,
+  [data-color-mode="system"] .here-glp .here-policy-item__title-text { color: #ECF7FC; }
   [data-color-mode="system"] .here-glp .here-policy-item__desc { color: #BEDFEB; }
 
-  /* Lock hds-icon color only — margin-left/flex-shrink are layout, not
-     color, and already correct via the light-mode base rule above. */
+  /* Lock icon color only (margin-left/flex-shrink stay in the light-mode base rule). */
   [data-color-mode="system"] .here-glp .here-policy-item__title hds-icon {
     --hds-icon-color: rgba(190, 223, 235, 0.7);
   }

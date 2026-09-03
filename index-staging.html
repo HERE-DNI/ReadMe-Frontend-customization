@@ -551,7 +551,9 @@
     */
 
     /* ── Explicit dark ──
-       NOTE: .here-hero dark background lives in global-staging.css §2a. */
+       NOTE: .here-hero dark background + pre-paint guard mirror both
+       live in global-staging.css §2a (added alongside the dark-mode
+       hero pattern image). */
     [data-color-mode="dark"] .here-glp .here-body { background: #1a1f23 !important; }
     [data-color-mode="dark"] .here-glp .here-whatsnew { background: #141a1e !important; }
     [data-color-mode="dark"] .here-glp .here-videos { background: #111518 !important; }
@@ -612,7 +614,8 @@
 
     /* ── System + OS dark ── */
     @media (prefers-color-scheme: dark) {
-      /* NOTE: .here-hero dark background lives in global-staging.css §2a. */
+      /* NOTE: .here-hero dark background + pre-paint guard mirror both
+         live in global-staging.css §2a. */
       [data-color-mode="system"] .here-glp .here-body { background: #1a1f23 !important; }
       [data-color-mode="system"] .here-glp .here-whatsnew { background: #141a1e !important; }
       [data-color-mode="system"] .here-glp .here-videos { background: #111518 !important; }
