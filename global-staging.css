@@ -530,13 +530,9 @@ font-size: 14px !important;
   }
 }
 
-/* Dark mode — hero surface + text. Bg pattern image is dark-only for now; light-mode version pending (Figma rate-limited). */
+/* Dark mode — hero surface + text. Bg pattern image reverted (bad export washed out text contrast) — solid color only until re-exported correctly. */
 .here-glp[data-theme*="dark"] .here-hero {
   background-color: #153947 !important;
-  background-image: url('https://here-dni.github.io/ReadMe-Frontend-customization/assets/images/hero-bg/hero-bg-pattern-dark.png') !important;
-  background-repeat: no-repeat !important;
-  background-position: center top !important;
-  background-size: cover !important;
 }
 
 .here-glp[data-theme*="dark"] .here-hero__subtitle,
@@ -555,10 +551,6 @@ font-size: 14px !important;
 /* Pre-paint guard mirror (no-flash) — .here-hero. Mirrors the post-paint block above; keep both in sync whenever this section changes. */
 [data-color-mode="dark"] .here-glp .here-hero {
   background-color: #153947 !important;
-  background-image: url('https://here-dni.github.io/ReadMe-Frontend-customization/assets/images/hero-bg/hero-bg-pattern-dark.png') !important;
-  background-repeat: no-repeat !important;
-  background-position: center top !important;
-  background-size: cover !important;
 }
 [data-color-mode="dark"] .here-glp .here-hero__subtitle,
 [data-color-mode="dark"] .here-glp .here-popular-searches__label {
@@ -577,10 +569,6 @@ font-size: 14px !important;
 @media (prefers-color-scheme: dark) {
   [data-color-mode="system"] .here-glp .here-hero {
     background-color: #153947 !important;
-    background-image: url('https://here-dni.github.io/ReadMe-Frontend-customization/assets/images/hero-bg/hero-bg-pattern-dark.png') !important;
-    background-repeat: no-repeat !important;
-    background-position: center top !important;
-    background-size: cover !important;
   }
   [data-color-mode="system"] .here-glp .here-hero__subtitle,
   [data-color-mode="system"] .here-glp .here-popular-searches__label {
