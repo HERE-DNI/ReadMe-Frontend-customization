@@ -11,6 +11,7 @@
 // SECTION INDEX
 // =============================================================================
 //
+//   0. Editor preview nav fix         ~line   38   TEMPORARY workaround — see notes below
 //   1. Shared SPA Nav Bus             ~line   26   Core nav-change detection & dispatch
 //   2. HERE → ReadMe HDS Adapter      ~line  193   HDS widget conversion (callouts, accordions, etc.)
 //   3. HERE Mega Menu Injector        ~line  647   Product navigation mega menu
@@ -24,6 +25,111 @@
 //  11. Swagger / OAS Download Button  ~line 3579   Adds "Download Spec" button on Reference pages
 //  12. Contact us Button (site-wide)  end-of-file  Adds Contact us pill next to Ask AI on every page
 //
+// ─────────────────────────────────────────────────────────────────────────────
+// 0. EDITOR PREVIEW NAV FIX  —  *** TEMPORARY WORKAROUND — REMOVE LATER ***
+//
+//    Symptom: in the ReadMe editor preview, clicking a link in the synced
+//    API-reference content blanks the frame with "docs.here.com refused to
+//    connect".
+//
+//    Cause: the synced content (Javadoc/jazzy output) links with bare relative
+//    hrefs, e.g. href="sdk-for-android-explore-com-here-sdk-animation-easing".
+//    A relative reference with no query component resolves WITHOUT the query
+//    string, so following one lands on the parameter-less URL. ReadMe serves the
+//    preview at ?isFramePreview=true (no X-Frame-Options); the same URL without
+//    the parameter responds with `x-frame-options: Deny`, so the frame is blocked.
+//
+//    Fix: intercept the click before ReadMe's router sees it, re-attach the
+//    parameter, and drive THIS frame's location. `window.location` inside an
+//    iframe always targets that iframe, so the navigation cannot escape to the
+//    top document. (Rewriting the hrefs instead does NOT work -- the router then
+//    navigates the top window out of the editor.)
+//
+//    SCOPE: Custom Page body content only -- an anchor must be inside both <main>
+//    and .rm-CustomPage. Sidebar, header, mega menu and footer links are left
+//    alone so they keep using ReadMe's client-side router.
+//
+//    TRADE-OFF: for those content links this replaces client-side routing with a
+//    full document load, inside the preview only. On the large API-reference
+//    pages that is slow, but the alternative is a blank frame.
+//
+//    SAFETY — two independent guards, BOTH must hold before anything happens:
+//      1) we are inside an iframe, and
+//      2) our own URL already carries isFramePreview=true
+//    Guard (2) is the important one: isFramePreview=true is what suppresses
+//    X-Frame-Options, so this must never affect public pages. On public docs the
+//    parameter is absent, the guard fails, and this module is inert.
+//
+//    Remove this once the router preserves the query string on its own.
+// ─────────────────────────────────────────────────────────────────────────────
+(function () {
+  var TAG = "__here_preview_nav_v1";
+  if (window[TAG]) return;
+
+  var framed = false;
+  try {
+    framed = window.self !== window.top;
+  } catch (e) {
+    // Cross-origin access to window.top threw, which means we are framed.
+    framed = true;
+  }
+  if (!framed) return;
+
+  try {
+    if (new URLSearchParams(window.location.search).get("isFramePreview") !== "true") return;
+  } catch (e) {
+    return;
+  }
+
+  window[TAG] = true;
+
+  document.addEventListener(
+    "click",
+    function (e) {
+      if (e.defaultPrevented || e.button !== 0) return;
+      // Leave cmd/ctrl/shift/alt-click to the browser (new tab, new window).
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+
+      var a = e.target && e.target.closest ? e.target.closest("a[href]") : null;
+      if (!a) return;
+
+      // SCOPE: body content of a Custom Page only. Site-wide chrome -- sidebar,
+      // header, mega menu, footer, breadcrumbs -- must keep using ReadMe's
+      // client-side router and HERE's own click handlers. Both conditions are
+      // checked independently so this holds regardless of whether
+      // .rm-CustomPage sits inside <main> or wraps it.
+      if (!a.closest("main")) return;
+      if (!a.closest(".rm-CustomPage")) return;
+
+      // The OAS download buttons have their own handler further down this file.
+      if (a.closest(".oas-link-btn")) return;
+
+      // Respect an explicit target (_blank, _top, named frames).
+      if (a.target && a.target !== "" && a.target !== "_self") return;
+
+      var u;
+      try {
+        u = new URL(a.href, window.location.href);
+      } catch (err) {
+        return;
+      }
+
+      if (u.origin !== window.location.origin) return;
+
+      // Pure in-page anchors: let the browser scroll normally.
+      if (u.pathname === window.location.pathname && u.hash) return;
+
+      u.searchParams.set("isFramePreview", "true");
+
+      e.preventDefault();
+      e.stopPropagation();
+      if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+      window.location.assign(u.href);
+    },
+    true
+  );
+})();
+
 // ─────────────────────────────────────────────────────────────────────────────
 // 1. SHARED SPA NAV BUS
 //    Detects ReadMe SPA route changes via three complementary strategies and
@@ -865,7 +971,7 @@ function stampMarkdownScopes() {
             en: "/introduction-to-mapping-c",
             ja: "/traffic-api/ja/v1.0/docs/readme-developer-s-guide",
           },
-          showInJa: true,
+          showInJa: false,
         },
         {
           text: { en: "GIS Data Suite", ja: "GIS Data Suite" },
@@ -1087,8 +1193,13 @@ function stampMarkdownScopes() {
       label: { en: "Development enablers", ja: "開発支援" },
       items: [
         {
+          text: { en: "HERE Location Reasoning", ja: "HERE Location Reasoning" },
+          href: { en: "/location-reasoning", ja: "/location-reasoning" },
+          showInJa: false,
+        },
+        {
           text: { en: "HERE SDK", ja: "HERE SDK" },
-          href: { en: "/here-sdk", ja: "/here-sdk/ja/v1.0/docs" },
+          href: { en: "/here-sdk", ja: "/here-sdk/ja/v4.25.5-0/docs" },
           showInJa: true,
         },
         {

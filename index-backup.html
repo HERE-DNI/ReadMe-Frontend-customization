@@ -960,6 +960,7 @@
             </div>
             <p>Updates and announcements about the HERE platform.</p>
             <div class="here-wn-links">
+              <a href=https://www.here.com/learn/blog/august-2026-platform-release-notes rel="noopener">August 2026</a>         
               <a href=https://www.here.com/learn/blog/july-2026-platform-release-notes rel="noopener">July 2026</a>
               <a href=https://www.here.com/learn/blog/june-2026-platform-release-notes rel="noopener">June 2026</a>
               <a href=https://www.here.com/learn/blog/may-2026-platform-release-notes rel="noopener">May 2026</a>
@@ -1046,6 +1047,22 @@
     <section class="here-hero" aria-label="ヒーロー">
       <div class="here-wrap">
         <div class="here-lang-row" aria-label="言語">
+          <!-- ── MCP banner (inside lang row) ── -->
+          <aside class="here-mcp-banner" role="region" aria-label="AIドキュメントのお知らせ">
+            <div class="here-mcp-banner__content">
+              <span class="here-mcp-banner__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="3"/>
+                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+              </span>
+              <span class="here-mcp-banner__text">
+                <strong>AIを活用していますか？</strong> HEREドキュメントMCPを利用すると、AIコーディングエージェントからHEREドキュメントに接続し、最新の製品情報や技術ドキュメントをIDEで直接利用できます。
+              </span>
+            </div>
+            <a href="https://docs.here.com/here-kb/docs/the-here-docs-mcp" target="_blank" rel="noopener" class="here-mcp-banner__cta">ドキュメントを表示（英語） &#8594;</a>
+          </aside>
+
           <hds-switcher size="small" data-here-lang-toggle>
             <hds-switcher-tab data-lang="en">EN</hds-switcher-tab>
             <hds-switcher-tab selected data-lang="ja">日本語</hds-switcher-tab>
@@ -1090,7 +1107,6 @@
             <h3 class="here-card__title">地図とデータ</h3>
             <p class="here-card__desc">世界中を走行する多数のマッピング車両から得られる最新の位置情報データを活用し、精度の高い地図やカスタムレイヤーを構築できます。</p>
             <div class="here-card__pills">
-              <a class="hds-button hds-button--variant-secondary hds-button--size-small" href="/traffic-api/ja/v1.0/docs/readme-developer-s-guide">HERE Traffic Vector Tile API</a>
               <a class="hds-button hds-button--variant-secondary hds-button--size-small" href="/indoor-map/ja/v1.0/docs/indoor-map-readme">HERE Indoor Map</a>
             </div>
           </article>
@@ -1100,7 +1116,7 @@
             <p class="here-card__desc">アプリやデバイスに高精度な位置情報を組み込み、測位精度の向上やルート・旅程計画をより簡単にします。</p>
             <div class="here-card__pills">
               <a class="hds-button hds-button--variant-secondary hds-button--size-small" href="/geocoding-and-search/ja/v1.0/docs/introduction-to-here-geocoding-search-api-v7">HERE Geocoding & Search</a>
-              <a class="hds-button hds-button--variant-secondary hds-button--size-small" href="/routing/ja/v1.0/docs/routing-intro">HERE Routing</a>
+              <a class="hds-button hds-button--variant-secondary hds-button--size-small" href="/routing/ja/v1.0/docs/intro-geofencing">HERE Routing</a>
               <a class="hds-button hds-button--variant-secondary hds-button--size-small" href="/tour-planning/ja/v1.0/docs/introduction-tour-planning">HERE Tour Planning API</a>
               <a class="hds-button hds-button--variant-secondary hds-button--size-small" href="/map-rendering/ja/v1.0/docs/introduction-vector-tile-api">HERE Map Rendering</a>
               <a class="hds-button hds-button--variant-secondary hds-button--size-small" href="/tracking/ja/v1.0/docs/readme">HERE Tracking API</a>
@@ -1112,7 +1128,7 @@
             <p class="here-card__desc">開発ツールを使ってカスタムソリューションを構築する。</p>
             <div class="here-card__pills">
               <a class="hds-button hds-button--variant-secondary hds-button--size-small" href="/maps-api-for-js/ja/v1.0/docs/introduction-maps-api-for-javascript">HERE Maps API for JavaScript</a>
-              <a class="hds-button hds-button--variant-secondary hds-button--size-small" href="/here-sdk/ja/v4.25.5-0/docs/readme">HERE SDK</a>
+              <a class="hds-button hds-button--variant-secondary hds-button--size-small" href="/here-sdk/ja/v4.25.5-0/docs/android-readme">HERE SDK</a>
             </div>
           </article>
 
@@ -1151,6 +1167,7 @@
             </div>
             <p>HEREプラットフォームに関する更新情報とお知らせ (英語)</p>
            	<div class="here-wn-links">
+              <a href=https://www.here.com/learn/blog/august-2026-platform-release-notes rel="noopener">２０２６年8月</a>
               <a href=https://www.here.com/learn/blog/july-2026-platform-release-notes rel="noopener">２０２６年7月</a>
               <a href=https://www.here.com/learn/blog/june-2026-platform-release-notes rel="noopener">２０２６年6月</a>
               <a href=https://www.here.com/learn/blog/may-2026-platform-release-notes rel="noopener">２０２６年５月</a>
@@ -1158,6 +1175,12 @@
               <a href=https://www.here.com/learn/blog/march-2026-platform-release-notes rel="noopener">２０２６年３月</a>
               <a href=https://www.here.com/learn/blog/february-2026-platform-release-notes rel="noopener">２０２６年２月</a>
               <a href=https://www.here.com/learn/blog/january-2026-platform-release-notes rel="noopener">２０２６年１月</a>
+            </div>
+            <div class="here-wn-footer">
+              <a class="here-wn-seeall" href="https://www.here.com/learn/developer-blog?refinementList%5Bcategory%5D%5B0%5D=Release%20notes" rel="noopener">
+                すべて表示
+                <svg viewBox="0 0 24 24" fill="none"><path d="M14 3h7v7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 14 21 3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              </a>
             </div>
           </article>
 
@@ -1261,16 +1284,37 @@
       if (window[TAG]) return;
       window[TAG] = true;
 
+      // On the real production GLP, EN/JA are separate ReadMe routes
+      // ("/" and "/ja"), so switching languages there means a real
+      // navigation. On any other route (e.g. a test Custom Page that
+      // fetches this same content via the shell/loader), there is no
+      // "/ja" equivalent to navigate to — so we toggle the language
+      // in place instead, without leaving the page.
+      var langOverride = null;
+
+      function isProductionRoute() {
+        var path = (window.location.pathname || "/").replace(/\/+$/, "") || "/";
+        return path === "/" || path === "/ja";
+      }
+
       function getCurrentLang() {
+        if (langOverride) return langOverride;
         var url = window.location.href || "";
         return /\/ja(\/|$|\?)/.test(url) ? "ja" : "en";
       }
 
       function navigate(lang) {
-        var target = lang === "ja"
-          ? "https://docs.here.com/ja"
-          : "https://docs.here.com/";
-        window.location.assign(target);
+        if (isProductionRoute()) {
+          var target = lang === "ja"
+            ? "https://docs.here.com/ja"
+            : "https://docs.here.com/";
+          window.location.assign(target);
+          return;
+        }
+
+        // Non-production route (e.g. test Custom Page): toggle in place.
+        langOverride = lang;
+        enforce();
       }
 
       function enforce() {
