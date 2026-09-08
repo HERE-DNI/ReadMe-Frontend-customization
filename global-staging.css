@@ -446,7 +446,7 @@ font-size: 14px !important;
   background-image: url('https://here-dni.github.io/ReadMe-Frontend-customization/assets/images/hero-bg/hero-bg-pattern-light.svg') !important;
   background-repeat: no-repeat !important;
   background-position: center top !important;
-  background-size: cover !important;
+  background-size: 100% auto !important;
   padding: 80px 0 !important;
 }
 
@@ -540,7 +540,7 @@ font-size: 14px !important;
   background-image: url('https://here-dni.github.io/ReadMe-Frontend-customization/assets/images/hero-bg/hero-bg-pattern-dark.svg') !important;
   background-repeat: no-repeat !important;
   background-position: center top !important;
-  background-size: cover !important;
+  background-size: 100% auto !important;
 }
 
 .here-glp[data-theme*="dark"] .here-hero__subtitle,
@@ -562,7 +562,7 @@ font-size: 14px !important;
   background-image: url('https://here-dni.github.io/ReadMe-Frontend-customization/assets/images/hero-bg/hero-bg-pattern-dark.svg') !important;
   background-repeat: no-repeat !important;
   background-position: center top !important;
-  background-size: cover !important;
+  background-size: 100% auto !important;
 }
 [data-color-mode="dark"] .here-glp .here-hero__subtitle,
 [data-color-mode="dark"] .here-glp .here-popular-searches__label {
@@ -584,7 +584,7 @@ font-size: 14px !important;
     background-image: url('https://here-dni.github.io/ReadMe-Frontend-customization/assets/images/hero-bg/hero-bg-pattern-dark.svg') !important;
     background-repeat: no-repeat !important;
     background-position: center top !important;
-    background-size: cover !important;
+    background-size: 100% auto !important;
   }
   [data-color-mode="system"] .here-glp .here-hero__subtitle,
   [data-color-mode="system"] .here-glp .here-popular-searches__label {
@@ -659,6 +659,16 @@ font-size: 14px !important;
   letter-spacing: -0.0125em;
   color: #2C596A;
   margin: 0;
+}
+
+/* What's new for developers — section subtitle, same treatment as the other 2026 section __sub classes. */
+.here-glp .here-wn-sub {
+  font-family: "FiraGO", "Fira GO", "Fira Sans", system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.0125em;
+  color: #2C596A;
+  margin: 0 0 24px;
 }
 
 /* --- Filter bar ------------------------------------------------------
@@ -1376,6 +1386,23 @@ font-size: 14px !important;
 .here-glp[data-theme*="dark"] .here-whatsnew h2.here-section-title,
 .here-glp[data-theme*="dark"] .here-videos h2.here-section-title {
   color: #ECF7FC !important;
+}
+.here-glp[data-theme*="dark"] .here-wn-sub { color: #BEDFEB !important; }
+
+/* Pre-paint guard mirror (no-flash) — .here-whatsnew/.here-videos heading + .here-wn-sub. Mirrors the post-paint block above; keep both in sync whenever this section changes. */
+[data-color-mode="dark"] .here-glp .here-whatsnew h2.here-section-title,
+[data-color-mode="dark"] .here-glp .here-videos h2.here-section-title {
+  color: #ECF7FC !important;
+}
+[data-color-mode="dark"] .here-glp .here-wn-sub { color: #BEDFEB !important; }
+
+/* System-mode mirror (no-flash) — .here-whatsnew/.here-videos heading + .here-wn-sub. Keep in sync with the two blocks above whenever this section changes. */
+@media (prefers-color-scheme: dark) {
+  [data-color-mode="system"] .here-glp .here-whatsnew h2.here-section-title,
+  [data-color-mode="system"] .here-glp .here-videos h2.here-section-title {
+    color: #ECF7FC !important;
+  }
+  [data-color-mode="system"] .here-glp .here-wn-sub { color: #BEDFEB !important; }
 }
 
 
