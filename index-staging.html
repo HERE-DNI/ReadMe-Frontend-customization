@@ -61,6 +61,17 @@
        shared .rm-Header-bottom-link class. */
     a.rm-Header-bottom-link { display: none !important; }
 
+    /* Hide ReadMe's native project-picker button ("Documentation" project
+       name). Per Figma the header shows a single "Documentation" wordmark
+       (injected as #here-header-wordmark) plus the "Explore" mega-menu
+       trigger (#here-mm-wrapper) — the native picker's label is a DUPLICATE
+       "Documentation" and must be removed. The mega-menu injector already
+       sets display:none on this button when it successfully replaces it, but
+       that is timing-dependent; this CSS guarantees the duplicate never shows
+       even before/if the JS injection runs. Scoped to .rm-ProjectPicker only,
+       so our wordmark and Explore trigger are unaffected. */
+    button.rm-ProjectPicker { display: none !important; }
+
     /* Logo sizing */
     .Header-logo-img3YvV4lcGKkeb { height: 50px; width: auto; }
     .Header-logo1Xy41PtkzbdG { padding: 0 !important; }
@@ -125,13 +136,14 @@
       border-bottom: 1px solid rgba(9, 39, 50, 0.10) !important;
     }
 
-    /* Search toggle */
+    /* Search toggle — HDS button small (secondary), icon-only square (32px) */
     .rm-SearchToggle {
       display: inline-flex !important;
       align-items: center !important;
       justify-content: center !important;
-      width: 36px !important;
-      height: 36px !important;
+      width: 2rem !important;
+      height: 2rem !important;
+      min-height: 2rem !important;
       border-radius: 999px !important;
       border: 1px solid rgba(9, 39, 50, 0.20) !important;
       background: transparent !important;
@@ -144,15 +156,15 @@
     .rm-SearchToggle-shortcut { display: none !important; }
     .rm-SearchToggle .icon-search1 { font-size: 16px !important; color: #092732 !important; }
 
-    /* Ask AI button */
+    /* Ask AI button — HDS button small (primary): padding 8px 16px, min-height 2rem */
     .rm-AskAi-button {
       background: #092732 !important;
       color: #1ef3e4 !important;
       border: none !important;
       border-radius: 999px !important;
-      padding: 8px 18px !important;
-      height: 36px !important;
-      min-height: 36px !important;
+      padding: 8px 16px !important;
+      height: auto !important;
+      min-height: 2rem !important;
       font-size: 13px !important;
       font-weight: 700 !important;
       display: inline-flex !important;
@@ -697,7 +709,7 @@
       justify-content: space-between;
       gap: 16px;
       padding: 10px 16px;
-      background: rgba(255, 255, 255, 0.55);
+      background: #FFFFFF;
       border: 1px solid rgba(9, 39, 50, 0.10);
       border-radius: 8px;
     }
@@ -754,7 +766,7 @@
 
     /* Dark mode */
     .here-glp[data-theme*="dark"] .here-mcp-banner {
-      background: rgba(255, 255, 255, 0.04) !important;
+      background: #092732 !important;
       border-color: rgba(255, 255, 255, 0.10) !important;
     }
     .here-glp[data-theme*="dark"] .here-mcp-banner__icon,
@@ -839,7 +851,7 @@
 
           <div class="here-resources__filters" role="group" aria-label="Filters">
             <hds-button variant="secondary" size="small" icon-right="chevron-down">Show all products &amp; services</hds-button>
-            <hds-chip size="small">Show APIs</hds-chip>
+            <hds-chip size="medium">Show APIs</hds-chip>
             <hds-toggle aria-label="Show all descriptions" data-here-desc-toggle>Show all descriptions</hds-toggle>
             <span class="here-filter-divider" aria-hidden="true"></span>
             <hds-button variant="subtle" size="small" icon-right="chevron-down">Sort by: Most viewed</hds-button>
@@ -1109,7 +1121,10 @@
     <!-- ── Popular videos ── -->
     <section class="here-videos" aria-label="Popular videos">
       <div class="here-wrap">
-        <h2 class="here-section-title">Popular videos</h2>
+        <div class="here-videos__head">
+          <h2 class="here-section-title">Popular videos</h2>
+          <a class="here-videos__more" href="https://www.youtube.com/@HERETechnologies" target="_blank" rel="noopener">Go to more videos <span aria-hidden="true">&rarr;</span></a>
+        </div>
         <div class="here-carousel" data-here-carousel>
           <div class="here-carousel__track" data-here-track>
             <article class="here-vid-card"><div class="here-vid-thumb" data-here-thumb><img src="https://img.youtube.com/vi/jA5wbygIJN8/mqdefault.jpg" alt="HERE SDK Licenses Explained"/><div class="here-vid-play"><svg viewBox="0 0 68 68" fill="none"><circle cx="34" cy="34" r="34" fill="rgba(0,0,0,0.55)"/><polygon points="27,20 54,34 27,48" fill="#fff"/></svg></div><iframe title="HERE SDK Licenses Explained" data-src="https://www.youtube-nocookie.com/embed/jA5wbygIJN8?autoplay=1" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div><div class="here-vid-titlebar">HERE SDK Licenses Explained</div></article>
@@ -1188,8 +1203,6 @@
                   <span class="here-policy-item__desc">Country-level approvals required to use map data.</span>
                 </a>
               </article>
-              <div class="here-policy-item here-policy-item--empty" aria-hidden="true"></div>
-              <div class="here-policy-item here-policy-item--empty" aria-hidden="true"></div>
             </div>
           </div>
 
@@ -1263,7 +1276,7 @@
 
           <div class="here-resources__filters" role="group" aria-label="フィルター">
             <hds-button variant="secondary" size="small" icon-right="chevron-down">すべての製品・サービスを表示</hds-button>
-            <hds-chip size="small">API を表示</hds-chip>
+            <hds-chip size="medium">API を表示</hds-chip>
             <hds-toggle aria-label="説明を表示" data-here-desc-toggle>説明を表示</hds-toggle>
             <span class="here-filter-divider" aria-hidden="true"></span>
             <hds-button variant="subtle" size="small" icon-right="chevron-down">並び順: 閲覧数順</hds-button>
@@ -1454,7 +1467,10 @@
     <!-- ── 人気の動画 ── -->
     <section class="here-videos" aria-label="人気の動画">
       <div class="here-wrap">
-        <h2 class="here-section-title">人気の動画</h2>
+        <div class="here-videos__head">
+          <h2 class="here-section-title">人気の動画</h2>
+          <a class="here-videos__more" href="https://www.youtube.com/@HERETechnologies" target="_blank" rel="noopener">動画をもっと見る <span aria-hidden="true">&rarr;</span></a>
+        </div>
         <div class="here-carousel" data-here-carousel>
           <div class="here-carousel__track" data-here-track>
             <article class="here-vid-card"><div class="here-vid-thumb" data-here-thumb><img src="https://img.youtube.com/vi/jA5wbygIJN8/mqdefault.jpg" alt="HERE SDKのライセンスについて"/><div class="here-vid-play"><svg viewBox="0 0 68 68" fill="none"><circle cx="34" cy="34" r="34" fill="rgba(0,0,0,0.55)"/><polygon points="27,20 54,34 27,48" fill="#fff"/></svg></div><iframe title="HERE SDKのライセンスについて" data-src="https://www.youtube-nocookie.com/embed/jA5wbygIJN8?autoplay=1" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div><div class="here-vid-titlebar">HERE SDKのライセンスについて</div></article>
@@ -1533,8 +1549,6 @@
                   <span class="here-policy-item__desc">地図データを利用するために必要な、国単位の承認について説明します。</span>
                 </a>
               </article>
-              <div class="here-policy-item here-policy-item--empty" aria-hidden="true"></div>
-              <div class="here-policy-item here-policy-item--empty" aria-hidden="true"></div>
             </div>
           </div>
 

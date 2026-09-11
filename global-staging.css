@@ -152,7 +152,7 @@ button.Button.Button_slate_text.Button_md.Header-link2tXYTgXq85zW.NavItem2xSfFaV
             stylesheet). Rules outside that scope must use the legacy
             --color-* / --here-font* vars defined below.
    ====================================================================== */
-.App header .rm-Container { height: 55px; }
+.App header .rm-Container { height: 48px; }
 
 .ThemeContext_line:not(:has(.Header-links-buttons)) .Header-subnavnVH8URdkgvEl {
     position: relative;
@@ -618,7 +618,7 @@ font-size: 14px !important;
 .here-glp .here-resources__inner {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 24px;
 }
 
 .here-glp .here-resources__head {
@@ -772,6 +772,18 @@ font-size: 14px !important;
   background: rgba(0, 148, 215, 0.07);
   border-radius: 4px;
   padding: 8px;
+  transition: background-color 0.12s ease;
+}
+
+/* Hover — no title underline (per Figma feedback); instead shift the whole
+   row background to the HDS object-hover token. */
+.here-glp .here-res-list__item:hover {
+  background: var(--hds-background-object-hover);
+}
+
+/* Pressed / active — HDS object-press token. */
+.here-glp .here-res-list__item:active {
+  background: var(--hds-background-object-press);
 }
 
 /* Extended variant (descriptions visible) needs extra bottom padding to
@@ -790,8 +802,10 @@ font-size: 14px !important;
   padding: 0 8px;
 }
 
+/* Title stays un-underlined on hover — the row background change signals
+   interactivity instead (Figma feedback). */
 .here-glp .here-res-list__item a:hover .here-res-list__title-text {
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 .here-glp .here-res-list__title {
@@ -864,7 +878,7 @@ font-size: 14px !important;
 .here-glp .here-usecases__inner {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 24px;
 }
 
 .here-glp .here-usecases__head {
@@ -934,10 +948,24 @@ font-size: 14px !important;
 /* Tag uses <hds-flag variant="subtle" size="small">, we only align it. */
 .here-glp .here-usecase-card__tag {
   align-self: flex-start;
+  /* Constrain the hds-flag host so its (shadow-DOM) rendering can't expand
+     to cover the adjacent <h3> title. The flag is a small pill: keep it
+     hugging its content and out of the title's box. */
+  flex: 0 0 auto;
+  min-height: 0;
+  line-height: normal;
 }
 
-/* Title (Figma Desktop/Headlines/headline-05: 16/24 500 weight) */
+/* Title (Figma Desktop/Headlines/headline-05: 16/24 500 weight).
+   display:block + visibility:visible defend against the title being
+   collapsed/covered by the neighbouring hds-flag custom element; the
+   explicit color keeps it high-contrast on the white card (and is
+   overridden by the dark-mode variants further down). */
 .here-glp .here-usecase-card__title {
+  display: block !important;
+  visibility: visible !important;
+  position: relative;
+  z-index: 1;
   font-family: "FiraGO", "Fira GO", "Fira Sans", system-ui, sans-serif;
   font-size: 16px !important;
   line-height: 24px !important;
@@ -1010,7 +1038,7 @@ font-size: 14px !important;
 .here-glp .here-policies__inner {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 24px;
 }
 
 .here-glp .here-policies__head {
@@ -1111,14 +1139,6 @@ font-size: 14px !important;
   color: #2C596A;
 }
 
-/* Empty grid cell placeholder (Figma opacity-0 slots that preserve the
-   4-column rhythm on rows with fewer items) */
-.here-glp .here-policy-item--empty {
-  background: transparent;
-  min-height: 0;
-  pointer-events: none;
-}
-
 /* --- Section-heading level bump for 2026 (h2 → h3 heading-03 style) --- */
 .here-glp .here-whatsnew h2.here-section-title,
 .here-glp .here-videos h2.here-section-title {
@@ -1127,6 +1147,41 @@ font-size: 14px !important;
   letter-spacing: -0.0278em !important;
   font-weight: 600 !important;
   color: #051920 !important;
+  /* Normalize heading→content gap to 24px, matching the __inner gap used by
+     Explore / Get started / Policies sections (Figma feedback). */
+  margin: 0 0 24px !important;
+}
+
+/* Popular videos header row — title on the left, "Go to more videos"
+   link aligned to the right (Figma feedback). The 24px heading→content
+   gap now lives on this row so the link baselines with the title. */
+.here-glp .here-videos__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin: 0 0 24px;
+}
+.here-glp .here-videos__head h2.here-section-title {
+  margin: 0 !important;
+}
+.here-glp .here-videos__more {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  font-family: "FiraGO", "Fira GO", "Fira Sans", system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 500;
+  letter-spacing: -0.0125em;
+  color: var(--hds-action, #0071a4);
+  text-decoration: none;
+}
+.here-glp .here-videos__more:hover {
+  color: var(--hds-action-hover, #005a83);
+  text-decoration: underline;
 }
 
 /* --- Responsive ------------------------------------------------------ */
@@ -1362,6 +1417,16 @@ font-size: 14px !important;
   color: #ECF7FC !important;
 }
 
+/* "Go to more videos" link — light text on the dark videos band.
+   Uses the HDS action token (which is a lighter blue in dark theme);
+   the explicit fallback matches the section's muted-light ink. */
+.here-glp[data-theme*="dark"] .here-videos__more {
+  color: var(--hds-action, #7FC5E8);
+}
+.here-glp[data-theme*="dark"] .here-videos__more:hover {
+  color: var(--hds-action-hover, #A9DAF2);
+}
+
 
 /* ======================================================================
    3) HEADER / TOP NAV
@@ -1417,13 +1482,15 @@ button.Button.Button_slate_text.Button_md.NavItem2xSfFaVqfRjy.Button.Button_slat
   border-bottom: 1px solid var(--color-header-border) !important;
 }
 
-/* Search toggle — pill control */
+/* Search toggle — HDS button small (secondary), icon-only square.
+   HDS small = min-height 2rem (32px); keep it square so the icon stays centred. */
 .rm-SearchToggle {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  width: 36px !important;
-  height: 36px !important;
+  width: 2rem !important;
+  height: 2rem !important;
+  min-height: 2rem !important;
   border-radius: var(--radius-pill) !important;
   border: 1px solid var(--color-ctrl-border) !important;
   background: transparent !important;
@@ -1450,16 +1517,17 @@ button.Button.Button_slate_text.Button_md.NavItem2xSfFaVqfRjy.Button.Button_slat
   color: var(--color-header-ink) !important;
 }
 
-/* Ask AI button */
+/* Ask AI button — HDS button small (primary). HDS small = padding 8px 16px,
+   min-height 2rem (32px). Keeps HERE accent fill via --color-ai-bg/-fg. */
 .rm-AskAi-button,
 .Header-askai1MTDknILiJku .Button {
   background: var(--color-ai-bg) !important;
   color: var(--color-ai-fg) !important;
   border: none !important;
   border-radius: var(--radius-pill) !important;
-  padding: 8px 18px !important;
-  height: 36px !important;
-  min-height: 36px !important;
+  padding: 8px 16px !important;
+  height: auto !important;
+  min-height: 2rem !important;
   font-size: 13px !important;
   font-weight: 700 !important;
   display: inline-flex !important;
@@ -3238,8 +3306,22 @@ header .LangPicker17mF-TSKPUmJ.undefined.Dropdown.Dropdown_closed {
 }
 
 /* Outer app shell */
-.rm-SearchModal[data-styles="hds"] .SuperHubSearchI_obvfvvQi4g,
+/* Outer overlay (fullscreen backdrop). Previously painted solid #ffffff,
+   which completely hid the GLP page behind the modal (Erik: "GLP disappears
+   … page should be blurred and in the background"). Make it a translucent
+   frosted-glass layer so the GLP stays visible and blurred behind the modal.
+   Reuses the same tint/blur as the "See all" modal backdrop for consistency.
+   The inner app shell (.SuperHubSearchI_obvfvvQi4g) stays solid white below. */
+.rm-SearchModal[data-styles="hds"],
 #AppSearch[data-styles="hds"] {
+  background: rgba(180, 210, 220, 0.45) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  backdrop-filter: blur(12px) !important;
+  color: #092732 !important;
+}
+
+/* Inner app shell — the actual modal surface, kept solid white. */
+.rm-SearchModal[data-styles="hds"] .SuperHubSearchI_obvfvvQi4g {
   background: #ffffff !important;
   color: #092732 !important;
 }
@@ -3695,8 +3777,19 @@ header .LangPicker17mF-TSKPUmJ.undefined.Dropdown.Dropdown_closed {
     color: #e8f4f8 !important;
   }
 
-  [data-color-mode="system"] .rm-SearchModal[data-styles="hds"] .SuperHubSearchI_obvfvvQi4g,
+  /* Outer overlay (fullscreen backdrop) — translucent frosted dark layer so
+     the GLP page stays visible/blurred behind the modal (matches light-mode
+     fix and the See-all modal dark backdrop). */
+  [data-color-mode="system"] .rm-SearchModal[data-styles="hds"],
   [data-color-mode="system"] #AppSearch[data-styles="hds"] {
+    background: rgba(5, 15, 22, 0.55) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    backdrop-filter: blur(12px) !important;
+    color: #e8f4f8 !important;
+  }
+
+  /* Inner app shell — solid dark modal surface. */
+  [data-color-mode="system"] .rm-SearchModal[data-styles="hds"] .SuperHubSearchI_obvfvvQi4g {
     background: #0d1f26 !important;
     color: #e8f4f8 !important;
   }
@@ -3859,13 +3952,18 @@ header .LangPicker17mF-TSKPUmJ.undefined.Dropdown.Dropdown_closed {
 
 /* ---- forced dark (user toggle, regardless of system preference) ---- */
 
+/* Outer overlay (fullscreen backdrop) — translucent frosted dark layer so
+   the GLP page stays visible/blurred behind the modal. */
 [data-color-mode="dark"] .rm-SearchModal[data-styles="hds"],
 [data-color-mode="dark"] #AppSearch[data-styles="hds"] {
+  background: rgba(5, 15, 22, 0.55) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  backdrop-filter: blur(12px) !important;
   color: #e8f4f8 !important;
 }
 
-[data-color-mode="dark"] .rm-SearchModal[data-styles="hds"] .SuperHubSearchI_obvfvvQi4g,
-[data-color-mode="dark"] #AppSearch[data-styles="hds"] {
+/* Inner app shell — solid dark modal surface. */
+[data-color-mode="dark"] .rm-SearchModal[data-styles="hds"] .SuperHubSearchI_obvfvvQi4g {
   background: #0d1f26 !important;
   color: #e8f4f8 !important;
 }

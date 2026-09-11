@@ -14,3 +14,5 @@ package-lock.json
 
 # Logs
 *.log
+# Jira attachments (downloaded for local reference)
+jira-attachments/
