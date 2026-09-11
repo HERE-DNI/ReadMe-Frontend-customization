@@ -3897,6 +3897,10 @@ function stampMarkdownScopes() {
       throw new Error(`Download failed: ${res.status}`);
     }
 
+    if (/text\/html/i.test(res.headers.get('content-type') || '')) {
+      throw new Error('Download failed: received HTML instead of a spec file');
+    }
+
     const blob = await res.blob();
     const blobUrl = URL.createObjectURL(blob);
 
@@ -4050,7 +4054,7 @@ function stampMarkdownScopes() {
       if (raycastKey) {
         const filename = raycastKey.split('/').pop();
         const openapiUrl = `${projectRoot()}/openapi/${filename}`;
-        const url = (await headOk(openapiUrl, signal)) ? openapiUrl : absoluteUrl(raycastKey);
+        const url = openapiUrl
 
         if (myLoadId !== activeLoadId) return;
 
@@ -4108,7 +4112,7 @@ function stampMarkdownScopes() {
       await forceFileDownload(url, filename);
     } catch (err) {
       console.warn('[oas-link] forced download failed, opening file instead:', err);
-      window.open(url, '_blank', 'noopener');
+      window.open(`${projectRoot()}/openapi`, '_blank', 'noopener');
     } finally {
       btn.textContent = originalText;
       btn.removeAttribute('aria-busy');
