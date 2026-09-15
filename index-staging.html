@@ -61,16 +61,11 @@
        shared .rm-Header-bottom-link class. */
     a.rm-Header-bottom-link { display: none !important; }
 
-    /* Hide ReadMe's native project-picker button ("Documentation" project
-       name). Per Figma the header shows a single "Documentation" wordmark
-       (injected as #here-header-wordmark) plus the "Explore" mega-menu
-       trigger (#here-mm-wrapper) — the native picker's label is a DUPLICATE
-       "Documentation" and must be removed. The mega-menu injector already
-       sets display:none on this button when it successfully replaces it, but
-       that is timing-dependent; this CSS guarantees the duplicate never shows
-       even before/if the JS injection runs. Scoped to .rm-ProjectPicker only,
-       so our wordmark and Explore trigger are unaffected. */
-    button.rm-ProjectPicker { display: none !important; }
+    /* Hide ReadMe's native project-picker (duplicate "Documentation" label); scoped to .rm-ProjectPicker so injected wordmark #here-header-wordmark and Explore trigger #here-mm-wrapper are unaffected. */
+    .rm-ProjectPicker,
+    .Header-subnavnVH8URdkgvEl .rm-ProjectPicker,
+    [data-testid="dropdown-container"].rm-ProjectPicker,
+    .rm-ProjectPicker.Dropdown-toggle { display: none !important; }
 
     /* Logo sizing */
     .Header-logo-img3YvV4lcGKkeb { height: 50px; width: auto; }
