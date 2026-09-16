@@ -3975,6 +3975,11 @@ header .LangPicker17mF-TSKPUmJ.undefined.Dropdown.Dropdown_closed {
 
 /* ---- forced dark (user toggle, regardless of system preference) ---- */
 
+/* Dark mode: ReadMe's native modal backdrop scrim is opaque and hides the GLP; light mode already shows the page through its scrim, so make the dark scrim translucent to match. Scoped to the .modal-backdrop scrim only — the #AppSearch dialog panel keeps its solid surface. */
+[data-color-mode="dark"] .rm-SearchModal.modal-backdrop {
+  background-color: rgba(5, 15, 22, 0.6) !important;
+}
+
 /* Outer shell */
 [data-color-mode="dark"] .rm-SearchModal[data-styles="hds"],
 [data-color-mode="dark"] #AppSearch[data-styles="hds"] {
