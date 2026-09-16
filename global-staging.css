@@ -3342,49 +3342,6 @@ header .LangPicker17mF-TSKPUmJ.undefined.Dropdown.Dropdown_closed {
    16) SEARCH MODAL
    ====================================================================== */
 
-/* Authoritative frosted backdrop for the classic search modal (.rm-SearchModal_classic[data-theme]); targets the real element chain (not the unused [data-styles=hds] rules below) so the GLP shows through blurred in both themes. */
-
-/* Wrapper chain fully transparent so only the backdrop tint shows. */
-#hub-search-results.hub-search-results--reactApp,
-#hub-search-results .hub-container {
-  background: transparent !important;
-}
-
-/* Backdrop — light theme */
-.rm-SearchModal.rm-SearchModal_classic[data-theme*="light"] {
-  background: rgba(180, 210, 220, 0.45) !important;
-  -webkit-backdrop-filter: blur(12px) !important;
-  backdrop-filter: blur(12px) !important;
-}
-
-/* Backdrop — dark theme */
-.rm-SearchModal.rm-SearchModal_classic[data-theme*="dark"] {
-  background: rgba(20, 45, 58, 0.35) !important;
-  -webkit-backdrop-filter: blur(12px) !important;
-  backdrop-filter: blur(12px) !important;
-}
-
-/* Inner dialog (#AppSearch) is transparent — the panel below carries the fill. */
-.rm-SearchModal.rm-SearchModal_classic > #AppSearch {
-  background: transparent !important;
-}
-
-/* Panel container — solid surface. Prefix match survives ReadMe class-hash changes. */
-.rm-SearchModal.rm-SearchModal_classic[data-theme*="light"] [class*="SuperHubSearch-container"] {
-  background: #ffffff !important;
-  border: 1px solid rgba(0, 129, 177, 0.25) !important;
-  border-radius: 8px !important;
-  box-shadow: 0 12px 32px rgba(9, 39, 50, 0.14) !important;
-  overflow: hidden !important;
-}
-.rm-SearchModal.rm-SearchModal_classic[data-theme*="dark"] [class*="SuperHubSearch-container"] {
-  background: #122530 !important;
-  border: 1px solid rgba(0, 129, 177, 0.20) !important;
-  border-radius: 8px !important;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45) !important;
-  overflow: hidden !important;
-}
-
 .rm-SearchModal[data-styles="hds"],
 #AppSearch[data-styles="hds"] {
   font-family: var(--here-font) !important;
@@ -3392,22 +3349,8 @@ header .LangPicker17mF-TSKPUmJ.undefined.Dropdown.Dropdown_closed {
 }
 
 /* Outer app shell */
-/* Outer overlay (fullscreen backdrop). Previously painted solid #ffffff,
-   which completely hid the GLP page behind the modal (Erik: "GLP disappears
-   … page should be blurred and in the background"). Make it a translucent
-   frosted-glass layer so the GLP stays visible and blurred behind the modal.
-   Reuses the same tint/blur as the "See all" modal backdrop for consistency.
-   The inner app shell (.SuperHubSearchI_obvfvvQi4g) stays solid white below. */
-.rm-SearchModal[data-styles="hds"],
+.rm-SearchModal[data-styles="hds"] .SuperHubSearchI_obvfvvQi4g,
 #AppSearch[data-styles="hds"] {
-  background: rgba(180, 210, 220, 0.45) !important;
-  -webkit-backdrop-filter: blur(12px) !important;
-  backdrop-filter: blur(12px) !important;
-  color: #092732 !important;
-}
-
-/* Inner app shell — the actual modal surface, kept solid white. */
-.rm-SearchModal[data-styles="hds"] .SuperHubSearchI_obvfvvQi4g {
   background: #ffffff !important;
   color: #092732 !important;
 }
@@ -3863,21 +3806,15 @@ header .LangPicker17mF-TSKPUmJ.undefined.Dropdown.Dropdown_closed {
     color: #e8f4f8 !important;
   }
 
-  /* Outer overlay (fullscreen backdrop) — translucent frosted dark layer so
-     the GLP page stays visible/blurred behind the modal (matches light-mode
-     fix and the See-all modal dark backdrop). */
+  /* Outer shell */
   [data-color-mode="system"] .rm-SearchModal[data-styles="hds"],
   [data-color-mode="system"] #AppSearch[data-styles="hds"] {
-    background: rgba(20, 45, 58, 0.35) !important;
-    -webkit-backdrop-filter: blur(12px) !important;
-    backdrop-filter: blur(12px) !important;
     color: #e8f4f8 !important;
   }
 
-  /* Inner app shell — solid dark modal surface. */
-  [data-color-mode="system"] .rm-SearchModal[data-styles="hds"] .SuperHubSearchI_obvfvvQi4g {
+  [data-color-mode="system"] .rm-SearchModal[data-styles="hds"] .SuperHubSearchI_obvfvvQi4g,
+  [data-color-mode="system"] #AppSearch[data-styles="hds"] {
     background: #0d1f26 !important;
-    color: #e8f4f8 !important;
   }
 
   /* Main modal container */
@@ -4038,25 +3975,15 @@ header .LangPicker17mF-TSKPUmJ.undefined.Dropdown.Dropdown_closed {
 
 /* ---- forced dark (user toggle, regardless of system preference) ---- */
 
-/* Outer overlay (fullscreen backdrop) — translucent frosted dark layer so
-   the GLP page stays visible/blurred behind the modal. Tint kept low-opacity
-   and mid-dark (not near-black) so the already-dark GLP shows through the blur;
-   a higher/darker tint rendered as a solid black wash that hid the page. */
+/* Outer shell */
 [data-color-mode="dark"] .rm-SearchModal[data-styles="hds"],
 [data-color-mode="dark"] #AppSearch[data-styles="hds"] {
-  background: rgba(20, 45, 58, 0.35) !important;
-  -webkit-backdrop-filter: blur(12px) !important;
-  backdrop-filter: blur(12px) !important;
   color: #e8f4f8 !important;
 }
 
-/* (Dark backdrop for the classic modal now handled by the authoritative block at
-   the top of section 16, keyed on .rm-SearchModal_classic[data-theme*="dark"].) */
-
-/* Inner app shell — solid dark modal surface. */
-[data-color-mode="dark"] .rm-SearchModal[data-styles="hds"] .SuperHubSearchI_obvfvvQi4g {
+[data-color-mode="dark"] .rm-SearchModal[data-styles="hds"] .SuperHubSearchI_obvfvvQi4g,
+[data-color-mode="dark"] #AppSearch[data-styles="hds"] {
   background: #0d1f26 !important;
-  color: #e8f4f8 !important;
 }
 
 [data-color-mode="dark"] .rm-SearchModal[data-styles="hds"] .SuperHubSearch-container2BhYey2XE-Ij,
