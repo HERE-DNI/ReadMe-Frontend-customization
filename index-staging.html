@@ -61,11 +61,8 @@
        shared .rm-Header-bottom-link class. */
     a.rm-Header-bottom-link { display: none !important; }
 
-    /* Hide ReadMe's native project-picker (duplicate "Documentation" label); scoped to .rm-ProjectPicker so injected wordmark #here-header-wordmark and Explore trigger #here-mm-wrapper are unaffected. */
-    .rm-ProjectPicker,
-    .Header-subnavnVH8URdkgvEl .rm-ProjectPicker,
-    [data-testid="dropdown-container"].rm-ProjectPicker,
-    .rm-ProjectPicker.Dropdown-toggle { display: none !important; }
+    /* Hide ReadMe's native project-picker button ("Documentation" project name) so it doesn't duplicate the injected wordmark; scoped to the button only. */
+    button.rm-ProjectPicker { display: none !important; }
 
     /* Logo sizing */
     .Header-logo-img3YvV4lcGKkeb { height: 50px; width: auto; }

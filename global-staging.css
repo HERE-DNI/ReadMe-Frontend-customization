@@ -4007,6 +4007,16 @@ header .LangPicker17mF-TSKPUmJ.undefined.Dropdown.Dropdown_closed {
   color: #e8f4f8 !important;
 }
 
+/* ReadMe renders the search modal as .rm-SearchModal with
+   data-theme="hds-web-product-dark-theme" (NOT data-styles="hds"), so the
+   rule above never matches and the default opaque modal hides the GLP.
+   Match the actual theme attribute to apply the frosted backdrop. */
+.rm-SearchModal[data-theme*="dark"] {
+  background: rgba(20, 45, 58, 0.35) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  backdrop-filter: blur(12px) !important;
+}
+
 /* Inner app shell — solid dark modal surface. */
 [data-color-mode="dark"] .rm-SearchModal[data-styles="hds"] .SuperHubSearchI_obvfvvQi4g {
   background: #0d1f26 !important;
