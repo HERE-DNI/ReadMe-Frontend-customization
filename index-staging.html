@@ -839,7 +839,7 @@
 
           <div class="here-resources__filters" role="group" aria-label="Filters">
             <span class="here-solfilter" data-here-solfilter data-here-solfilter-labels='{"all":"Show all products &amp; services","adas":"ADAS Solutions","navigation":"Navigation Solutions","fleet":"Fleet &amp; Mobility Solutions","gis":"GIS &amp; Location Intelligence"}'>
-              <hds-button variant="secondary" size="small" icon-right="chevron-down" data-here-solfilter-trigger aria-haspopup="true" aria-expanded="false">Show all products &amp; services</hds-button>
+              <hds-button variant="secondary" size="small" data-here-solfilter-trigger aria-haspopup="true" aria-expanded="false">Show all products &amp; services<span class="here-dd-chevron" aria-hidden="true"></span></hds-button>
               <div class="here-solfilter__menu" role="menu" hidden>
                 <button type="button" class="here-solfilter__opt here-solfilter__opt--active" role="menuitemradio" aria-checked="true" data-sol="all">Show all products &amp; services</button>
                 <span class="here-solfilter__label" aria-hidden="true">Filter by:</span>
@@ -853,7 +853,7 @@
             <hds-toggle aria-label="Show all descriptions" data-here-desc-toggle>Show all descriptions</hds-toggle>
             <span class="here-filter-divider" aria-hidden="true"></span>
             <span class="here-sort" data-here-sort data-here-sort-labels='{"most":"Sort by: Most viewed","az":"Sort by: A - Z","za":"Sort by: Z - A"}'>
-              <hds-button variant="subtle" size="small" icon-right="chevron-down" data-here-sort-trigger aria-haspopup="true" aria-expanded="false">Sort by: Most viewed</hds-button>
+              <hds-button variant="subtle" size="small" data-here-sort-trigger aria-haspopup="true" aria-expanded="false">Sort by: Most viewed<span class="here-dd-chevron" aria-hidden="true"></span></hds-button>
               <div class="here-sort__menu" role="menu" hidden>
                 <button type="button" class="here-sort__opt here-sort__opt--active" role="menuitemradio" aria-checked="true" data-sort="most">Most viewed</button>
                 <button type="button" class="here-sort__opt" role="menuitemradio" aria-checked="false" data-sort="az">A - Z</button>
@@ -878,15 +878,15 @@
               <ul class="here-res-list">
                 <li class="here-res-list__item"><a href="/map-rendering/docs"><span class="here-res-list__title"><span class="here-res-list__title-text">Map Rendering</span></span><span class="here-res-list__desc">Render rich, interactive maps with location data, customizable graphics with these APIs.</span></a></li>
                 <li class="here-res-list__item"><a href="/map-attributes/docs"><span class="here-res-list__title"><span class="here-res-list__title-text">Map Attributes API</span></span><span class="here-res-list__desc">Simplify access to HERE's rich map content and support tile retrieval, geographic filtering.</span></a></li>
-                <li class="here-res-list__item"><a href="/hd-live-map/docs"><span class="here-res-list__title"><span class="here-res-list__title-text">HD Live Map</span><hds-icon name="lock" category="core-ui" icon-style="outline" size="16" aria-label="Requires access"></hds-icon></span><span class="here-res-list__desc">Get intelligent, accurate data from real-time sources to innovate autonomous driving.</span></a></li>
-                <li class="here-res-list__item"><a href="/map-content/docs"><span class="here-res-list__title"><span class="here-res-list__title-text">Map Content</span><hds-icon name="lock" category="core-ui" icon-style="outline" size="16" aria-label="Requires access"></hds-icon></span><span class="here-res-list__desc">Access continuously updated data and content to specifically support your business needs.</span></a></li>
-                <li class="here-res-list__item"><a href="/optimized-client-map/docs"><span class="here-res-list__title"><span class="here-res-list__title-text">Optimized Client Map</span><hds-icon name="lock" category="core-ui" icon-style="outline" size="16" aria-label="Requires access"></hds-icon></span><span class="here-res-list__desc">Render compact, performance-tuned maps for mobile, automotive and embedded contexts.</span></a></li>
+                <li class="here-res-list__item"><a href="/hd-live-map/docs"><span class="here-res-list__title"><span class="here-res-list__title-text">HD Live Map</span><hds-icon name="lock" category="core-ui" size="16" aria-label="Requires access"></hds-icon></span><span class="here-res-list__desc">Get intelligent, accurate data from real-time sources to innovate autonomous driving.</span></a></li>
+                <li class="here-res-list__item"><a href="/map-content/docs"><span class="here-res-list__title"><span class="here-res-list__title-text">Map Content</span><hds-icon name="lock" category="core-ui" size="16" aria-label="Requires access"></hds-icon></span><span class="here-res-list__desc">Access continuously updated data and content to specifically support your business needs.</span></a></li>
+                <li class="here-res-list__item"><a href="/optimized-client-map/docs"><span class="here-res-list__title"><span class="here-res-list__title-text">Optimized Client Map</span><hds-icon name="lock" category="core-ui" size="16" aria-label="Requires access"></hds-icon></span><span class="here-res-list__desc">Render compact, performance-tuned maps for mobile, automotive and embedded contexts.</span></a></li>
                 <li class="here-res-list__item"><a href="/maps-xml/docs"><span class="here-res-list__title"><span class="here-res-list__title-text">Maps XML</span></span><span class="here-res-list__desc">Access rich map data in an XML structure for your OpenStreetMap context.</span></a></li>
                 <li class="here-res-list__item"><a href="/indoor-map/docs"><span class="here-res-list__title"><span class="here-res-list__title-text">Indoor Maps</span></span><span class="here-res-list__desc">Create with models of indoor spaces, building geometry, and web and mobile libraries.</span></a></li>
                 <li class="here-res-list__item"><a href="/map-feedback/docs"><span class="here-res-list__title"><span class="here-res-list__title-text">Map Feedback API</span></span><span class="here-res-list__desc">Submit map corrections and check the status of your feedback.</span></a></li>
                 <li class="here-res-list__item"><a href="/mapping-concepts/docs"><span class="here-res-list__title"><span class="here-res-list__title-text">Introduction to Mapping Concepts</span></span><span class="here-res-list__desc">Start with industry foundations and building with HERE.</span></a></li>
-                <li class="here-res-list__item"><a href="/mapmaking/docs"><span class="here-res-list__title"><span class="here-res-list__title-text">Mapmaking</span><hds-icon name="lock" category="core-ui" icon-style="outline" size="16" aria-label="Requires access"></hds-icon></span><span class="here-res-list__desc">Create navigable maps with custom map content for location services and applications.</span></a></li>
-                <li class="here-res-list__item"><a href="/map-object-model/docs"><span class="here-res-list__title"><span class="here-res-list__title-text">Map Object Model</span><hds-icon name="lock" category="core-ui" icon-style="outline" size="16" aria-label="Requires access"></hds-icon></span><span class="here-res-list__desc">Access HERE's semantic data model that unifies location data across layers.</span></a></li>
+                <li class="here-res-list__item"><a href="/mapmaking/docs"><span class="here-res-list__title"><span class="here-res-list__title-text">Mapmaking</span><hds-icon name="lock" category="core-ui" size="16" aria-label="Requires access"></hds-icon></span><span class="here-res-list__desc">Create navigable maps with custom map content for location services and applications.</span></a></li>
+                <li class="here-res-list__item"><a href="/map-object-model/docs"><span class="here-res-list__title"><span class="here-res-list__title-text">Map Object Model</span><hds-icon name="lock" category="core-ui" size="16" aria-label="Requires access"></hds-icon></span><span class="here-res-list__desc">Access HERE's semantic data model that unifies location data across layers.</span></a></li>
                 <li class="here-res-list__item"><a href="/automated-driving-zones/docs"><span class="here-res-list__title"><span class="here-res-list__title-text">Automated Driving Zones</span></span><span class="here-res-list__desc">Create, edit and manage maps for ADAS and automated driving.</span></a></li>
                 <li class="here-res-list__item"><a href="/nds-live/docs"><span class="here-res-list__title"><span class="here-res-list__title-text">NDS.Live</span></span><span class="here-res-list__desc">View how HERE implements the NDS.Live specs for ADAS, automated driving.</span></a></li>
                 <li class="here-res-list__item"><a href="/custom-attributes/docs"><span class="here-res-list__title"><span class="here-res-list__title-text">Custom Attributes</span></span><span class="here-res-list__desc">Create and customize maps with road and navigation attributes and fleet restrictions.</span></a></li>
@@ -939,7 +939,7 @@
                 <li class="here-res-list__item"><a href="/here-wego-pro/docs"><span class="here-res-list__title"><span class="here-res-list__title-text">HERE WeGo Pro</span></span><span class="here-res-list__desc">Equip fleet drivers with safe, truck-specific navigation, real-time traffic and more.</span></a></li>
                 <li class="here-res-list__item"><a href="/routing-api/docs"><span class="here-res-list__title"><span class="here-res-list__title-text">Routing APIs</span></span><span class="here-res-list__desc">Plan routes, optimize ETAs and support navigation for different transport types.</span></a></li>
                 <li class="here-res-list__item"><a href="/traffic-api/docs"><span class="here-res-list__title"><span class="here-res-list__title-text">Traffic API</span></span><span class="here-res-list__desc">Get info on live traffic flow data and incidents including type, location, status and times.</span></a></li>
-                <li class="here-res-list__item"><a href="/real-time-traffic/docs"><span class="here-res-list__title"><span class="here-res-list__title-text">Real-Time Traffic</span><hds-icon name="lock" category="core-ui" icon-style="outline" size="16" aria-label="Requires access"></hds-icon></span><span class="here-res-list__desc">Stream up-to-the-minute worldwide data on flows and incidents from multiple sources.</span></a></li>
+                <li class="here-res-list__item"><a href="/real-time-traffic/docs"><span class="here-res-list__title"><span class="here-res-list__title-text">Real-Time Traffic</span><hds-icon name="lock" category="core-ui" size="16" aria-label="Requires access"></hds-icon></span><span class="here-res-list__desc">Stream up-to-the-minute worldwide data on flows and incidents from multiple sources.</span></a></li>
                 <li class="here-res-list__item"><a href="/transit/docs"><span class="here-res-list__title"><span class="here-res-list__title-text">Transit APIs</span></span><span class="here-res-list__desc">Plan public transport journeys and get advanced intermodal routing capabilities.</span></a></li>
                 <li class="here-res-list__item"><a href="/safety-cameras/docs"><span class="here-res-list__title"><span class="here-res-list__title-text">Safety Cameras API</span></span><span class="here-res-list__desc">Access lists of fixed and mobile safety cameras, zones and known checkpoints.</span></a></li>
                 <li class="here-res-list__item"><a href="/behavioral-maneuvers/docs"><span class="here-res-list__title"><span class="here-res-list__title-text">Behavioral Maneuvers</span></span><span class="here-res-list__desc">Improve drive logic with anticipation, quality KPIs &amp; road coverage for autonomous driving.</span></a></li>
@@ -961,7 +961,7 @@
               <ul class="here-res-list">
                 <li class="here-res-list__item"><a href="/maps-api-for-js/docs"><span class="here-res-list__title"><span class="here-res-list__title-text">Maps API for JavaScript</span></span><span class="here-res-list__desc">Create feature-rich, interactive maps for your web applications.</span></a></li>
                 <li class="here-res-list__item"><a href="/style-editor/docs"><span class="here-res-list__title"><span class="here-res-list__title-text">Style Editor</span></span><span class="here-res-list__desc">Customize HERE map styles in an intuitive browser-based tool without writing code.</span></a></li>
-                <li class="here-res-list__item"><a href="/scenextract/docs"><span class="here-res-list__title"><span class="here-res-list__title-text">SceneXtract</span><hds-icon name="lock" category="core-ui" icon-style="outline" size="16" aria-label="Requires access"></hds-icon></span><span class="here-res-list__desc">Use natural language search to create scenes for ADAS and automated driving simulations.</span></a></li>
+                <li class="here-res-list__item"><a href="/scenextract/docs"><span class="here-res-list__title"><span class="here-res-list__title-text">SceneXtract</span><hds-icon name="lock" category="core-ui" size="16" aria-label="Requires access"></hds-icon></span><span class="here-res-list__desc">Use natural language search to create scenes for ADAS and automated driving simulations.</span></a></li>
                 <li class="here-res-list__item"><a href="/anonymizer/docs"><span class="here-res-list__title"><span class="here-res-list__title-text">Anonymizer</span></span><span class="here-res-list__desc">Anonymize location data to protect privacy at scale while preserving data value.</span></a></li>
                 <li class="here-res-list__item"><a href="/identity-and-access-management/docs"><span class="here-res-list__title"><span class="here-res-list__title-text">Identity &amp; Access Management</span></span><span class="here-res-list__desc">Securely authenticate identities and manage access to your HERE services and resources.</span></a></li>
                 <li class="here-res-list__item"><a href="/workspace/docs"><span class="here-res-list__title"><span class="here-res-list__title-text">Workspace</span></span><span class="here-res-list__desc">Enrich and transform geospatial data by leveraging batch and stream pipelines.</span></a></li>
@@ -1195,7 +1195,7 @@
               </article>
               <article class="here-policy-item" role="listitem">
                 <a href="/policies/docs/local-maps-regulatory-approval">
-                  <span class="here-policy-item__title"><span class="here-policy-item__title-text">Local Maps Regulatory Approval</span><hds-icon name="lock" category="core-ui" icon-style="outline" size="16" aria-label="Requires access"></hds-icon></span>
+                  <span class="here-policy-item__title"><span class="here-policy-item__title-text">Local Maps Regulatory Approval</span><hds-icon name="lock" category="core-ui" size="16" aria-label="Requires access"></hds-icon></span>
                   <span class="here-policy-item__desc">Country-level approvals required to use map data.</span>
                 </a>
               </article>
@@ -1268,7 +1268,7 @@
 
           <div class="here-resources__filters" role="group" aria-label="フィルター">
             <span class="here-solfilter" data-here-solfilter data-here-solfilter-labels='{"all":"すべての製品・サービスを表示","adas":"ADAS ソリューション","navigation":"ナビゲーション ソリューション","fleet":"フリート・モビリティ ソリューション","gis":"GIS・ロケーションインテリジェンス"}'>
-              <hds-button variant="secondary" size="small" icon-right="chevron-down" data-here-solfilter-trigger aria-haspopup="true" aria-expanded="false">すべての製品・サービスを表示</hds-button>
+              <hds-button variant="secondary" size="small" data-here-solfilter-trigger aria-haspopup="true" aria-expanded="false">すべての製品・サービスを表示<span class="here-dd-chevron" aria-hidden="true"></span></hds-button>
               <div class="here-solfilter__menu" role="menu" hidden>
                 <button type="button" class="here-solfilter__opt here-solfilter__opt--active" role="menuitemradio" aria-checked="true" data-sol="all">すべての製品・サービスを表示</button>
                 <span class="here-solfilter__label" aria-hidden="true">絞り込み:</span>
@@ -1282,7 +1282,7 @@
             <hds-toggle aria-label="説明を表示" data-here-desc-toggle>説明を表示</hds-toggle>
             <span class="here-filter-divider" aria-hidden="true"></span>
             <span class="here-sort" data-here-sort data-here-sort-labels='{"most":"並び順: 閲覧数順","az":"並び順: A - Z","za":"並び順: Z - A"}'>
-              <hds-button variant="subtle" size="small" icon-right="chevron-down" data-here-sort-trigger aria-haspopup="true" aria-expanded="false">並び順: 閲覧数順</hds-button>
+              <hds-button variant="subtle" size="small" data-here-sort-trigger aria-haspopup="true" aria-expanded="false">並び順: 閲覧数順<span class="here-dd-chevron" aria-hidden="true"></span></hds-button>
               <div class="here-sort__menu" role="menu" hidden>
                 <button type="button" class="here-sort__opt here-sort__opt--active" role="menuitemradio" aria-checked="true" data-sort="most">閲覧数順</button>
                 <button type="button" class="here-sort__opt" role="menuitemradio" aria-checked="false" data-sort="az">A - Z</button>
@@ -1544,7 +1544,7 @@
               </article>
               <article class="here-policy-item" role="listitem">
                 <a href="/policies/ja/v1.0/docs/local-maps-regulatory-approval">
-                  <span class="here-policy-item__title"><span class="here-policy-item__title-text">ローカル地図の規制承認</span><hds-icon name="lock" category="core-ui" icon-style="outline" size="16" aria-label="アクセスが必要"></hds-icon></span>
+                  <span class="here-policy-item__title"><span class="here-policy-item__title-text">ローカル地図の規制承認</span><hds-icon name="lock" category="core-ui" size="16" aria-label="アクセスが必要"></hds-icon></span>
                   <span class="here-policy-item__desc">地図データを利用するために必要な、国単位の承認について説明します。</span>
                 </a>
               </article>

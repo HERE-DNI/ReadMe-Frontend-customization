@@ -699,6 +699,24 @@ font-size: 14px !important;
   align-self: center;
 }
 
+/* Down-chevron affordance for the filter/sort dropdown triggers (bespoke CSS
+   chevron — HDS has no "chevron-down" icon token, and the icon-right fallback
+   rendered a wrong glyph). Rotates 180deg when its trigger is expanded. */
+.here-glp .here-dd-chevron {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-left: 8px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(45deg) translateY(-1px);
+  transition: transform 0.15s ease;
+  flex-shrink: 0;
+}
+.here-glp [aria-expanded="true"] .here-dd-chevron {
+  transform: rotate(-135deg) translateY(1px);
+}
+
 /* Sort by dropdown — bespoke menu anchored to the "Sort by" hds-button. */
 .here-glp .here-sort {
   position: relative;
