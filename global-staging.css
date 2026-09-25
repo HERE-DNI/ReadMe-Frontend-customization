@@ -707,14 +707,18 @@ font-size: 14px !important;
   width: 6px;
   height: 6px;
   margin-left: 8px;
-  border-right: 1.5px solid currentColor;
-  border-bottom: 1.5px solid currentColor;
+  border-right: 1.5px solid #051920;
+  border-bottom: 1.5px solid #051920;
   transform: rotate(45deg) translateY(-1px);
   transition: transform 0.15s ease;
   flex-shrink: 0;
 }
 .here-glp [aria-expanded="true"] .here-dd-chevron {
   transform: rotate(-135deg) translateY(1px);
+}
+.here-glp[data-theme*="dark"] .here-dd-chevron {
+  border-right-color: #ECF7FC;
+  border-bottom-color: #ECF7FC;
 }
 
 /* Sort by dropdown — bespoke menu anchored to the "Sort by" hds-button. */
