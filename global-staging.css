@@ -703,22 +703,31 @@ font-size: 14px !important;
    chevron — HDS has no "chevron-down" icon token, and the icon-right fallback
    rendered a wrong glyph). Rotates 180deg when its trigger is expanded. */
 .here-glp .here-dd-chevron {
-  display: inline-block;
+  position: absolute;
+  right: 14px;
+  top: 50%;
   width: 6px;
   height: 6px;
-  margin-left: 8px;
   border-right: 1.5px solid #051920;
   border-bottom: 1.5px solid #051920;
-  transform: rotate(45deg) translateY(-1px);
+  transform: translateY(-50%) rotate(45deg);
   transition: transform 0.15s ease;
-  flex-shrink: 0;
+  pointer-events: none;
 }
-.here-glp [aria-expanded="true"] .here-dd-chevron {
-  transform: rotate(-135deg) translateY(1px);
+/* Chevron is a sibling of the trigger button; flip it when the button
+   in the same wrapper is expanded. */
+.here-glp .here-sort:has([aria-expanded="true"]) .here-dd-chevron,
+.here-glp .here-solfilter:has([aria-expanded="true"]) .here-dd-chevron {
+  transform: translateY(-50%) rotate(-135deg);
 }
 .here-glp[data-theme*="dark"] .here-dd-chevron {
   border-right-color: #ECF7FC;
   border-bottom-color: #ECF7FC;
+}
+/* Make room for the absolute chevron inside the trigger button. */
+.here-glp .here-sort [data-here-sort-trigger],
+.here-glp .here-solfilter [data-here-solfilter-trigger] {
+  padding-right: 28px !important;
 }
 
 /* Sort by dropdown — bespoke menu anchored to the "Sort by" hds-button. */
