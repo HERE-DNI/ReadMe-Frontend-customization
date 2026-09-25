@@ -699,6 +699,104 @@ font-size: 14px !important;
   align-self: center;
 }
 
+/* Sort by dropdown — bespoke menu anchored to the "Sort by" hds-button. */
+.here-glp .here-sort {
+  position: relative;
+  display: inline-flex;
+}
+.here-glp .here-sort__menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 50;
+  min-width: 180px;
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 129, 177, 0.25);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+.here-glp .here-sort__menu[hidden] { display: none; }
+.here-glp .here-sort__opt {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  min-height: 32px;
+  border: 0;
+  background: transparent;
+  border-radius: 4px;
+  font-family: "FiraGO", "Fira GO", "Fira Sans", system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: -0.0286em;
+  color: #051920;
+  text-align: left;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.here-glp .here-sort__opt:hover {
+  background: var(--hds-background-object-hover, rgba(0, 137, 184, 0.13));
+}
+.here-glp .here-sort__opt--active {
+  background: var(--hds-background-object, rgba(0, 148, 215, 0.07));
+  font-weight: 600;
+}
+
+/* Show all products & services — solution filter dropdown (same pattern as sort). */
+.here-glp .here-solfilter {
+  position: relative;
+  display: inline-flex;
+}
+.here-glp .here-solfilter__menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 50;
+  min-width: 260px;
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 129, 177, 0.25);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+.here-glp .here-solfilter__menu[hidden] { display: none; }
+.here-glp .here-solfilter__opt {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  min-height: 32px;
+  border: 0;
+  background: transparent;
+  border-radius: 4px;
+  font-family: "FiraGO", "Fira GO", "Fira Sans", system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: -0.0286em;
+  color: #051920;
+  text-align: left;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.here-glp .here-solfilter__opt:hover {
+  background: var(--hds-background-object-hover, rgba(0, 137, 184, 0.13));
+}
+.here-glp .here-solfilter__opt--active {
+  background: var(--hds-background-object, rgba(0, 148, 215, 0.07));
+  font-weight: 600;
+}
+.here-glp .here-solfilter__label {
+  padding: 10px 12px 4px;
+  font-family: "FiraGO", "Fira GO", "Fira Sans", system-ui, sans-serif;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: -0.0167em;
+  color: #56899C;
+}
+
 /* --- 4-column category grid ----------------------------------------- */
 .here-glp .here-resources__grid {
   display: grid;
@@ -810,6 +908,27 @@ font-size: 14px !important;
 /* Pressed / active — HDS object-press token. */
 .here-glp .here-res-list__item:active {
   background: var(--hds-background-object-press);
+}
+
+/* "Show APIs" filter — when active, API items stay full-emphasis and non-API items are grayed out (dimmed + non-interactive). Driven by data-show-apis on the section; API items get .here-res-list__item--api from JS. */
+.here-glp .here-resources[data-show-apis="1"] .here-res-list__item:not(.here-res-list__item--api) {
+  opacity: 0.35;
+  pointer-events: none;
+}
+.here-glp .here-resources[data-show-apis="1"] .here-res-card__title,
+.here-glp .here-resources[data-show-apis="1"] .here-res-card__intro,
+.here-glp .here-resources[data-show-apis="1"] .here-res-card__icon {
+  opacity: 0.35;
+}
+.here-glp .here-resources[data-show-apis="1"] .here-res-card--has-api .here-res-card__title,
+.here-glp .here-resources[data-show-apis="1"] .here-res-card--has-api .here-res-card__intro,
+.here-glp .here-resources[data-show-apis="1"] .here-res-card--has-api .here-res-card__icon {
+  opacity: 1;
+}
+
+/* Solution filter — hide items not in the selected solution (set by JS once the product→solution mapping is available). */
+.here-glp .here-res-list__item[data-sol-hidden] {
+  display: none;
 }
 
 /* Extended variant (descriptions visible) needs extra bottom padding to
@@ -1264,6 +1383,41 @@ font-size: 14px !important;
 .here-glp[data-theme*="dark"] .here-res-card__intro,
 .here-glp[data-theme*="dark"] .here-res-list__desc {
   color: #BEDFEB !important;
+}
+
+/* Sort by dropdown — dark */
+.here-glp[data-theme*="dark"] .here-sort__menu {
+  background: #12262F !important;
+  border-color: rgba(0, 129, 177, 0.35) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.32) !important;
+}
+.here-glp[data-theme*="dark"] .here-sort__opt {
+  color: #ECF7FC !important;
+}
+.here-glp[data-theme*="dark"] .here-sort__opt:hover {
+  background: rgba(0, 148, 206, 0.20) !important;
+}
+.here-glp[data-theme*="dark"] .here-sort__opt--active {
+  background: rgba(0, 148, 206, 0.28) !important;
+}
+
+/* Solution filter dropdown — dark */
+.here-glp[data-theme*="dark"] .here-solfilter__menu {
+  background: #12262F !important;
+  border-color: rgba(0, 129, 177, 0.35) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.32) !important;
+}
+.here-glp[data-theme*="dark"] .here-solfilter__opt {
+  color: #ECF7FC !important;
+}
+.here-glp[data-theme*="dark"] .here-solfilter__opt:hover {
+  background: rgba(0, 148, 206, 0.20) !important;
+}
+.here-glp[data-theme*="dark"] .here-solfilter__opt--active {
+  background: rgba(0, 148, 206, 0.28) !important;
+}
+.here-glp[data-theme*="dark"] .here-solfilter__label {
+  color: #89B9CB !important;
 }
 .here-glp[data-theme*="dark"] .here-res-card {
   background: #092732 !important;

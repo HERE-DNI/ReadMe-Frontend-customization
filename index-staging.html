@@ -796,10 +796,6 @@
             <a href="https://docs.here.com/here-kb/docs/the-here-docs-mcp" target="_blank" rel="noopener" class="here-mcp-banner__cta">View documentation &#8594;</a>
           </aside>
 
-          <hds-switcher size="small" data-here-lang-toggle>
-            <hds-switcher-tab selected data-lang="en">EN</hds-switcher-tab>
-            <hds-switcher-tab data-lang="ja">日本語</hds-switcher-tab>
-          </hds-switcher>
         </div>
 
         <div class="here-hero__wrap">
@@ -842,11 +838,28 @@
           </div>
 
           <div class="here-resources__filters" role="group" aria-label="Filters">
-            <hds-button variant="secondary" size="small" icon-right="chevron-down">Show all products &amp; services</hds-button>
-            <hds-chip size="medium">Show APIs</hds-chip>
+            <span class="here-solfilter" data-here-solfilter data-here-solfilter-labels='{"all":"Show all products &amp; services","adas":"ADAS Solutions","navigation":"Navigation Solutions","fleet":"Fleet &amp; Mobility Solutions","gis":"GIS &amp; Location Intelligence"}'>
+              <hds-button variant="secondary" size="small" icon-right="chevron-down" data-here-solfilter-trigger aria-haspopup="true" aria-expanded="false">Show all products &amp; services</hds-button>
+              <div class="here-solfilter__menu" role="menu" hidden>
+                <button type="button" class="here-solfilter__opt here-solfilter__opt--active" role="menuitemradio" aria-checked="true" data-sol="all">Show all products &amp; services</button>
+                <span class="here-solfilter__label" aria-hidden="true">Filter by:</span>
+                <button type="button" class="here-solfilter__opt" role="menuitemradio" aria-checked="false" data-sol="adas">ADAS Solutions</button>
+                <button type="button" class="here-solfilter__opt" role="menuitemradio" aria-checked="false" data-sol="navigation">Navigation Solutions</button>
+                <button type="button" class="here-solfilter__opt" role="menuitemradio" aria-checked="false" data-sol="fleet">Fleet &amp; Mobility Solutions</button>
+                <button type="button" class="here-solfilter__opt" role="menuitemradio" aria-checked="false" data-sol="gis">GIS &amp; Location Intelligence</button>
+              </div>
+            </span>
+            <hds-chip size="medium" selectable data-here-apis-chip>Show APIs</hds-chip>
             <hds-toggle aria-label="Show all descriptions" data-here-desc-toggle>Show all descriptions</hds-toggle>
             <span class="here-filter-divider" aria-hidden="true"></span>
-            <hds-button variant="subtle" size="small" icon-right="chevron-down">Sort by: Most viewed</hds-button>
+            <span class="here-sort" data-here-sort data-here-sort-labels='{"most":"Sort by: Most viewed","az":"Sort by: A - Z","za":"Sort by: Z - A"}'>
+              <hds-button variant="subtle" size="small" icon-right="chevron-down" data-here-sort-trigger aria-haspopup="true" aria-expanded="false">Sort by: Most viewed</hds-button>
+              <div class="here-sort__menu" role="menu" hidden>
+                <button type="button" class="here-sort__opt here-sort__opt--active" role="menuitemradio" aria-checked="true" data-sort="most">Most viewed</button>
+                <button type="button" class="here-sort__opt" role="menuitemradio" aria-checked="false" data-sort="az">A - Z</button>
+                <button type="button" class="here-sort__opt" role="menuitemradio" aria-checked="false" data-sort="za">Z - A</button>
+              </div>
+            </span>
           </div>
 
           <div class="here-resources__grid" role="list">
@@ -1017,16 +1030,6 @@
               </div>
             </article>
 
-          </div>
-
-          <div class="here-usecases__controls" role="group" aria-label="Carousel navigation">
-            <hds-button variant="subtle" size="small" icon="chevron-left" icon-only aria-label="Previous"></hds-button>
-            <div class="here-usecases__dots" role="tablist">
-              <button type="button" class="here-usecases__dot here-usecases__dot--active" role="tab" aria-selected="true" aria-label="Slide 1"></button>
-              <button type="button" class="here-usecases__dot" role="tab" aria-selected="false" aria-label="Slide 2"></button>
-              <button type="button" class="here-usecases__dot" role="tab" aria-selected="false" aria-label="Slide 3"></button>
-            </div>
-            <hds-button variant="subtle" size="small" icon="chevron-right" icon-only aria-label="Next"></hds-button>
           </div>
 
         </div>
@@ -1232,10 +1235,6 @@
             <a href="https://docs.here.com/here-kb/docs/the-here-docs-mcp" target="_blank" rel="noopener" class="here-mcp-banner__cta">ドキュメントを表示（英語） &#8594;</a>
           </aside>
 
-          <hds-switcher size="small" data-here-lang-toggle>
-            <hds-switcher-tab data-lang="en">EN</hds-switcher-tab>
-            <hds-switcher-tab selected data-lang="ja">日本語</hds-switcher-tab>
-          </hds-switcher>
         </div>
 
         <div class="here-hero__wrap">
@@ -1268,11 +1267,28 @@
           </div>
 
           <div class="here-resources__filters" role="group" aria-label="フィルター">
-            <hds-button variant="secondary" size="small" icon-right="chevron-down">すべての製品・サービスを表示</hds-button>
-            <hds-chip size="medium">API を表示</hds-chip>
+            <span class="here-solfilter" data-here-solfilter data-here-solfilter-labels='{"all":"すべての製品・サービスを表示","adas":"ADAS ソリューション","navigation":"ナビゲーション ソリューション","fleet":"フリート・モビリティ ソリューション","gis":"GIS・ロケーションインテリジェンス"}'>
+              <hds-button variant="secondary" size="small" icon-right="chevron-down" data-here-solfilter-trigger aria-haspopup="true" aria-expanded="false">すべての製品・サービスを表示</hds-button>
+              <div class="here-solfilter__menu" role="menu" hidden>
+                <button type="button" class="here-solfilter__opt here-solfilter__opt--active" role="menuitemradio" aria-checked="true" data-sol="all">すべての製品・サービスを表示</button>
+                <span class="here-solfilter__label" aria-hidden="true">絞り込み:</span>
+                <button type="button" class="here-solfilter__opt" role="menuitemradio" aria-checked="false" data-sol="adas">ADAS ソリューション</button>
+                <button type="button" class="here-solfilter__opt" role="menuitemradio" aria-checked="false" data-sol="navigation">ナビゲーション ソリューション</button>
+                <button type="button" class="here-solfilter__opt" role="menuitemradio" aria-checked="false" data-sol="fleet">フリート・モビリティ ソリューション</button>
+                <button type="button" class="here-solfilter__opt" role="menuitemradio" aria-checked="false" data-sol="gis">GIS・ロケーションインテリジェンス</button>
+              </div>
+            </span>
+            <hds-chip size="medium" selectable data-here-apis-chip>API を表示</hds-chip>
             <hds-toggle aria-label="説明を表示" data-here-desc-toggle>説明を表示</hds-toggle>
             <span class="here-filter-divider" aria-hidden="true"></span>
-            <hds-button variant="subtle" size="small" icon-right="chevron-down">並び順: 閲覧数順</hds-button>
+            <span class="here-sort" data-here-sort data-here-sort-labels='{"most":"並び順: 閲覧数順","az":"並び順: A - Z","za":"並び順: Z - A"}'>
+              <hds-button variant="subtle" size="small" icon-right="chevron-down" data-here-sort-trigger aria-haspopup="true" aria-expanded="false">並び順: 閲覧数順</hds-button>
+              <div class="here-sort__menu" role="menu" hidden>
+                <button type="button" class="here-sort__opt here-sort__opt--active" role="menuitemradio" aria-checked="true" data-sort="most">閲覧数順</button>
+                <button type="button" class="here-sort__opt" role="menuitemradio" aria-checked="false" data-sort="az">A - Z</button>
+                <button type="button" class="here-sort__opt" role="menuitemradio" aria-checked="false" data-sort="za">Z - A</button>
+              </div>
+            </span>
           </div>
 
           <div class="here-resources__grid" role="list">
@@ -1403,16 +1419,6 @@
               </div>
             </article>
 
-          </div>
-
-          <div class="here-usecases__controls" role="group" aria-label="カルーセルナビゲーション">
-            <hds-button variant="subtle" size="small" icon="chevron-left" icon-only aria-label="前へ"></hds-button>
-            <div class="here-usecases__dots" role="tablist">
-              <button type="button" class="here-usecases__dot here-usecases__dot--active" role="tab" aria-selected="true" aria-label="スライド 1"></button>
-              <button type="button" class="here-usecases__dot" role="tab" aria-selected="false" aria-label="スライド 2"></button>
-              <button type="button" class="here-usecases__dot" role="tab" aria-selected="false" aria-label="スライド 3"></button>
-            </div>
-            <hds-button variant="subtle" size="small" icon="chevron-right" icon-only aria-label="次へ"></hds-button>
           </div>
 
         </div>
@@ -1777,6 +1783,311 @@
       bind();
       try {
         new MutationObserver(bind).observe(document.documentElement, { childList: true, subtree: true });
+      } catch (e) {}
+    })();
+
+    /* ── Show APIs filter ──
+       Explore technical resources only. Clicking the "Show APIs" chip
+       highlights products that expose an API (per the fixed list below)
+       and grays out everything else; clicking again resets. API items are
+       matched by their (locale-invariant) title text, so EN and JA both
+       work. Both language sections are kept in sync. */
+    (function () {
+      var TAG = "__hereApisChip_v1";
+      if (window[TAG]) return;
+      window[TAG] = true;
+
+      var API_TITLES = {
+        "Map Attributes API": 1,
+        "Map Feedback API": 1,
+        "Geocoding & Search": 1,
+        "Destination Weather": 1,
+        "Tracking API": 1,
+        "Positioning": 1,
+        "Parking": 1,
+        "Fuel Prices API": 1,
+        "Data API": 1,
+        "HERE-hosted what3words API": 1,
+        "EV Charge Points API": 1,
+        "Tour Planning API": 1,
+        "Routing APIs": 1,
+        "Traffic API": 1,
+        "Transit APIs": 1,
+        "Safety Cameras API": 1,
+        "Maps API for JavaScript": 1,
+        "Identity & Access Management": 1,
+        "System Status API": 1
+      };
+
+      function markItems() {
+        document.querySelectorAll(".here-resources .here-res-list__item").forEach(function (item) {
+          var t = item.querySelector(".here-res-list__title-text");
+          var name = t ? (t.textContent || "").trim() : "";
+          var isApi = !!API_TITLES[name];
+          item.classList.toggle("here-res-list__item--api", isApi);
+        });
+        document.querySelectorAll(".here-resources .here-res-card").forEach(function (card) {
+          var hasApi = !!card.querySelector(".here-res-list__item--api");
+          card.classList.toggle("here-res-card--has-api", hasApi);
+        });
+      }
+
+      function setState(on) {
+        document.querySelectorAll(".here-resources").forEach(function (section) {
+          section.setAttribute("data-show-apis", on ? "1" : "0");
+          section.querySelectorAll("[data-here-apis-chip]").forEach(function (chip) {
+            try { if (chip.selected !== on) chip.selected = on; } catch (e) {}
+            chip.setAttribute("aria-pressed", on ? "true" : "false");
+          });
+        });
+      }
+
+      function isOn() {
+        var section = document.querySelector(".here-resources");
+        return !!(section && section.getAttribute("data-show-apis") === "1");
+      }
+
+      function bind() {
+        markItems();
+        document.querySelectorAll("[data-here-apis-chip]").forEach(function (chip) {
+          if (chip.__hereApisBound) return;
+          chip.__hereApisBound = true;
+          // hds-chip[selectable] emits "select" on activation; sync to its own
+          // selected state when present, else fall back to a plain toggle.
+          chip.addEventListener("select", function () {
+            var next = (typeof chip.selected === "boolean") ? chip.selected : !isOn();
+            setState(next);
+          });
+          chip.addEventListener("click", function () {
+            if (chip.__hereApisSelectSupported) return;
+            setState(!isOn());
+          });
+          if (typeof chip.selected === "boolean") chip.__hereApisSelectSupported = true;
+        });
+      }
+
+      bind();
+      try {
+        new MutationObserver(bind).observe(document.documentElement, { childList: true, subtree: true });
+      } catch (e) {}
+    })();
+
+    /* ── Sort by dropdown ──
+       Explore technical resources only. Reorders each card's product list
+       by "Most viewed" (per-category ranking from MostPopularRanking), "A - Z",
+       or "Z - A". Default is Most viewed. Ranking is matched by the
+       locale-invariant title text, so EN and JA both work; both sections
+       stay in sync. */
+    (function () {
+      var TAG = "__hereSort_v1";
+      if (window[TAG]) return;
+      window[TAG] = true;
+
+      // Most-viewed order per category (from MostPopularRanking_Sorted.xlsx).
+      // Ranks are assigned by position; lower = more viewed = shown first.
+      var MOST_VIEWED = [
+        "Map Rendering", "Map Attributes API", "Introduction to Mapping Concepts",
+        "Map Feedback API", "Indoor Maps", "Map Content", "HD Live Map",
+        "Optimized Client Map", "Maps XML", "Mapmaking", "Custom Attributes",
+        "Automated Driving Zones", "Map Object Model", "NDS.Live",
+        "Geocoding & Search", "HERE SDK", "Data API", "GIS Data Suite",
+        "Positioning", "Data SDK", "Fuel Prices API", "Traffic Analytics",
+        "Destination Weather", "Tracking API", "Parking",
+        "HERE-hosted what3words API", "Phonetic Training Data", "Road Alerts",
+        "Traffic API", "Tour Planning API", "EV Charge Points API", "Transit APIs",
+        "HERE WeGo Pro", "Safety Cameras API", "Real-Time Traffic",
+        "Behavioral Maneuvers", "Routing APIs", "Last Meter Guidance",
+        "Maps API for JavaScript", "Identity & Access Management", "Workspace",
+        "Style Editor", "Anonymizer", "Embedded Editor", "System Status API",
+        "SceneXtract", "Cost Management", "Location Reasoning"
+      ];
+      var RANK = {};
+      MOST_VIEWED.forEach(function (name, i) { RANK[name] = i; });
+
+      function titleOf(li) {
+        var t = li.querySelector(".here-res-list__title-text");
+        return t ? (t.textContent || "").trim() : "";
+      }
+
+      function sortList(list, mode) {
+        var items = Array.prototype.slice.call(list.querySelectorAll(".here-res-list__item"));
+        items.sort(function (a, b) {
+          var na = titleOf(a), nb = titleOf(b);
+          if (mode === "az") return na.localeCompare(nb);
+          if (mode === "za") return nb.localeCompare(na);
+          // most viewed: known rank first (in order), unknown items keep after
+          var ra = (na in RANK) ? RANK[na] : Number.MAX_SAFE_INTEGER;
+          var rb = (nb in RANK) ? RANK[nb] : Number.MAX_SAFE_INTEGER;
+          return ra - rb;
+        });
+        items.forEach(function (li) { list.appendChild(li); });
+      }
+
+      function applySort(mode) {
+        document.querySelectorAll(".here-resources .here-res-list").forEach(function (list) {
+          sortList(list, mode);
+        });
+        // Sync every sort widget (EN + JA): label, active option, aria.
+        document.querySelectorAll("[data-here-sort]").forEach(function (wrap) {
+          var labels = {};
+          try { labels = JSON.parse(wrap.getAttribute("data-here-sort-labels") || "{}"); } catch (e) {}
+          var trigger = wrap.querySelector("[data-here-sort-trigger]");
+          if (trigger && labels[mode]) trigger.textContent = labels[mode];
+          wrap.querySelectorAll(".here-sort__opt").forEach(function (opt) {
+            var on = opt.getAttribute("data-sort") === mode;
+            opt.classList.toggle("here-sort__opt--active", on);
+            opt.setAttribute("aria-checked", on ? "true" : "false");
+          });
+          wrap.setAttribute("data-here-sort-mode", mode);
+        });
+      }
+
+      function closeAll() {
+        document.querySelectorAll("[data-here-sort] .here-sort__menu").forEach(function (m) {
+          m.hidden = true;
+        });
+        document.querySelectorAll("[data-here-sort-trigger]").forEach(function (t) {
+          t.setAttribute("aria-expanded", "false");
+        });
+      }
+
+      function bind() {
+        document.querySelectorAll("[data-here-sort]").forEach(function (wrap) {
+          if (wrap.__hereSortBound) return;
+          wrap.__hereSortBound = true;
+
+          var trigger = wrap.querySelector("[data-here-sort-trigger]");
+          var menu = wrap.querySelector(".here-sort__menu");
+          if (!trigger || !menu) return;
+
+          trigger.addEventListener("click", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var willOpen = menu.hidden;
+            closeAll();
+            menu.hidden = !willOpen;
+            trigger.setAttribute("aria-expanded", willOpen ? "true" : "false");
+          });
+
+          menu.querySelectorAll(".here-sort__opt").forEach(function (opt) {
+            opt.addEventListener("click", function (e) {
+              e.preventDefault();
+              e.stopPropagation();
+              applySort(opt.getAttribute("data-sort"));
+              closeAll();
+            });
+          });
+        });
+      }
+
+      // Close on outside click / Escape.
+      document.addEventListener("click", function (e) {
+        if (!e.target.closest || !e.target.closest("[data-here-sort]")) closeAll();
+      });
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") closeAll();
+      });
+
+      bind();
+      applySort("most"); // default order on load
+      try {
+        new MutationObserver(function () { bind(); }).observe(document.documentElement, { childList: true, subtree: true });
+      } catch (e) {}
+    })();
+
+    /* ── Show all products & services (solution filter) dropdown ──
+       Explore technical resources only. Dropdown UI + selection state; the
+       per-solution product filtering is a placeholder until the product→
+       solution mapping is finalized (see DOPTOOLS-2455). Selecting a solution
+       updates the trigger label and active option; "Show all" is the default.
+       Both EN and JA widgets stay in sync. */
+    (function () {
+      var TAG = "__hereSolFilter_v1";
+      if (window[TAG]) return;
+      window[TAG] = true;
+
+      // Product→solution mapping goes here once finalized, keyed by solution id
+      // ("adas"|"navigation"|"fleet"|"gis") -> array of title-text names.
+      // Empty for now: filtering is a no-op until provided.
+      var SOLUTIONS = {};
+
+      function applyFilter(sol) {
+        var hasMap = sol !== "all" && SOLUTIONS[sol] && SOLUTIONS[sol].length;
+        document.querySelectorAll(".here-resources").forEach(function (section) {
+          section.setAttribute("data-sol-filter", sol);
+          // Only filter items if we have a mapping for this solution; otherwise
+          // leave everything visible (UI-only until mapping is available).
+          section.querySelectorAll(".here-res-list__item").forEach(function (item) {
+            if (!hasMap) { item.removeAttribute("data-sol-hidden"); return; }
+            var t = item.querySelector(".here-res-list__title-text");
+            var name = t ? (t.textContent || "").trim() : "";
+            var show = SOLUTIONS[sol].indexOf(name) !== -1;
+            if (show) item.removeAttribute("data-sol-hidden");
+            else item.setAttribute("data-sol-hidden", "1");
+          });
+        });
+        // Sync every widget (EN + JA): label, active option, aria.
+        document.querySelectorAll("[data-here-solfilter]").forEach(function (wrap) {
+          var labels = {};
+          try { labels = JSON.parse(wrap.getAttribute("data-here-solfilter-labels") || "{}"); } catch (e) {}
+          var trigger = wrap.querySelector("[data-here-solfilter-trigger]");
+          if (trigger && labels[sol]) trigger.textContent = labels[sol];
+          wrap.querySelectorAll(".here-solfilter__opt").forEach(function (opt) {
+            var on = opt.getAttribute("data-sol") === sol;
+            opt.classList.toggle("here-solfilter__opt--active", on);
+            opt.setAttribute("aria-checked", on ? "true" : "false");
+          });
+        });
+      }
+
+      function closeAll() {
+        document.querySelectorAll("[data-here-solfilter] .here-solfilter__menu").forEach(function (m) {
+          m.hidden = true;
+        });
+        document.querySelectorAll("[data-here-solfilter-trigger]").forEach(function (t) {
+          t.setAttribute("aria-expanded", "false");
+        });
+      }
+
+      function bind() {
+        document.querySelectorAll("[data-here-solfilter]").forEach(function (wrap) {
+          if (wrap.__hereSolBound) return;
+          wrap.__hereSolBound = true;
+
+          var trigger = wrap.querySelector("[data-here-solfilter-trigger]");
+          var menu = wrap.querySelector(".here-solfilter__menu");
+          if (!trigger || !menu) return;
+
+          trigger.addEventListener("click", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var willOpen = menu.hidden;
+            closeAll();
+            menu.hidden = !willOpen;
+            trigger.setAttribute("aria-expanded", willOpen ? "true" : "false");
+          });
+
+          menu.querySelectorAll(".here-solfilter__opt").forEach(function (opt) {
+            opt.addEventListener("click", function (e) {
+              e.preventDefault();
+              e.stopPropagation();
+              applyFilter(opt.getAttribute("data-sol"));
+              closeAll();
+            });
+          });
+        });
+      }
+
+      document.addEventListener("click", function (e) {
+        if (!e.target.closest || !e.target.closest("[data-here-solfilter]")) closeAll();
+      });
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") closeAll();
+      });
+
+      bind();
+      try {
+        new MutationObserver(function () { bind(); }).observe(document.documentElement, { childList: true, subtree: true });
       } catch (e) {}
     })();
 
