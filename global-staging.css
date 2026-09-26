@@ -1632,8 +1632,10 @@ font-size: 14px !important;
   [data-color-mode="system"] .here-glp .here-policy-item__desc { color: #BEDFEB; }
 
   /* Lock icon color only (margin-left/flex-shrink stay in the light-mode base rule). */
-  [data-color-mode="system"] .here-glp .here-policy-item__title hds-icon {
+  [data-color-mode="system"] .here-glp .here-policy-item__title hds-icon,
+  [data-color-mode="system"] .here-glp .here-policy-item__title .here-lock-icon {
     --hds-icon-color: rgba(190, 223, 235, 0.7);
+    color: rgba(190, 223, 235, 0.7);
   }
 }
 
