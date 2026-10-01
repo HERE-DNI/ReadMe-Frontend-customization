@@ -1,0 +1,275 @@
+/* =============================================================================
+   HERE Documentation — Use Case sub pages
+   Figma: "Documentation site 2026" section 2457-112827 (Use Cases - Light Mode)
+
+   Loaded after doc-shell.css. Covers only the blocks that are specific to the
+   use case template:
+     · numbered flow steps        ("Flow" / How it works)
+     · card grids                 (Typical scenarios, Building blocks, Take it further)
+     · code example               (tabbed sample with a copy button)
+     · next use case card         (the "Related" footer card)
+   ========================================================================== */
+
+/* ==========================================================================
+   FLOW — numbered steps
+   Same rail geometry as the Get Started page, but the badge holds a number
+   instead of an icon, so it gets the tabular-numeral treatment.
+   ========================================================================== */
+
+.hgs-flow {
+  margin-top: var(--hds-spacing-2, 8px);
+  display: flex;
+  flex-direction: column;
+  gap: var(--hds-spacing-6, 24px);
+  /* The visible numbers are real text, not counters — see the note in
+     doc-shell.css about HDS injecting its own ::before markers. */
+  counter-reset: none;
+}
+
+.hgs-flow__step {
+  display: flex;
+  align-items: stretch;
+  gap: var(--hds-spacing-4, 16px);
+}
+
+.hgs-flow__rail {
+  flex: 0 0 33px;
+  width: 33px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--hds-spacing-1, 4px);
+}
+
+.hgs-flow__number {
+  flex: 0 0 auto;
+  width: 33px;
+  height: 33px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--hds-background-secondary);
+  border: 1px solid var(--hds-foreground-divider);
+  border-radius: var(--hds-border-radius, 4px);
+  color: var(--hds-foreground-primary);
+  font-family: var(--hgs-font-medium);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+  /* Figma uses lining tabular figures so 1/2/3 share an advance width. */
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.hgs-flow__line {
+  flex: 1 1 auto;
+  width: 1px;
+  min-height: 24px;
+  background: var(--hds-foreground-divider);
+}
+
+/* The last step has nothing to connect to. */
+.hgs-flow__step:last-child .hgs-flow__line {
+  display: none;
+}
+
+.hgs-flow__body {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding-top: var(--hds-spacing-1, 4px);
+  display: flex;
+  flex-direction: column;
+  gap: var(--hds-spacing-1, 4px);
+}
+
+/* Figma "headline-05": 16 / 24, weight 500 */
+.hgs-flow__title {
+  margin: 0;
+  color: var(--hds-foreground-primary);
+  font-family: var(--hgs-font-medium);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+}
+
+/* ==========================================================================
+   CARD GRIDS
+   Three shapes, all built on the same card:
+     .hgs-cards--3   Typical scenarios / Take it further
+     .hgs-cards--2   Building blocks on Use Case 02
+   Cards that carry an action get .hgs-card--action so the button pins to the
+   bottom regardless of how much copy sits above it.
+   ========================================================================== */
+
+.hgs-cards {
+  margin-top: var(--hds-spacing-2, 8px);
+  display: grid;
+  gap: var(--hds-spacing-4, 16px);
+}
+
+.hgs-cards--2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.hgs-cards--3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.hgs-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hds-spacing-2, 8px);
+  padding: var(--hds-spacing-4, 16px);
+  background: var(--hds-background-secondary);
+  border: 1px solid var(--hds-foreground-divider);
+  border-radius: 8px;
+}
+
+/* Figma "headline-05": 16 / 24, weight 500 */
+.hgs-card__title {
+  margin: 0;
+  color: var(--hds-foreground-primary);
+  font-family: var(--hgs-font-medium);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+}
+
+/* Figma "Global/Body/body-small": 14 / 20 inside the tighter card column. */
+.hgs-card__body {
+  margin: 0;
+  color: var(--hds-foreground-secondary);
+  font-family: var(--hgs-font-regular);
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: -0.0286em;
+}
+
+/* Push the action to the card's bottom edge so a row of cards lines up. */
+.hgs-card__action {
+  margin-top: auto;
+  padding-top: var(--hds-spacing-2, 8px);
+  display: flex;
+  align-items: center;
+}
+
+/* ==========================================================================
+   CODE EXAMPLE
+   hds-tabs supplies the CSS / HTML / JS switcher; the panel below holds the
+   sample on the HDS secondary surface with a copy affordance top-right.
+   ========================================================================== */
+
+.hgs-code {
+  margin-top: var(--hds-spacing-2, 8px);
+}
+
+.hgs-code hds-tabs {
+  display: block;
+}
+
+.hgs-code__panel {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  background: var(--hds-background-primary);
+  border: 1px solid var(--hds-foreground-divider);
+  border-radius: 8px;
+}
+
+/* Room on the right so long lines never slide under the copy button. */
+.hgs-code__pre {
+  margin: 0;
+  padding: var(--hds-spacing-4, 16px) 88px var(--hds-spacing-4, 16px)
+    var(--hds-spacing-4, 16px);
+  overflow-x: auto;
+  background: transparent;
+  color: var(--hds-foreground-primary);
+  font-family: var(--hgs-font-mono);
+  font-size: 13px;
+  line-height: 20px;
+  tab-size: 2;
+}
+
+.hgs-code__pre code {
+  font: inherit;
+  color: inherit;
+  background: none;
+  padding: 0;
+}
+
+.hgs-code__copy {
+  position: absolute;
+  top: var(--hds-spacing-2, 8px);
+  right: var(--hds-spacing-2, 8px);
+  z-index: 1;
+}
+
+/* ==========================================================================
+   NEXT USE CASE CARD
+   Sits below the crosslink table: title + kicker on the left, action right.
+   ========================================================================== */
+
+.hgs-next {
+  margin-top: var(--hds-spacing-6, 24px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--hds-spacing-4, 16px);
+  padding: var(--hds-spacing-4, 16px);
+  background: var(--hds-background-secondary);
+  border: 1px solid var(--hds-foreground-divider);
+  border-radius: 8px;
+}
+
+.hgs-next__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.hgs-next__title {
+  margin: 0;
+  color: var(--hds-foreground-primary);
+  font-family: var(--hgs-font-medium);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+}
+
+/* Figma "Global/Layout/caption": 12 / 16, ls -0.0167em */
+.hgs-next__kicker {
+  margin: 0;
+  color: var(--hds-foreground-secondary);
+  font-family: var(--hgs-font-regular);
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: -0.0167em;
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+  .hgs-cards--3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 767px) {
+  .hgs-cards--2,
+  .hgs-cards--3 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* Stack the copy button above the sample so it cannot cover code. */
+  .hgs-code__pre {
+    padding-right: var(--hds-spacing-4, 16px);
+    padding-top: 48px;
+  }
+
+  .hgs-next {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

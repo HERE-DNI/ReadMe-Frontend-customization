@@ -1,0 +1,661 @@
+/* =============================================================================
+   HERE Documentation — shared sub page shell
+   Figma: "Documentation site 2026"
+
+   This file carries everything the documentation sub pages have in common:
+   the wide navbar, the "Sub Pages Hero Area", the 920 + 335 body grid, the
+   section scaffolding, the "Where do I go next?" crosslink table, the sticky
+   "On this page" navigation and the footer.
+
+   Page-specific blocks live in their own stylesheet next to this one:
+     get-started.css   icon-rail steps, video library cards
+     use-case.css      numbered flow steps, card grids, code example
+
+   Load order matters — this file first, then the page stylesheet.
+
+   Everything is scoped under .hgs (HERE documentation shell) so it can be
+   dropped into a larger page without leaking styles.
+
+   Colours come from HDS 2026.2.0 light-theme design tokens, which map 1:1 onto
+   the Figma values:
+     --hds-foreground-primary    #092732   headings
+     --hds-foreground-secondary  #2c596a   body copy
+     --hds-foreground-tertiary   #3f7183   pill borders
+     --hds-foreground-divider    #0081b140 hairlines / card borders
+     --hds-background-secondary  #ffffff   page + card surface
+     --hds-background-primary    #ecf7fc   footer + media surface
+     --hds-background-tertiary   #e2fffd   hero surface
+     --hds-background-object     #0094d712 flag surface
+     --hds-action                #1f28e8   links
+     --hds-accent                #007d75   footer accent bar
+     --hds-blue-onlight-100      #e8ecfe   hero flag surface
+     --hds-gray-700              #56899c   hero back-link text
+   ========================================================================== */
+
+.hgs {
+  /* HDS ships FiraGO as discrete families rather than weight variants. */
+  --hgs-font-regular: "FiraGO-Regular", "Fira GO", "FiraGO", system-ui,
+    -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --hgs-font-medium: "FiraGO-Medium", "Fira GO", "FiraGO", system-ui,
+    -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --hgs-font-mono: "FiraCode-Medium", "Fira Code", ui-monospace, SFMono-Regular,
+    Menlo, Consolas, monospace;
+
+  /* Figma grid: 1388px content, 32px page gutters. */
+  --hgs-max: 1388px;
+  --hgs-gutter: 32px;
+  --hgs-content-col: 920px;
+  --hgs-aside-col: 335px;
+  --hgs-col-gap: 133px;
+  --hgs-navbar-h: 64px;
+
+  margin: 0;
+  background: var(--hds-background-secondary);
+  color: var(--hds-foreground-primary);
+  font-family: var(--hgs-font-regular);
+  -webkit-font-smoothing: antialiased;
+}
+
+.hgs *,
+.hgs *::before,
+.hgs *::after {
+  box-sizing: border-box;
+}
+
+/* --------------------------------------------------------------------------
+   Utilities
+   -------------------------------------------------------------------------- */
+
+.hgs-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.hgs-skip-link {
+  position: absolute;
+  top: -100px;
+  left: var(--hgs-gutter);
+  z-index: 100;
+  padding: 8px 16px;
+  border-radius: var(--hds-border-radius);
+  background: var(--hds-background-secondary);
+  color: var(--hds-action);
+  font-family: var(--hgs-font-medium);
+  font-size: 14px;
+  box-shadow: 0 2px 10px rgb(9 39 50 / 18%);
+}
+
+.hgs-skip-link:focus-visible {
+  top: 12px;
+}
+
+/* `data-styles="hds"` decorates every ol/ul with counter- and bullet-based
+   ::before markers (`:root [data-styles=hds] ol li:before`) and a 20px
+   `padding-inline-start`. Lists used purely for layout opt out with this class.
+
+   `list-style: none` alone is not enough: the markers are generated content,
+   not list markers. The indent also needs the attribute in the selector —
+   `:root [data-styles=hds] ul` scores (0,2,1), so a bare `.hgs-plain-list`
+   at (0,1,0) loses to it. */
+.hgs-plain-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: none;
+}
+
+[data-styles="hds"] ul.hgs-plain-list,
+[data-styles="hds"] ol.hgs-plain-list {
+  margin: 0;
+  padding: 0;
+}
+
+.hgs-plain-list > li::before {
+  content: none !important;
+  display: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   Shared prose
+   Figma "Global/Body/body": 16 / 24, letter-spacing -0.0125em
+   -------------------------------------------------------------------------- */
+
+.hgs-prose {
+  margin: 0;
+  color: var(--hds-foreground-secondary);
+  font-family: var(--hgs-font-regular);
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.0125em;
+}
+
+.hgs-prose + .hgs-prose {
+  margin-top: var(--hds-spacing-4, 16px);
+}
+
+/* ==========================================================================
+   1. NAVBAR TOP
+   ========================================================================== */
+
+.hgs-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: var(--hds-background-secondary);
+  border-bottom: 1px solid var(--hds-foreground-divider);
+}
+
+.hgs-navbar hds-navbar-top {
+  --hds-navbar-top-max-width: var(--hgs-max);
+  --hds-navbar-top-min-lr-spacing: var(--hgs-gutter);
+  display: block;
+  height: var(--hgs-navbar-h);
+}
+
+/* "Documentation" product name — Figma subheadline 18 / 24 */
+.hgs-navbar__title {
+  color: var(--hds-foreground-primary);
+  font-family: var(--hgs-font-regular);
+  font-size: 18px;
+  line-height: 24px;
+  text-decoration: none;
+}
+
+.hgs-navbar__title:hover {
+  text-decoration: none;
+}
+
+.hgs-navbar__tray {
+  display: flex;
+  align-items: center;
+  gap: var(--hds-spacing-4, 16px);
+}
+
+/* ==========================================================================
+   2. SUB PAGE HERO AREA
+   ========================================================================== */
+
+.hgs-hero {
+  background: var(--hds-background-tertiary);
+  padding: var(--hds-spacing-6, 24px) var(--hgs-gutter);
+}
+
+.hgs-hero__inner {
+  max-width: var(--hgs-max);
+  margin: 0 auto;
+  padding: var(--hds-spacing-6, 24px) 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--hds-spacing-4, 16px);
+}
+
+/* Back link sits flush with the grid, so pull off the button's own inset. */
+.hgs-hero__back {
+  margin-left: -12px;
+}
+
+.hgs-hero__flags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--hds-spacing-2, 8px);
+}
+
+/* Hero flags use the blue surface from Figma rather than the default subtle. */
+.hgs-hero__flag {
+  --hds-flag-custom-accent-color: var(--hds-blue-onlight-100);
+  --hds-flag-custom-font-color: var(--hds-foreground-primary);
+}
+
+/* Figma "Desktop/Headlines/headline-02": 48 / 56, weight 500, ls -0.0208em */
+.hgs-hero__title {
+  margin: 0;
+  max-width: var(--hgs-content-col);
+  color: var(--hds-foreground-primary);
+  font-family: var(--hgs-font-medium);
+  font-size: 48px;
+  font-weight: 500;
+  line-height: 56px;
+  letter-spacing: -0.0208em;
+}
+
+/* Figma hero sub-headline: 20 / 24, weight 350, clamped to the 920px column */
+.hgs-hero__intro {
+  margin: 0;
+  max-width: var(--hgs-content-col);
+  color: var(--hds-foreground-primary);
+  font-family: var(--hgs-font-regular);
+  font-size: 20px;
+  font-weight: 350;
+  line-height: 24px;
+}
+
+.hgs-hero__meta {
+  display: flex;
+  align-items: center;
+  gap: var(--hds-spacing-2, 8px);
+  min-height: 32px;
+  margin-top: var(--hds-spacing-2, 8px);
+}
+
+.hgs-meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--hds-spacing-2, 8px);
+}
+
+/* Figma "Global/Body/body-small": 14 / 20, ls -0.0286em */
+.hgs-meta-item__text {
+  color: var(--hds-foreground-secondary);
+  font-family: var(--hgs-font-regular);
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: -0.0286em;
+}
+
+.hgs-meta-divider {
+  display: inline-block;
+  width: 1px;
+  height: 24px;
+  background: var(--hds-foreground-divider);
+}
+
+/* ==========================================================================
+   3. BODY GRID
+   ========================================================================== */
+
+.hgs-body {
+  background: var(--hds-background-secondary);
+  padding: 0 var(--hgs-gutter);
+}
+
+.hgs-grid {
+  max-width: var(--hgs-max);
+  margin: 0 auto;
+  padding: 64px 0 96px;
+  display: grid;
+  grid-template-columns: minmax(0, var(--hgs-content-col)) var(--hgs-aside-col);
+  column-gap: var(--hgs-col-gap);
+  align-items: start;
+}
+
+.hgs-content {
+  display: flex;
+  flex-direction: column;
+  gap: 64px;
+  min-width: 0;
+}
+
+/* -------- Section scaffolding ---------------------------------------------
+   Figma: heading + kicker stacked with 4px, 16px before the section body.
+   -------------------------------------------------------------------------- */
+
+.hgs-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hds-spacing-4, 16px);
+  scroll-margin-top: calc(var(--hgs-navbar-h) + 24px);
+}
+
+.hgs-section__head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hds-spacing-1, 4px);
+}
+
+/* Figma "headline-04": 24 / 28, weight 500 */
+.hgs-section__title {
+  margin: 0;
+  color: var(--hds-foreground-primary);
+  font-family: var(--hgs-font-medium);
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 28px;
+}
+
+/* The first section uses the larger "headline-03": 36 / 44, ls -0.0278em */
+.hgs-section__title--lead {
+  font-size: 36px;
+  line-height: 44px;
+  letter-spacing: -0.0278em;
+}
+
+.hgs-section__kicker {
+  margin: 0;
+  color: var(--hds-foreground-secondary);
+  font-family: var(--hgs-font-regular);
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.0125em;
+}
+
+.hgs-section__cta {
+  display: flex;
+  align-items: center;
+}
+
+.hgs-section__cta hds-button {
+  margin-left: -12px;
+}
+
+/* -------- Where do I go next? (crosslink table) --------------------------- */
+
+.hgs-crosslinks {
+  margin-top: var(--hds-spacing-2, 8px);
+  overflow: hidden;
+  border: 1px solid var(--hds-foreground-divider);
+  border-radius: 8px;
+}
+
+.hgs-crosslink + .hgs-crosslink {
+  border-top: 1px solid var(--hds-foreground-divider);
+}
+
+.hgs-crosslink__link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--hds-spacing-4, 16px);
+  min-height: 56px;
+  padding: var(--hds-spacing-4, 16px);
+  text-decoration: none;
+  transition: background-color 120ms ease;
+}
+
+.hgs-crosslink__link:hover {
+  background: var(--hds-background-hover, rgb(0 148 215 / 7%));
+  text-decoration: none;
+}
+
+.hgs-crosslink__link:focus-visible {
+  outline: 2px solid var(--hds-action);
+  outline-offset: -2px;
+}
+
+/* Figma tabular numerals body: 16 / 24, ls -0.0125em */
+.hgs-crosslink__label {
+  color: var(--hds-foreground-secondary);
+  font-family: var(--hgs-font-regular);
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.0125em;
+}
+
+.hgs-crosslink__icon {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  color: var(--hds-foreground-secondary);
+  --hds-icon-color: var(--hds-foreground-secondary);
+}
+
+.hgs-crosslink__link:hover .hgs-crosslink__icon {
+  color: var(--hds-action);
+  --hds-icon-color: var(--hds-action);
+}
+
+/* -------- "On this page" side navigation ---------------------------------- */
+
+.hgs-aside {
+  position: sticky;
+  top: calc(var(--hgs-navbar-h) + 24px);
+  width: var(--hgs-aside-col);
+}
+
+.hgs-toc {
+  display: block;
+}
+
+.hgs-toc a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ==========================================================================
+   4. FOOTER
+   ========================================================================== */
+
+.hgs-footer {
+  background: var(--hds-background-primary);
+}
+
+.hgs-footer__inner {
+  max-width: var(--hgs-max);
+  margin: 0 auto;
+  padding: 64px var(--hgs-gutter);
+  display: flex;
+  flex-direction: column;
+  gap: var(--hds-spacing-8, 32px);
+}
+
+.hgs-footer__row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--hds-spacing-4, 16px);
+}
+
+.hgs-footer__assist {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--hds-spacing-4, 16px);
+}
+
+.hgs-footer__spacer {
+  flex: 1 1 auto;
+  min-width: 16px;
+}
+
+.hgs-footer__lang {
+  display: inline-flex;
+  overflow: hidden;
+  border: 1px solid var(--hds-foreground-divider);
+  border-radius: 50px;
+}
+
+.hgs-footer__lang button {
+  padding: 8px 16px;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  color: var(--hds-foreground-secondary);
+  font-family: var(--hgs-font-medium);
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.hgs-footer__lang button[aria-pressed="true"] {
+  background: var(--hds-foreground-primary);
+  color: var(--hds-background-primary);
+}
+
+.hgs-footer__lang button:not([aria-pressed="true"]):hover {
+  background: var(--hds-background-object);
+  color: var(--hds-foreground-primary);
+}
+
+.hgs-footer__lang button:focus-visible {
+  outline: 2px solid var(--hds-action);
+  outline-offset: -2px;
+}
+
+.hgs-footer__column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hds-spacing-4, 16px);
+}
+
+.hgs-footer__columnTitle {
+  margin: 0;
+  color: var(--hds-foreground-primary);
+  font-family: var(--hgs-font-regular);
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.0125em;
+}
+
+.hgs-footer__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hds-spacing-2, 8px);
+}
+
+.hgs-footer__list a,
+.hgs-footer__legal a {
+  color: var(--hds-foreground-primary);
+  font-family: var(--hgs-font-medium);
+  font-size: 14px;
+  line-height: 16px;
+  letter-spacing: -0.0286em;
+  text-decoration: none;
+}
+
+.hgs-footer__list a:hover,
+.hgs-footer__legal a:hover {
+  text-decoration: underline;
+}
+
+.hgs-footer__rule {
+  height: 1px;
+  margin: 0;
+  border: 0;
+  background: var(--hds-foreground-divider);
+}
+
+.hgs-footer__bottom {
+  display: flex;
+  align-items: center;
+  gap: var(--hds-spacing-8, 32px);
+}
+
+.hgs-footer__copyright {
+  margin: 0;
+  flex: 0 0 auto;
+  color: var(--hds-foreground-secondary);
+  font-family: var(--hgs-font-regular);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.hgs-footer__legal {
+  flex: 1 1 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--hds-spacing-8, 32px);
+}
+
+/* 4px brand bar closing the page. */
+.hgs-footer__accentBar {
+  height: 4px;
+  background: var(--hds-accent);
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+
+/* Below the 1388px grid the side nav no longer fits beside 920px of content. */
+@media (max-width: 1320px) {
+  .hgs {
+    --hgs-col-gap: 64px;
+  }
+
+  .hgs-grid {
+    grid-template-columns: minmax(0, 1fr) var(--hgs-aside-col);
+  }
+}
+
+@media (max-width: 1024px) {
+  .hgs-grid {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 48px;
+    padding-top: 48px;
+  }
+
+  /* Move the table of contents above the content and let it scroll away. */
+  .hgs-aside {
+    position: static;
+    width: 100%;
+    order: -1;
+  }
+
+  .hgs-hero__title {
+    font-size: 36px;
+    line-height: 44px;
+  }
+
+  .hgs-section__title--lead {
+    font-size: 28px;
+    line-height: 36px;
+  }
+}
+
+@media (max-width: 767px) {
+  .hgs {
+    --hgs-gutter: 20px;
+  }
+
+  .hgs-hero__inner {
+    padding: var(--hds-spacing-4, 16px) 0;
+  }
+
+  .hgs-hero__title {
+    font-size: 28px;
+    line-height: 36px;
+  }
+
+  .hgs-hero__intro {
+    font-size: 18px;
+  }
+
+  .hgs-content {
+    gap: 48px;
+  }
+
+  .hgs-crosslink__link {
+    align-items: flex-start;
+  }
+
+  .hgs-footer__row {
+    flex-direction: column;
+  }
+
+  .hgs-footer__spacer {
+    display: none;
+  }
+
+  .hgs-footer__bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--hds-spacing-4, 16px);
+  }
+
+  .hgs-footer__legal {
+    justify-content: flex-start;
+    gap: var(--hds-spacing-4, 16px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hgs {
+    scroll-behavior: auto;
+  }
+
+  .hgs-crosslink__link {
+    transition: none;
+  }
+}

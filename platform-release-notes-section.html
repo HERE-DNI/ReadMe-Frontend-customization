@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Platform Release Notes Section</title>
+  <link rel="stylesheet" href="https://js.api.here.com/design-system/hds-web.2026.2.0.css">
+  <style>
+    /* ════════════════════════════════════════════════════════════════
+       CSS VARIABLES
+       ════════════════════════════════════════════════════════════════ */
+    :root {
+      --wn-bg: #f8f9fa;
+      --ink: #092732;
+      --link: #1F28E8;
+      --link-hover: #0f1a9e;
+    }
+
+    /* ════════════════════════════════════════════════════════════════
+       LIGHT MODE BASE STYLES
+       ════════════════════════════════════════════════════════════════ */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      background: #ffffff;
+      color: var(--ink);
+    }
+
+    .here-whatsnew {
+      background: var(--wn-bg);
+      padding: 48px 0 56px;
+    }
+
+    .here-wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+
+    .here-section-title {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 24px;
+      color: var(--ink);
+    }
+
+    /* Platform Release Notes Card Grid */
+    .here-wn-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    /* Card internals (using HDS card component) */
+    .here-wn-grid .hds-card {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .here-wn-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .here-wn-head svg {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      opacity: .85;
+      color: var(--ink);
+    }
+
+    .here-wn-head h4 {
+      font-size: 16px;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .here-wn-links {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 4px;
+      margin-bottom: 16px;
+    }
+
+    .here-wn-links a {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--link);
+      text-decoration: none;
+    }
+
+    .here-wn-links a:hover {
+      color: var(--link-hover);
+      text-decoration: underline;
+    }
+
+    .here-wn-footer {
+      margin-top: auto;
+      padding-top: 16px;
+    }
+
+    a.here-wn-seeall {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--link);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    a.here-wn-seeall:hover {
+      color: var(--link-hover);
+      text-decoration: underline;
+    }
+
+    a.here-wn-seeall svg {
+      width: 13px;
+      height: 13px;
+    }
+
+    /* ════════════════════════════════════════════════════════════════
+       RESPONSIVE BREAKPOINTS
+       ════════════════════════════════════════════════════════════════ */
+    @media (max-width: 1100px) {
+      .here-wn-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .here-wrap {
+        padding: 0 24px;
+      }
+      .here-wn-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ════════════════════════════════════════════════════════════════
+       DARK MODE
+       ════════════════════════════════════════════════════════════════ */
+    [data-theme*="dark"] {
+      --wn-bg: #141a1e;
+      --ink: #e8edf0;
+      --link: #5bc8f5;
+      --link-hover: #8edcfa;
+    }
+
+    [data-theme*="dark"] body {
+      background: #1a1f23;
+      color: var(--ink);
+    }
+
+    [data-theme*="dark"] .here-whatsnew {
+      background: var(--wn-bg);
+    }
+
+    /* Dark mode card backgrounds - using HDS design tokens */
+    [data-theme*="dark"] .hds-card--primary-solid {
+      background: #1f2b30 !important;
+      border-color: rgba(255, 255, 255, 0.1) !important;
+    }
+
+    [data-theme*="dark"] .here-wn-head svg {
+      color: var(--ink);
+    }
+
+    [data-theme*="dark"] .here-wn-links a {
+      color: var(--link);
+    }
+
+    [data-theme*="dark"] .here-wn-links a:hover {
+      color: var(--link-hover);
+    }
+
+    [data-theme*="dark"] a.here-wn-seeall {
+      color: var(--link);
+    }
+
+    [data-theme*="dark"] a.here-wn-seeall:hover {
+      color: var(--link-hover);
+    }
+
+    /* ════════════════════════════════════════════════════════════════
+       THEME TOGGLE BUTTON (for demo purposes)
+       ════════════════════════════════════════════════════════════════ */
+    .theme-toggle-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+    }
+
+    .theme-toggle-btn {
+      background: #1F28E8;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      transition: background 0.2s;
+    }
+
+    .theme-toggle-btn:hover {
+      background: #0f1a9e;
+    }
+
+    [data-theme*="dark"] .theme-toggle-btn {
+      background: #5bc8f5;
+      color: #092732;
+    }
+
+    [data-theme*="dark"] .theme-toggle-btn:hover {
+      background: #8edcfa;
+    }
+  </style>
+</head>
+<body>
+  <!-- Theme toggle button for demo -->
+  <div class="theme-toggle-container">
+    <button class="theme-toggle-btn" onclick="toggleTheme()">Toggle Dark Mode</button>
+  </div>
+
+  <!-- Platform Release Notes Section -->
+  <section class="here-whatsnew" aria-label="What's new">
+    <div class="here-wrap">
+      <h2 class="here-section-title">What's new</h2>
+      <div class="here-wn-grid" role="list">
+        
+        <article class="hds-card hds-card--primary-solid hds-card--uninteractive" role="listitem">
+          <div class="here-wn-head">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M7.00016 20C6.69724 19.9989 6.39852 19.9291 6.12654 19.7957C5.85457 19.6623 5.61645 19.4689 5.43016 19.23L2.16016 14.15L3.84016 13.07L7.06016 18.07L18.2202 4L19.7802 5.25L8.57016 19.25C8.38185 19.4852 8.14285 19.6748 7.87099 19.8047C7.59913 19.9345 7.30144 20.0013 7.00016 20ZM22.0002 18H12.0002V20H22.0002V18ZM22.0002 14H15.0002V16H22.0002V14ZM22.0002 10H18.0002V12H22.0002V10Z" fill="currentColor"/>
+            </svg>
+            <h4>Platform release notes</h4>
+          </div>
+          <p>Updates and announcements about the HERE platform.</p>
+          <div class="here-wn-links">
+            <a href="https://www.here.com/learn/blog/may-2026-platform-release-notes" rel="noopener">May 2026</a>
+            <a href="https://www.here.com/learn/blog/april-2026-platform-release-notes" rel="noopener">April 2026</a>
+            <a href="https://www.here.com/learn/blog/march-2026-platform-release-notes" rel="noopener">March 2026</a>
+            <a href="https://www.here.com/learn/blog/february-2026-platform-release-notes" rel="noopener">February 2026</a>
+            <a href="https://www.here.com/learn/blog/january-2026-platform-release-notes" rel="noopener">January 2026</a>
+            <a href="https://www.here.com/learn/blog/december-2025-platform-release-notes" rel="noopener">December 2025</a>
+          </div>
+          <div class="here-wn-footer">
+            <a class="here-wn-seeall" href="https://www.here.com/developer/blog?category=Release%20notes#blog-results" rel="noopener">
+              Go to all releases on the developer blog
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M14 3h7v7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10 14 21 3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </a>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Theme toggle functionality
+    function toggleTheme() {
+      const html = document.documentElement;
+      const currentTheme = html.getAttribute('data-theme');
+      
+      if (currentTheme && currentTheme.includes('dark')) {
+        html.removeAttribute('data-theme');
+      } else {
+        html.setAttribute('data-theme', 'hds-web-product-dark-theme');
+      }
+    }
+
+    // Initialize theme based on system preference
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.setAttribute('data-theme', 'hds-web-product-dark-theme');
+    }
+
+    // Listen for system theme changes
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+      document.documentElement.setAttribute('data-theme', e.matches ? 'hds-web-product-dark-theme' : '');
+    });
+  </script>
+</body>
+</html>

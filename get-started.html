@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Build your first HERE integration | HERE Documentation</title>
+    <meta
+      name="description"
+      content="The shortest path from a blank editor to a working HERE location feature."
+    />
+
+    <!-- HDS styles + icon libraries + web components (same versions as head-global.html) -->
+    <link
+      rel="stylesheet"
+      href="https://platform.here.com/hds/hds-styles.css?versionOverride=2026.2.0"
+    />
+    <link
+      rel="stylesheet"
+      href="https://platform.here.com/hds/hds-iconlibrary-8px.css?versionOverride=2026.2.0"
+    />
+    <link
+      rel="stylesheet"
+      href="https://platform.here.com/hds/hds-iconlibrary-16px.css?versionOverride=2026.2.0"
+    />
+    <link
+      rel="stylesheet"
+      href="https://platform.here.com/hds/hds-iconlibrary-24px.css?versionOverride=2026.2.0"
+    />
+    <script
+      defer
+      src="https://platform.here.com/hds/hds-webcomponents.js?versionOverride=2026.2.0"
+    ></script>
+
+    <!-- Shared sub page shell first, then the page-specific blocks. -->
+    <link rel="stylesheet" href="doc-shell.css" />
+    <link rel="stylesheet" href="get-started.css" />
+  </head>
+
+  <body
+    class="hgs"
+    data-styles="hds"
+    data-theme="hds-web-product-light-theme"
+  >
+    <a class="hgs-skip-link" href="#hgs-main">Skip to main content</a>
+
+    <!-- ===================================================================
+         1. NAVBAR TOP — wide
+         =================================================================== -->
+    <header class="hgs-navbar">
+      <hds-navbar-top variant="wide">
+        <a slot="logo" href="/" aria-label="HERE">
+          <hds-logo size="small"></hds-logo>
+        </a>
+
+        <a slot="page-title" href="/" class="hgs-navbar__title">Documentation</a>
+
+        <div slot="tabs-menu">
+          <hds-tabs role="menubar" variant="wide">
+            <hds-tab role="menuitem" selected>
+              Get started
+              <div slot="menu">
+                <hds-list>
+                  <hds-list-item>
+                    <a href="#introduction">Introduction</a>
+                  </hds-list-item>
+                  <hds-list-item>
+                    <a href="#quick-start">Quick start</a>
+                  </hds-list-item>
+                  <hds-list-item>
+                    <a href="#video-library">Video library</a>
+                  </hds-list-item>
+                  <hds-list-item>
+                    <a href="#where-next">Where do I go next?</a>
+                  </hds-list-item>
+                </hds-list>
+              </div>
+            </hds-tab>
+          </hds-tabs>
+        </div>
+
+        <div slot="right-tray" class="hgs-navbar__tray">
+          <hds-button
+            variant="secondary"
+            size="small"
+            icon="search"
+            icon-category="core-ui"
+            icon-only
+            aria-label="Search documentation"
+            data-hgs-search
+          ></hds-button>
+
+          <hds-button
+            variant="primary"
+            size="small"
+            icon="computer-chip"
+            icon-category="devices-sensors"
+            data-hgs-ask-ai
+            >Ask AI</hds-button
+          >
+
+          <hds-button variant="secondary" size="small" data-hgs-contact
+            >Contact us</hds-button
+          >
+
+          <hds-button
+            variant="subtle"
+            size="large"
+            icon="clear-night"
+            icon-category="weather"
+            icon-style="outline"
+            icon-only
+            aria-label="Switch to dark mode"
+            data-hgs-theme-toggle
+          ></hds-button>
+        </div>
+
+        <div slot="profile-menu">
+          <hds-profile-menu
+            profile-name="Jane Developer"
+            profile-email="jane.developer@here.com"
+          >
+            <hds-list-item icon="settings">
+              <a href="#">Settings</a>
+            </hds-list-item>
+            <hds-list-item icon="help">
+              <a href="#">FAQ</a>
+            </hds-list-item>
+            <hds-list-item icon="sign-out">
+              <a href="#">Log out</a>
+            </hds-list-item>
+          </hds-profile-menu>
+        </div>
+      </hds-navbar-top>
+    </header>
+
+    <main id="hgs-main">
+      <!-- =================================================================
+           2. SUB PAGE HERO AREA
+           ================================================================= -->
+      <section class="hgs-hero" aria-labelledby="hgs-hero-title">
+        <div class="hgs-hero__inner">
+          <hds-button
+            class="hgs-hero__back"
+            variant="subtle"
+            size="small"
+            icon="arrow-left"
+            icon-category="core-ui"
+            onclick="location.href='/'"
+            >Back to documentation</hds-button
+          >
+
+          <div class="hgs-hero__flags">
+            <hds-flag class="hgs-hero__flag" variant="custom" size="medium"
+              >Get started</hds-flag
+            >
+          </div>
+
+          <h1 class="hgs-hero__title" id="hgs-hero-title">
+            Build your first HERE integration
+          </h1>
+
+          <p class="hgs-hero__intro">
+            The body copy should be a short intro and break at 70 characters and
+            be no more than 2 lines.
+          </p>
+
+          <div class="hgs-hero__meta">
+            <span class="hgs-meta-item">
+              <hds-icon
+                name="time"
+                category="core-ui"
+                icon-style="outline"
+                size="24px"
+              ></hds-icon>
+              <span class="hgs-meta-item__text">6 minute read</span>
+            </span>
+
+            <span class="hgs-meta-divider" role="separator" aria-hidden="true"></span>
+
+            <span class="hgs-meta-item">
+              <span class="hgs-meta-item__text">
+                Last updated:
+                <time datetime="2026-01-06">Jan 6, 2026</time>
+              </span>
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================
+           3. BODY — content column + side navigation
+           ================================================================= -->
+      <div class="hgs-body">
+        <div class="hgs-grid">
+          <div class="hgs-content">
+            <!-- ---------------------------------------------------------
+                 Introduction
+                 --------------------------------------------------------- -->
+            <section class="hgs-section" id="introduction">
+              <header class="hgs-section__head">
+                <h2 class="hgs-section__title hgs-section__title--lead">
+                  Introduction
+                </h2>
+                <p class="hgs-section__kicker">Overview</p>
+              </header>
+
+              <p class="hgs-prose">
+                HERE gives you maps, location data, and developer tools to build
+                location-based experiences. This page is the shortest path from a
+                blank editor to a working feature.
+                <br />
+                If you prefer to learn by watching, jump to the video library. If
+                you'd rather copy a working project and edit it, head to the
+                sample projects below.
+              </p>
+            </section>
+
+            <!-- ---------------------------------------------------------
+                 Quick start — 4 steps
+                 --------------------------------------------------------- -->
+            <section class="hgs-section" id="quick-start">
+              <header class="hgs-section__head">
+                <h2 class="hgs-section__title">Quick start</h2>
+                <p class="hgs-section__kicker">In four steps</p>
+              </header>
+
+              <ol class="hgs-steps hgs-plain-list">
+                <!-- Step 1 -->
+                <li class="hgs-step">
+                  <div class="hgs-step__rail" aria-hidden="true">
+                    <span class="hgs-step__badge">
+                      <hds-icon
+                        name="key"
+                        category="misc"
+                        icon-style="outline"
+                        size="24px"
+                      ></hds-icon>
+                    </span>
+                    <span class="hgs-step__line"></span>
+                  </div>
+
+                  <div class="hgs-step__body">
+                    <div class="hgs-step__text">
+                      <hds-flag variant="subtle" size="medium">Step 1</hds-flag>
+                      <h3 class="hgs-step__title">
+                        Create an account and get an API key
+                      </h3>
+                      <p class="hgs-prose">
+                        Every HERE request needs an API key. Sign up for a free
+                        developer account, create a project, and generate a key
+                        from the platform dashboard. Free plans include enough
+                        monthly transactions to build and test a real integration.
+                      </p>
+                      <p class="hgs-prose">
+                        Keep your key out of client-side code in production. Use
+                        environment variables or a small proxy so the key never
+                        ships in your bundle.
+                      </p>
+                    </div>
+
+                    <div class="hgs-step__links">
+                      <hds-button
+                        variant="link"
+                        size="small"
+                        icon-right="chevron-right"
+                        icon-right-category="core-ui"
+                        onclick="location.href='https://platform.here.com/sign-up'"
+                        >Create a free developer account</hds-button
+                      >
+                      <hds-button
+                        variant="link"
+                        size="small"
+                        icon-right="chevron-right"
+                        icon-right-category="core-ui"
+                        onclick="location.href='/identity-and-access-management/dev_guide/topics/plat-using-apikeys.html'"
+                        >Generate an API key</hds-button
+                      >
+                      <hds-button
+                        variant="link"
+                        size="small"
+                        icon-right="chevron-right"
+                        icon-right-category="core-ui"
+                        onclick="location.href='/identity-and-access-management/dev_guide/index.html'"
+                        >Keep your credentials safe</hds-button
+                      >
+                    </div>
+                  </div>
+                </li>
+
+                <!-- Step 2 -->
+                <li class="hgs-step">
+                  <div class="hgs-step__rail" aria-hidden="true">
+                    <span class="hgs-step__badge">
+                      <hds-icon
+                        name="code"
+                        category="misc"
+                        icon-style="outline"
+                        size="24px"
+                      ></hds-icon>
+                    </span>
+                    <span class="hgs-step__line"></span>
+                  </div>
+
+                  <div class="hgs-step__body">
+                    <div class="hgs-step__text">
+                      <hds-flag variant="subtle" size="medium">Step 2</hds-flag>
+                      <h3 class="hgs-step__title">Make your first request</h3>
+                      <p class="hgs-prose">
+                        Start with Geocoding &amp; Search. A single GET request
+                        turns an address into coordinates and confirms your key
+                        works end to end. You can run it from your terminal with
+                        curl, paste the URL into a browser, or call it from any
+                        HTTP client.
+                        <br />
+                        Once you see a response, try Routing or Map Rendering to
+                        get a feel for how products connect.
+                      </p>
+                    </div>
+
+                    <div class="hgs-step__links">
+                      <hds-button
+                        variant="link"
+                        size="small"
+                        icon-right="chevron-right"
+                        icon-right-category="core-ui"
+                        onclick="location.href='/geocoding-and-search/dev_guide/index.html'"
+                        >Geocoding &amp; Search quick start</hds-button
+                      >
+                      <hds-button
+                        variant="link"
+                        size="small"
+                        icon-right="chevron-right"
+                        icon-right-category="core-ui"
+                        onclick="location.href='/routing-api/dev_guide/index.html'"
+                        >Calculate a route</hds-button
+                      >
+                      <hds-button
+                        variant="link"
+                        size="small"
+                        icon-right="chevron-right"
+                        icon-right-category="core-ui"
+                        onclick="location.href='/maps-api-for-js/dev_guide/index.html'"
+                        >Render your first map</hds-button
+                      >
+                    </div>
+                  </div>
+                </li>
+
+                <!-- Step 3 -->
+                <li class="hgs-step">
+                  <div class="hgs-step__rail" aria-hidden="true">
+                    <span class="hgs-step__badge">
+                      <hds-icon
+                        name="library"
+                        category="poi"
+                        icon-style="outline"
+                        size="24px"
+                      ></hds-icon>
+                    </span>
+                    <span class="hgs-step__line"></span>
+                  </div>
+
+                  <div class="hgs-step__body">
+                    <div class="hgs-step__text">
+                      <hds-flag variant="subtle" size="medium">Step 3</hds-flag>
+                      <h3 class="hgs-step__title">Learn the core concepts</h3>
+                      <p class="hgs-prose">
+                        A short read goes a long way. The basics cover how
+                        authentication works, how coordinates are expressed, how
+                        rate limits apply, and how HERE products fit together so
+                        you can pick the right one for the job.
+                        <br />
+                        Skim the glossary if you're new to mapping terms like
+                        geocoding, isolines, or map tiles.
+                      </p>
+                    </div>
+
+                    <div class="hgs-step__links">
+                      <hds-button
+                        variant="link"
+                        size="small"
+                        icon-right="chevron-right"
+                        icon-right-category="core-ui"
+                        onclick="location.href='/intro-to-mapping-concepts/dev_guide/index.html'"
+                        >Intro to mapping concepts</hds-button
+                      >
+                      <hds-button
+                        variant="link"
+                        size="small"
+                        icon-right="chevron-right"
+                        icon-right-category="core-ui"
+                        onclick="location.href='/usage/dev_guide/index.html'"
+                        >Rate limits and quotas</hds-button
+                      >
+                      <hds-button
+                        variant="link"
+                        size="small"
+                        icon-right="chevron-right"
+                        icon-right-category="core-ui"
+                        onclick="location.href='/intro-to-mapping-concepts/dev_guide/topics/glossary.html'"
+                        >Mapping glossary</hds-button
+                      >
+                    </div>
+                  </div>
+                </li>
+
+                <!-- Step 4 -->
+                <li class="hgs-step hgs-step--last">
+                  <div class="hgs-step__rail" aria-hidden="true">
+                    <span class="hgs-step__badge">
+                      <hds-icon
+                        name="wrench"
+                        category="tools"
+                        icon-style="outline"
+                        size="24px"
+                      ></hds-icon>
+                    </span>
+                    <span class="hgs-step__line"></span>
+                  </div>
+
+                  <div class="hgs-step__body">
+                    <div class="hgs-step__text">
+                      <hds-flag variant="subtle" size="medium">Step 4</hds-flag>
+                      <h3 class="hgs-step__title">
+                        Build your first integration
+                      </h3>
+                      <p class="hgs-prose">
+                        When you're ready to ship something real, follow a guided
+                        tutorial. Each one walks you from an empty project to a
+                        working feature with full code you can adapt. Pick the one
+                        that matches what you're building.
+                        <br />
+                        If you'd rather start from a working example, browse the
+                        use cases and clone the closest match.
+                      </p>
+                    </div>
+
+                    <div class="hgs-step__links">
+                      <hds-button
+                        variant="link"
+                        size="small"
+                        icon-right="chevron-right"
+                        icon-right-category="core-ui"
+                        onclick="location.href='/getting-started/docs'"
+                        >Follow a guided tutorial</hds-button
+                      >
+                      <hds-button
+                        variant="link"
+                        size="small"
+                        icon-right="chevron-right"
+                        icon-right-category="core-ui"
+                        onclick="location.href='/getting-started/docs'"
+                        >Browse the use cases</hds-button
+                      >
+                      <hds-button
+                        variant="link"
+                        size="small"
+                        icon-right="chevron-right"
+                        icon-right-category="core-ui"
+                        onclick="location.href='https://github.com/heremaps'"
+                        >Sample projects on GitHub</hds-button
+                      >
+                    </div>
+                  </div>
+                </li>
+              </ol>
+            </section>
+
+            <!-- ---------------------------------------------------------
+                 Video library — 3 preview cards
+                 --------------------------------------------------------- -->
+            <section class="hgs-section" id="video-library">
+              <header class="hgs-section__head">
+                <h2 class="hgs-section__title">Video library</h2>
+                <p class="hgs-section__kicker">Learn HERE by watching</p>
+              </header>
+
+              <p class="hgs-prose">
+                Short, focused videos that walk you through the most common
+                starting points. Watch in order or jump straight to what you need.
+              </p>
+
+              <ul class="hgs-videos hgs-plain-list">
+                <li class="hgs-video">
+                  <div class="hgs-video__slot">
+                    <button
+                      type="button"
+                      class="hgs-video__play"
+                      data-hgs-video="set-up-your-here-account"
+                      aria-label="Play: Set up your HERE account"
+                    >
+                      <hds-icon
+                        name="video-tutorial"
+                        category="navigation-image"
+                        icon-style="solid"
+                        size="24px"
+                      ></hds-icon>
+                    </button>
+                    <div class="hgs-video__duration">
+                      <hds-flag variant="subtle" size="small">04:12</hds-flag>
+                    </div>
+                  </div>
+                  <div class="hgs-video__content">
+                    <h3 class="hgs-video__title">Set up your HERE account</h3>
+                    <p class="hgs-prose">
+                      Create a project, generate an API key, and confirm it works.
+                    </p>
+                  </div>
+                </li>
+
+                <li class="hgs-video">
+                  <div class="hgs-video__slot">
+                    <button
+                      type="button"
+                      class="hgs-video__play"
+                      data-hgs-video="your-first-geocoding-request"
+                      aria-label="Play: Your first Geocoding request"
+                    >
+                      <hds-icon
+                        name="video-tutorial"
+                        category="navigation-image"
+                        icon-style="solid"
+                        size="24px"
+                      ></hds-icon>
+                    </button>
+                    <div class="hgs-video__duration">
+                      <hds-flag variant="subtle" size="small">06:45</hds-flag>
+                    </div>
+                  </div>
+                  <div class="hgs-video__content">
+                    <h3 class="hgs-video__title">
+                      Your first Geocoding request
+                    </h3>
+                    <p class="hgs-prose">
+                      Turn an address into coordinates with a single GET request.
+                    </p>
+                  </div>
+                </li>
+
+                <li class="hgs-video">
+                  <div class="hgs-video__slot">
+                    <button
+                      type="button"
+                      class="hgs-video__play"
+                      data-hgs-video="render-a-map-in-the-browser"
+                      aria-label="Play: Render a map in the browser"
+                    >
+                      <hds-icon
+                        name="video-tutorial"
+                        category="navigation-image"
+                        icon-style="solid"
+                        size="24px"
+                      ></hds-icon>
+                    </button>
+                    <div class="hgs-video__duration">
+                      <hds-flag variant="subtle" size="small">05:30</hds-flag>
+                    </div>
+                  </div>
+                  <div class="hgs-video__content">
+                    <h3 class="hgs-video__title">Render a map in the browser</h3>
+                    <p class="hgs-prose">
+                      Add the Maps API for JavaScript and drop a marker on a map.
+                    </p>
+                  </div>
+                </li>
+              </ul>
+
+              <div class="hgs-section__cta">
+                <hds-button
+                  variant="link"
+                  size="small"
+                  icon-right="chevron-right"
+                  icon-right-category="core-ui"
+                  onclick="location.href='/getting-started/docs'"
+                  >See the full video library</hds-button
+                >
+              </div>
+            </section>
+
+            <!-- ---------------------------------------------------------
+                 Where do I go next? — crosslink table
+                 --------------------------------------------------------- -->
+            <section class="hgs-section" id="where-next">
+              <header class="hgs-section__head">
+                <h2 class="hgs-section__title">Where do I go next?</h2>
+                <p class="hgs-section__kicker">Related</p>
+              </header>
+
+              <ul class="hgs-crosslinks hgs-plain-list">
+                <li class="hgs-crosslink">
+                  <a
+                    class="hgs-crosslink__link"
+                    href="/geocoding-and-search/dev_guide/index.html"
+                  >
+                    <span class="hgs-crosslink__label"
+                      >Geocoding &amp; Search API - Get started</span
+                    >
+                    <span class="hgs-crosslink__icon" aria-hidden="true">
+                      <hds-icon
+                        name="arrow-right"
+                        category="core-ui"
+                        icon-style="outline"
+                        size="24px"
+                      ></hds-icon>
+                    </span>
+                  </a>
+                </li>
+
+                <li class="hgs-crosslink">
+                  <a
+                    class="hgs-crosslink__link"
+                    href="/geocoding-and-search/dev_guide/topics/endpoint-discover-brief.html"
+                  >
+                    <span class="hgs-crosslink__label"
+                      >Geocoding &amp; Search API - Discover endpoint</span
+                    >
+                    <span class="hgs-crosslink__icon" aria-hidden="true">
+                      <hds-icon
+                        name="arrow-right"
+                        category="core-ui"
+                        icon-style="outline"
+                        size="24px"
+                      ></hds-icon>
+                    </span>
+                  </a>
+                </li>
+
+                <li class="hgs-crosslink">
+                  <a
+                    class="hgs-crosslink__link"
+                    href="/maps-api-for-js/dev_guide/topics/marker-objects.html"
+                  >
+                    <span class="hgs-crosslink__label"
+                      >Maps API for JavaScript - Add markers</span
+                    >
+                    <span class="hgs-crosslink__icon" aria-hidden="true">
+                      <hds-icon
+                        name="arrow-right"
+                        category="core-ui"
+                        icon-style="outline"
+                        size="24px"
+                      ></hds-icon>
+                    </span>
+                  </a>
+                </li>
+
+                <li class="hgs-crosslink">
+                  <a
+                    class="hgs-crosslink__link"
+                    href="/maps-api-for-js/dev_guide/topics/best-practices.html"
+                  >
+                    <span class="hgs-crosslink__label"
+                      >Maps API for JavaScript - Best practices</span
+                    >
+                    <span class="hgs-crosslink__icon" aria-hidden="true">
+                      <hds-icon
+                        name="arrow-right"
+                        category="core-ui"
+                        icon-style="outline"
+                        size="24px"
+                      ></hds-icon>
+                    </span>
+                  </a>
+                </li>
+
+                <li class="hgs-crosslink">
+                  <a
+                    class="hgs-crosslink__link"
+                    href="/identity-and-access-management/dev_guide/topics/plat-using-apikeys.html"
+                  >
+                    <span class="hgs-crosslink__label"
+                      >HERE platform - Create an API key</span
+                    >
+                    <span class="hgs-crosslink__icon" aria-hidden="true">
+                      <hds-icon
+                        name="arrow-right"
+                        category="core-ui"
+                        icon-style="outline"
+                        size="24px"
+                      ></hds-icon>
+                    </span>
+                  </a>
+                </li>
+              </ul>
+            </section>
+          </div>
+
+          <!-- On this page — side navigation -->
+          <aside class="hgs-aside" aria-labelledby="hgs-aside-title">
+            <h2 class="hgs-visually-hidden" id="hgs-aside-title">
+              On this page
+            </h2>
+            <hds-vertical-navigation class="hgs-toc">
+              <hds-vertical-navigation-sub-list>
+                <hds-vertical-navigation-sub-list-item selected>
+                  <a href="#introduction">Introduction</a>
+                </hds-vertical-navigation-sub-list-item>
+                <hds-vertical-navigation-sub-list-item>
+                  <a href="#quick-start">Quick start</a>
+                </hds-vertical-navigation-sub-list-item>
+                <hds-vertical-navigation-sub-list-item>
+                  <a href="#video-library">Video library</a>
+                </hds-vertical-navigation-sub-list-item>
+                <hds-vertical-navigation-sub-list-item>
+                  <a href="#where-next">Where do I go next?</a>
+                </hds-vertical-navigation-sub-list-item>
+              </hds-vertical-navigation-sub-list>
+            </hds-vertical-navigation>
+          </aside>
+        </div>
+      </div>
+    </main>
+
+    <!-- ===================================================================
+         4. FOOTER
+         =================================================================== -->
+    <footer class="hgs-footer" role="contentinfo" aria-label="Footer">
+      <div class="hgs-footer__inner">
+        <div class="hgs-footer__row">
+          <div class="hgs-footer__assist">
+            <hds-logo size="medium"></hds-logo>
+            <div class="hgs-footer__lang" role="group" aria-label="Language">
+              <button type="button" data-lang="en" aria-pressed="true">EN</button>
+              <button type="button" data-lang="ja" aria-pressed="false">
+                日本語
+              </button>
+            </div>
+          </div>
+
+          <div class="hgs-footer__spacer"></div>
+
+          <nav class="hgs-footer__column" aria-labelledby="hgs-footer-other">
+            <p class="hgs-footer__columnTitle" id="hgs-footer-other">
+              Other sites
+            </p>
+            <ul class="hgs-footer__list hgs-plain-list">
+              <li>
+                <a href="https://www.here.com" rel="noopener">here.com</a>
+              </li>
+              <li>
+                <a href="https://platform.here.com/" rel="noopener"
+                  >HERE platform</a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://www.here.com/learn/developer-blog"
+                  rel="noopener"
+                  >Developer blog</a
+                >
+              </li>
+              <li>
+                <a href="https://knowledge.here.com/csm_kb" rel="noopener"
+                  >Knowledge base</a
+                >
+              </li>
+            </ul>
+          </nav>
+        </div>
+
+        <hr class="hgs-footer__rule" />
+
+        <div class="hgs-footer__bottom">
+          <p class="hgs-footer__copyright">© 2026 HERE</p>
+          <nav class="hgs-footer__legal" aria-label="Legal links">
+            <a
+              href="https://www.here.com/contact?intref=dev_docum"
+              rel="noopener"
+              >Contact us</a
+            >
+            <a href="#" rel="noopener" data-hgs-cookie-prefs
+              >Cookie preferences</a
+            >
+            <a
+              href="https://www.here.com/here-responsible-ai-charter"
+              rel="noopener"
+              >Responsible AI</a
+            >
+            <a
+              href="https://legal.here.com/en-gb/terms/here-end-user-terms"
+              rel="noopener"
+              >Terms</a
+            >
+            <a href="https://legal.here.com/en-gb/security" rel="noopener"
+              >Security</a
+            >
+            <a href="https://legal.here.com/en-gb/privacy" rel="noopener"
+              >Privacy</a
+            >
+            <a href="https://www.here.com/here-privacy-charter" rel="noopener"
+              >Privacy charter</a
+            >
+            <a
+              href="https://www.here.com/here-modern-slavery-statement"
+              rel="noopener"
+              >Modern slavery statement</a
+            >
+            <a
+              href="https://legal.here.com/en-gb/privacy/do-not-sell"
+              rel="noopener"
+              >Do not sell my personal information</a
+            >
+          </nav>
+        </div>
+      </div>
+
+      <div class="hgs-footer__accentBar" aria-hidden="true"></div>
+    </footer>
+
+    <script src="doc-shell.js"></script>
+  </body>
+</html>

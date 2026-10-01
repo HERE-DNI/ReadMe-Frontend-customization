@@ -1,0 +1,217 @@
+/* =============================================================================
+   HERE Documentation — "Get Started" sub page
+   Figma: "Documentation site 2026" node 2367-93090 (Get Started - Light Mode)
+
+   Loaded after doc-shell.css, which supplies the navbar, hero, body grid,
+   section scaffolding, crosslink table, side navigation and footer.
+
+   This file covers only the two blocks unique to the Get Started page:
+     · icon-rail steps   ("Quick start" / In four steps)
+     · video library     (preview cards with a play button and duration flag)
+   ========================================================================== */
+
+/* ==========================================================================
+   QUICK START — icon-rail steps
+   ========================================================================== */
+
+.hgs-steps {
+  margin-top: var(--hds-spacing-2, 8px);
+  display: flex;
+  flex-direction: column;
+  gap: var(--hds-spacing-6, 24px);
+}
+
+.hgs-step {
+  display: flex;
+  align-items: stretch;
+  gap: var(--hds-spacing-4, 16px);
+}
+
+/* Icon badge plus the hairline that runs down the rest of the step. */
+.hgs-step__rail {
+  flex: 0 0 33px;
+  width: 33px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--hds-spacing-1, 4px);
+}
+
+.hgs-step__badge {
+  flex: 0 0 auto;
+  width: 33px;
+  height: 33px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--hds-background-secondary);
+  border: 1px solid var(--hds-foreground-divider);
+  border-radius: var(--hds-border-radius, 4px);
+  color: var(--hds-foreground-primary);
+  --hds-icon-color: var(--hds-foreground-primary);
+}
+
+.hgs-step__line {
+  flex: 1 1 auto;
+  width: 1px;
+  min-height: 24px;
+  background: var(--hds-foreground-divider);
+}
+
+/* The final step has no following step, so the rail stops at the badge. */
+.hgs-step--last .hgs-step__line {
+  display: none;
+}
+
+.hgs-step__body {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding-top: var(--hds-spacing-1, 4px);
+  display: flex;
+  flex-direction: column;
+  gap: var(--hds-spacing-4, 16px);
+}
+
+.hgs-step__text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--hds-spacing-1, 4px);
+}
+
+/* Figma "headline-05": 16 / 24, weight 500 */
+.hgs-step__title {
+  margin: 0;
+  color: var(--hds-foreground-primary);
+  font-family: var(--hgs-font-medium);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+}
+
+.hgs-step__text .hgs-prose {
+  margin-top: var(--hds-spacing-1, 4px);
+}
+
+.hgs-step__links {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--hds-spacing-2, 8px);
+}
+
+.hgs-step__links hds-button {
+  margin-left: -12px;
+}
+
+/* ==========================================================================
+   VIDEO LIBRARY
+   ========================================================================== */
+
+.hgs-videos {
+  margin-top: var(--hds-spacing-2, 8px);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--hds-spacing-4, 16px);
+}
+
+.hgs-video {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--hds-background-secondary);
+  border: 1px solid var(--hds-foreground-divider);
+  border-radius: 8px;
+}
+
+/* Preview slot — Figma: padding 64px 4px 8px on the #ecf7fc surface. */
+.hgs-video__slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 56px;
+  padding: 64px 4px 8px;
+  background: var(--hds-background-primary);
+}
+
+.hgs-video__play {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  cursor: pointer;
+  background: rgb(0 153 204 / 4%);
+  border: 1px solid var(--hds-foreground-tertiary);
+  border-radius: 50px;
+  color: var(--hds-foreground-primary);
+  --hds-icon-color: var(--hds-foreground-primary);
+  transition: background-color 120ms ease, border-color 120ms ease;
+}
+
+.hgs-video__play:hover {
+  background: var(--hds-background-object);
+}
+
+.hgs-video__play:focus-visible {
+  outline: 2px solid var(--hds-action);
+  outline-offset: 2px;
+}
+
+.hgs-video__duration {
+  align-self: stretch;
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 var(--hds-spacing-4, 16px);
+}
+
+/* Figma: 32px padding, title and body copy stacked with 8px. */
+.hgs-video__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hds-spacing-2, 8px);
+  padding: var(--hds-spacing-8, 32px);
+  background: var(--hds-background-secondary);
+}
+
+/* Figma tablet "headline-04": 20 / 24, weight 500 */
+.hgs-video__title {
+  margin: 0;
+  color: var(--hds-foreground-primary);
+  font-family: var(--hgs-font-medium);
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 24px;
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+  .hgs-videos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 767px) {
+  .hgs-videos {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hgs-video__slot {
+    padding: 48px 4px 8px;
+    gap: 40px;
+  }
+
+  .hgs-video__content {
+    padding: var(--hds-spacing-6, 24px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hgs-video__play {
+    transition: none;
+  }
+}

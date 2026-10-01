@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<!--
+  HERE Documentation — Use Case 03: calculate a route between two locations
+  ─────────────────────────────────────────────────────────────────────────────
+  Source of truth: Figma "Documentation site 2026",
+  section 2457-112827 "Use Cases - Light Mode", frame "Use Case 03" (2500:122015)
+
+  Shell (navbar, hero, 920 + 335 grid, footer) comes from doc-shell.css /
+  doc-shell.js. Use-case-specific blocks come from use-case.css.
+
+  Note on copy: headings, kickers, card copy and flow steps are transcribed from
+  the design. The Figma code block holds a placeholder sample, so the snippets
+  below are real HERE Routing / Real-Time Traffic calls written for this page.
+  Swap them for the canonical snippets before launch.
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Calculate a route between two locations | HERE Documentation</title>
+    <meta
+      name="description"
+      content="Turn-by-turn directions between any two points with realistic ETAs and detours powered by live traffic."
+    />
+
+    <!-- HDS styles + icon libraries + web components (same versions as head-global.html) -->
+    <link
+      rel="stylesheet"
+      href="https://platform.here.com/hds/hds-styles.css?versionOverride=2026.2.0"
+    />
+    <link
+      rel="stylesheet"
+      href="https://platform.here.com/hds/hds-iconlibrary-8px.css?versionOverride=2026.2.0"
+    />
+    <link
+      rel="stylesheet"
+      href="https://platform.here.com/hds/hds-iconlibrary-16px.css?versionOverride=2026.2.0"
+    />
+    <link
+      rel="stylesheet"
+      href="https://platform.here.com/hds/hds-iconlibrary-24px.css?versionOverride=2026.2.0"
+    />
+    <script
+      defer
+      src="https://platform.here.com/hds/hds-webcomponents.js?versionOverride=2026.2.0"
+    ></script>
+
+    <!-- Shared sub page shell first, then the use case blocks. -->
+    <link rel="stylesheet" href="doc-shell.css" />
+    <link rel="stylesheet" href="use-case.css" />
+  </head>
+
+  <body class="hgs" data-styles="hds" data-theme="hds-web-product-light-theme">
+    <a class="hgs-skip-link" href="#hgs-main">Skip to main content</a>
+
+    <!-- ===================================================================
+         NAVBAR TOP — wide
+         =================================================================== -->
+    <header class="hgs-navbar">
+      <hds-navbar-top variant="wide">
+        <a slot="logo" href="/" aria-label="HERE">
+          <hds-logo size="small"></hds-logo>
+        </a>
+
+        <a slot="page-title" href="/" class="hgs-navbar__title">Documentation</a>
+
+        <div slot="tabs-menu">
+          <hds-tabs role="menubar" variant="wide">
+            <hds-tab role="menuitem" chevron selected>
+              Use cases
+              <hds-list slot="menu">
+                <hds-list-item>
+                  <a href="use-case-02.html">Search for a place on a map</a>
+                </hds-list-item>
+                <hds-list-item>
+                  <a href="use-case-03.html">Calculate a route</a>
+                </hds-list-item>
+                <hds-list-item>
+                  <a href="get-started.html">Get started</a>
+                </hds-list-item>
+              </hds-list>
+            </hds-tab>
+          </hds-tabs>
+        </div>
+
+        <div slot="right-tray" class="hgs-navbar__tray">
+          <hds-button
+            variant="secondary"
+            size="small"
+            icon="search"
+            icon-category="core-ui"
+            icon-only
+            aria-label="Search documentation"
+          ></hds-button>
+
+          <hds-button
+            variant="primary"
+            size="small"
+            icon="computer-chip"
+            icon-category="devices-sensors"
+            >Ask AI</hds-button
+          >
+
+          <hds-button variant="secondary" size="small">Contact us</hds-button>
+
+          <hds-button
+            variant="subtle"
+            size="large"
+            icon="clear-night"
+            icon-category="weather"
+            icon-style="outline"
+            icon-only
+            aria-label="Switch to dark mode"
+            data-hgs-theme-toggle
+          ></hds-button>
+        </div>
+
+        <div slot="profile-menu">
+          <hds-profile-menu
+            profile-name="Jane Developer"
+            profile-email="jane.developer@here.com"
+          >
+            <hds-list-item icon="settings"><a href="#">Settings</a></hds-list-item>
+            <hds-list-item icon="help"><a href="#">FAQ</a></hds-list-item>
+            <hds-list-item icon="sign-out"><a href="#">Log out</a></hds-list-item>
+          </hds-profile-menu>
+        </div>
+      </hds-navbar-top>
+    </header>
+
+    <main id="hgs-main">
+      <!-- =================================================================
+           SUB PAGE HERO AREA — Use Cases variant
+           ================================================================= -->
+      <section class="hgs-hero" aria-labelledby="hgs-hero-title">
+        <div class="hgs-hero__inner">
+          <hds-button
+            class="hgs-hero__back"
+            variant="subtle"
+            size="small"
+            icon="arrow-left"
+            icon-category="core-ui"
+            onclick="location.href='/'"
+            >Back to documentation</hds-button
+          >
+
+          <div class="hgs-hero__flags">
+            <hds-flag class="hgs-hero__flag" variant="custom" size="medium"
+              >Routing API</hds-flag
+            >
+          </div>
+
+          <h1 class="hgs-hero__title" id="hgs-hero-title">
+            Calculate a route between two locations
+          </h1>
+
+          <p class="hgs-hero__intro">
+            Provide turn-by-turn directions between any two points with realistic
+            ETAs and detours powered by live traffic. Ideal for navigation,
+            delivery, ride-hail, logistics, and fleet operations.
+          </p>
+
+          <div class="hgs-hero__meta">
+            <span class="hgs-meta-item">
+              <hds-icon
+                name="time"
+                category="core-ui"
+                icon-style="outline"
+                size="24px"
+              ></hds-icon>
+              <span class="hgs-meta-item__text">6 minute read</span>
+            </span>
+
+            <span
+              class="hgs-meta-divider"
+              role="separator"
+              aria-hidden="true"
+            ></span>
+
+            <span class="hgs-meta-item">
+              <span class="hgs-meta-item__text">
+                Last updated:
+                <time datetime="2026-01-06">Jan 6, 2026</time>
+              </span>
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================
+           BODY — content column + side navigation
+           ================================================================= -->
+      <div class="hgs-body">
+        <div class="hgs-grid">
+          <div class="hgs-content">
+            <!-- ---------------------------------------------------------
+                 Introduction
+                 --------------------------------------------------------- -->
+            <section class="hgs-section" id="introduction">
+              <header class="hgs-section__head">
+                <h2 class="hgs-section__title hgs-section__title--lead">
+                  Introduction
+                </h2>
+                <p class="hgs-section__kicker">Overview</p>
+              </header>
+
+              <p class="hgs-prose">
+                A routing experience takes an origin and a destination, picks a
+                travel mode, and returns a polyline plus turn-by-turn maneuvers.
+                HERE Routing supports car, truck, pedestrian, bicycle, scooter and
+                public transit, with options for tolls, ferries, and vehicle
+                restrictions.
+              </p>
+
+              <p class="hgs-prose">
+                Layering HERE Real-Time Traffic on top of Routing produces
+                realistic arrival times, dynamic re-routes around incidents, and a
+                visible congestion layer on the map — all behind a single API key
+                that also powers the Maps API for JavaScript visualization.
+              </p>
+            </section>
+
+            <!-- ---------------------------------------------------------
+                 Typical scenarios
+                 --------------------------------------------------------- -->
+            <section class="hgs-section" id="typical-scenarios">
+              <header class="hgs-section__head">
+                <h2 class="hgs-section__title">Typical scenarios</h2>
+                <p class="hgs-section__kicker">When to use</p>
+              </header>
+
+              <ul class="hgs-cards hgs-cards--3 hgs-plain-list">
+                <li class="hgs-card">
+                  <h3 class="hgs-card__title">Door-to-door navigation</h3>
+                  <p class="hgs-card__body">
+                    Guide a driver, cyclist or pedestrian from A to B with full
+                    turn-by-turn maneuvers and live ETAs.
+                  </p>
+                </li>
+                <li class="hgs-card">
+                  <h3 class="hgs-card__title">Delivery dispatch</h3>
+                  <p class="hgs-card__body">
+                    Calculate the most efficient route for a delivery vehicle,
+                    respecting truck attributes and current road conditions.
+                  </p>
+                </li>
+                <li class="hgs-card">
+                  <h3 class="hgs-card__title">Dynamic re-routing</h3>
+                  <p class="hgs-card__body">
+                    Detect incidents along the active route and offer a faster
+                    alternative in real time.
+                  </p>
+                </li>
+              </ul>
+            </section>
+
+            <!-- ---------------------------------------------------------
+                 Flow
+                 --------------------------------------------------------- -->
+            <section class="hgs-section" id="flow">
+              <header class="hgs-section__head">
+                <h2 class="hgs-section__title">Flow</h2>
+                <p class="hgs-section__kicker">How it works</p>
+              </header>
+
+              <ol class="hgs-flow hgs-plain-list">
+                <li class="hgs-flow__step">
+                  <div class="hgs-flow__rail" aria-hidden="true">
+                    <span class="hgs-flow__number">1</span>
+                    <span class="hgs-flow__line"></span>
+                  </div>
+                  <div class="hgs-flow__body">
+                    <h3 class="hgs-flow__title">
+                      Collect origin and destination
+                    </h3>
+                    <p class="hgs-prose">
+                      Capture both endpoints from the user as addresses, place
+                      picks, or map clicks. Convert addresses to coordinates if
+                      needed.
+                    </p>
+                  </div>
+                </li>
+
+                <li class="hgs-flow__step">
+                  <div class="hgs-flow__rail" aria-hidden="true">
+                    <span class="hgs-flow__number">2</span>
+                    <span class="hgs-flow__line"></span>
+                  </div>
+                  <div class="hgs-flow__body">
+                    <h3 class="hgs-flow__title">Request a traffic-aware route</h3>
+                    <p class="hgs-prose">
+                      Call the HERE Routing API with the chosen transport mode and
+                      a departure time so HERE factors current and predicted
+                      traffic into the response.
+                    </p>
+                  </div>
+                </li>
+
+                <li class="hgs-flow__step">
+                  <div class="hgs-flow__rail" aria-hidden="true">
+                    <span class="hgs-flow__number">3</span>
+                    <span class="hgs-flow__line"></span>
+                  </div>
+                  <div class="hgs-flow__body">
+                    <h3 class="hgs-flow__title">Render, monitor, and re-route</h3>
+                    <p class="hgs-prose">
+                      Draw the returned polyline on the map, fetch live incidents
+                      along the corridor, and trigger a re-route when conditions
+                      change the optimal path.
+                    </p>
+                  </div>
+                </li>
+              </ol>
+            </section>
+
+            <!-- ---------------------------------------------------------
+                 Code example
+                 --------------------------------------------------------- -->
+            <section class="hgs-section" id="code-example">
+              <header class="hgs-section__head">
+                <h2 class="hgs-section__title">
+                  Traffic-aware route with live incidents
+                </h2>
+                <p class="hgs-section__kicker">Try it</p>
+              </header>
+
+              <p class="hgs-prose">
+                Ask Routing to factor current traffic into the ETA, render the
+                polyline, then query Real-Time Traffic for incidents along the
+                same corridor.
+              </p>
+
+              <div class="hgs-code">
+                <hds-tabs>
+                  <hds-tab selected>CSS</hds-tab>
+                  <hds-tab-panel slot="panel">
+                    <div class="hgs-code__panel">
+                      <hds-button
+                        class="hgs-code__copy"
+                        variant="subtle"
+                        size="extra-small"
+                        icon="copy"
+                        icon-category="file"
+                        data-hgs-copy="uc03-css"
+                        >Copy</hds-button
+                      >
+                      <pre class="hgs-code__pre" id="uc03-css"><code>#map {
+  width: 100%;
+  height: 480px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.route-summary {
+  display: flex;
+  gap: 24px;
+  margin-top: 16px;
+}
+
+.route-summary__incident {
+  color: #b8321a;
+}</code></pre>
+                    </div>
+                  </hds-tab-panel>
+
+                  <hds-tab>HTML</hds-tab>
+                  <hds-tab-panel slot="panel">
+                    <div class="hgs-code__panel">
+                      <hds-button
+                        class="hgs-code__copy"
+                        variant="subtle"
+                        size="extra-small"
+                        icon="copy"
+                        icon-category="file"
+                        data-hgs-copy="uc03-html"
+                        >Copy</hds-button
+                      >
+                      <pre class="hgs-code__pre" id="uc03-html"><code>&lt;div id="map"&gt;&lt;/div&gt;
+
+&lt;dl class="route-summary"&gt;
+  &lt;div&gt;&lt;dt&gt;Distance&lt;/dt&gt;&lt;dd id="distance"&gt;—&lt;/dd&gt;&lt;/div&gt;
+  &lt;div&gt;&lt;dt&gt;ETA&lt;/dt&gt;&lt;dd id="eta"&gt;—&lt;/dd&gt;&lt;/div&gt;
+  &lt;div&gt;&lt;dt&gt;Incidents&lt;/dt&gt;&lt;dd id="incidents"&gt;—&lt;/dd&gt;&lt;/div&gt;
+&lt;/dl&gt;
+
+&lt;script src="https://js.api.here.com/v3/3.1/mapsjs-core.js"&gt;&lt;/script&gt;
+&lt;script src="https://js.api.here.com/v3/3.1/mapsjs-service.js"&gt;&lt;/script&gt;
+&lt;script src="https://js.api.here.com/v3/3.1/mapsjs-ui.js"&gt;&lt;/script&gt;
+&lt;script src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js"&gt;&lt;/script&gt;
+&lt;script src="./route.js"&gt;&lt;/script&gt;</code></pre>
+                    </div>
+                  </hds-tab-panel>
+
+                  <hds-tab>JS</hds-tab>
+                  <hds-tab-panel slot="panel">
+                    <div class="hgs-code__panel">
+                      <hds-button
+                        class="hgs-code__copy"
+                        variant="subtle"
+                        size="extra-small"
+                        icon="copy"
+                        icon-category="file"
+                        data-hgs-copy="uc03-js"
+                        >Copy</hds-button
+                      >
+                      <pre class="hgs-code__pre" id="uc03-js"><code>// Serve the key from your backend in production — never ship it in a bundle.
+const API_KEY = window.HERE_API_KEY;
+
+const platform = new H.service.Platform({ apikey: API_KEY });
+const defaultLayers = platform.createDefaultLayers();
+
+const map = new H.Map(
+  document.getElementById('map'),
+  defaultLayers.vector.normal.map,
+  { zoom: 10, center: { lat: 52.52, lng: 13.405 }, pixelRatio: devicePixelRatio }
+);
+
+new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
+H.ui.UI.createDefault(map, defaultLayers);
+
+async function routeWithTraffic(origin, destination) {
+  const url = new URL('https://router.hereapi.com/v8/routes');
+  url.searchParams.set('transportMode', 'car');
+  url.searchParams.set('origin', `${origin.lat},${origin.lng}`);
+  url.searchParams.set('destination', `${destination.lat},${destination.lng}`);
+  url.searchParams.set('return', 'polyline,summary,actions,instructions');
+  // "now" makes HERE factor live and predicted traffic into the ETA.
+  url.searchParams.set('departureTime', 'now');
+  url.searchParams.set('apiKey', API_KEY);
+
+  const response = await fetch(url);
+  if (!response.ok) throw new Error(`Routing failed: ${response.status}`);
+
+  const { routes } = await response.json();
+  if (!routes.length) return null;
+
+  const section = routes[0].sections[0];
+  const line = H.geo.LineString.fromFlexiblePolyline(section.polyline);
+
+  map.addObject(new H.map.Polyline(line, { style: { lineWidth: 6 } }));
+  map.getViewModel().setLookAtData({ bounds: line.getBoundingBox() });
+
+  document.getElementById('distance').textContent =
+    `${(section.summary.length / 1000).toFixed(1)} km`;
+  document.getElementById('eta').textContent =
+    `${Math.round(section.summary.duration / 60)} min`;
+
+  const incidents = await incidentsAlong(section.polyline);
+  document.getElementById('incidents').textContent = incidents.length;
+
+  return { section, incidents };
+}
+
+async function incidentsAlong(polyline, radiusMetres = 500) {
+  const url = new URL('https://data.traffic.hereapi.com/v7/incidents');
+  // A corridor query keeps the response scoped to the route itself.
+  url.searchParams.set('in', `corridor:${polyline};r=${radiusMetres}`);
+  url.searchParams.set('locationReferencing', 'shape');
+  url.searchParams.set('apiKey', API_KEY);
+
+  const response = await fetch(url);
+  if (!response.ok) throw new Error(`Traffic failed: ${response.status}`);
+
+  const { results = [] } = await response.json();
+  return results;
+}
+
+routeWithTraffic(
+  { lat: 52.53086, lng: 13.38469 },
+  { lat: 52.49404, lng: 13.42917 }
+).catch(console.error);</code></pre>
+                    </div>
+                  </hds-tab-panel>
+                </hds-tabs>
+              </div>
+            </section>
+
+            <!-- ---------------------------------------------------------
+                 Required building blocks
+                 --------------------------------------------------------- -->
+            <section class="hgs-section" id="required-building-blocks">
+              <header class="hgs-section__head">
+                <h2 class="hgs-section__title">Building blocks you'll need</h2>
+                <p class="hgs-section__kicker">Required</p>
+              </header>
+
+              <ul class="hgs-cards hgs-cards--3 hgs-plain-list">
+                <li class="hgs-card">
+                  <h3 class="hgs-card__title">HERE Routing</h3>
+                  <p class="hgs-card__body">
+                    REST API that returns routes, ETAs and turn-by-turn maneuvers
+                    for car, truck, pedestrian, bicycle, scooter and public
+                    transit.
+                  </p>
+                  <div class="hgs-card__action">
+                    <hds-button
+                      variant="secondary"
+                      size="small"
+                      icon-right="arrow-right"
+                      icon-right-category="core-ui"
+                      onclick="location.href='/routing-api/dev_guide/index.html'"
+                      >Open</hds-button
+                    >
+                  </div>
+                </li>
+
+                <li class="hgs-card">
+                  <h3 class="hgs-card__title">Maps API for JavaScript</h3>
+                  <p class="hgs-card__body">
+                    Interactive map client used to render the route polyline,
+                    start and end markers, and fit the viewport to the route.
+                  </p>
+                  <div class="hgs-card__action">
+                    <hds-button
+                      variant="secondary"
+                      size="small"
+                      icon-right="arrow-right"
+                      icon-right-category="core-ui"
+                      onclick="location.href='/maps-api-for-js/dev_guide/index.html'"
+                      >Open</hds-button
+                    >
+                  </div>
+                </li>
+
+                <li class="hgs-card">
+                  <h3 class="hgs-card__title">HERE Real-Time Traffic</h3>
+                  <p class="hgs-card__body">
+                    Live flow speeds and incidents (accidents, road closures,
+                    construction) for the route corridor or any viewport.
+                  </p>
+                  <div class="hgs-card__action">
+                    <hds-button
+                      variant="secondary"
+                      size="small"
+                      icon-right="arrow-right"
+                      icon-right-category="core-ui"
+                      onclick="location.href='/traffic-api/dev_guide/index.html'"
+                      >Open</hds-button
+                    >
+                  </div>
+                </li>
+              </ul>
+            </section>
+
+            <!-- ---------------------------------------------------------
+                 Optional building blocks
+                 --------------------------------------------------------- -->
+            <section class="hgs-section" id="optional-building-blocks">
+              <header class="hgs-section__head">
+                <h2 class="hgs-section__title">Take it further</h2>
+                <p class="hgs-section__kicker">Optional</p>
+              </header>
+
+              <ul class="hgs-cards hgs-cards--3 hgs-plain-list">
+                <li class="hgs-card">
+                  <h3 class="hgs-card__title">Geocoding &amp; Search</h3>
+                  <p class="hgs-card__body">
+                    Convert the user's typed origin and destination addresses into
+                    coordinates before routing.
+                  </p>
+                  <div class="hgs-card__action">
+                    <hds-button
+                      variant="secondary"
+                      size="small"
+                      icon-right="arrow-right"
+                      icon-right-category="core-ui"
+                      onclick="location.href='/geocoding-and-search/dev_guide/index.html'"
+                      >Open</hds-button
+                    >
+                  </div>
+                </li>
+
+                <li class="hgs-card">
+                  <h3 class="hgs-card__title">Markers &amp; geometry</h3>
+                  <p class="hgs-card__body">
+                    Add waypoints, custom start and end markers, and styled
+                    polylines to differentiate alternative routes.
+                  </p>
+                  <div class="hgs-card__action">
+                    <hds-button
+                      variant="secondary"
+                      size="small"
+                      icon-right="arrow-right"
+                      icon-right-category="core-ui"
+                      onclick="location.href='/maps-api-for-js/dev_guide/topics/marker-objects.html'"
+                      >Open</hds-button
+                    >
+                  </div>
+                </li>
+
+                <li class="hgs-card">
+                  <h3 class="hgs-card__title">HERE SDK</h3>
+                  <p class="hgs-card__body">
+                    Bring the same routing experience to native iOS, Android and
+                    Flutter apps with offline support.
+                  </p>
+                  <div class="hgs-card__action">
+                    <hds-button
+                      variant="secondary"
+                      size="small"
+                      icon-right="arrow-right"
+                      icon-right-category="core-ui"
+                      onclick="location.href='/here-sdk/dev_guide/index.html'"
+                      >Open</hds-button
+                    >
+                  </div>
+                </li>
+              </ul>
+            </section>
+
+            <!-- ---------------------------------------------------------
+                 Where do I go next?
+                 --------------------------------------------------------- -->
+            <section class="hgs-section" id="where-next">
+              <header class="hgs-section__head">
+                <h2 class="hgs-section__title">Where do I go next?</h2>
+                <p class="hgs-section__kicker">Related</p>
+              </header>
+
+              <ul class="hgs-crosslinks hgs-plain-list">
+                <li class="hgs-crosslink">
+                  <a
+                    class="hgs-crosslink__link"
+                    href="/routing-api/dev_guide/index.html"
+                  >
+                    <span class="hgs-crosslink__label"
+                      >Routing API - Get started</span
+                    >
+                    <span class="hgs-crosslink__icon" aria-hidden="true">
+                      <hds-icon
+                        name="arrow-right"
+                        category="core-ui"
+                        icon-style="outline"
+                        size="24px"
+                      ></hds-icon>
+                    </span>
+                  </a>
+                </li>
+                <li class="hgs-crosslink">
+                  <a
+                    class="hgs-crosslink__link"
+                    href="/routing-api/dev_guide/topics/use-cases/calculate-route.html"
+                  >
+                    <span class="hgs-crosslink__label"
+                      >Routing API - Calculate a route</span
+                    >
+                    <span class="hgs-crosslink__icon" aria-hidden="true">
+                      <hds-icon
+                        name="arrow-right"
+                        category="core-ui"
+                        icon-style="outline"
+                        size="24px"
+                      ></hds-icon>
+                    </span>
+                  </a>
+                </li>
+                <li class="hgs-crosslink">
+                  <a
+                    class="hgs-crosslink__link"
+                    href="/maps-api-for-js/dev_guide/topics/polylines.html"
+                  >
+                    <span class="hgs-crosslink__label"
+                      >Maps API for JavaScript - Polylines</span
+                    >
+                    <span class="hgs-crosslink__icon" aria-hidden="true">
+                      <hds-icon
+                        name="arrow-right"
+                        category="core-ui"
+                        icon-style="outline"
+                        size="24px"
+                      ></hds-icon>
+                    </span>
+                  </a>
+                </li>
+                <li class="hgs-crosslink">
+                  <a
+                    class="hgs-crosslink__link"
+                    href="/routing-api/dev_guide/topics/transport-modes.html"
+                  >
+                    <span class="hgs-crosslink__label"
+                      >Transport modes &amp; options</span
+                    >
+                    <span class="hgs-crosslink__icon" aria-hidden="true">
+                      <hds-icon
+                        name="arrow-right"
+                        category="core-ui"
+                        icon-style="outline"
+                        size="24px"
+                      ></hds-icon>
+                    </span>
+                  </a>
+                </li>
+                <li class="hgs-crosslink">
+                  <a
+                    class="hgs-crosslink__link"
+                    href="/identity-and-access-management/dev_guide/topics/plat-using-apikeys.html"
+                  >
+                    <span class="hgs-crosslink__label"
+                      >HERE platform - Create an API key</span
+                    >
+                    <span class="hgs-crosslink__icon" aria-hidden="true">
+                      <hds-icon
+                        name="arrow-right"
+                        category="core-ui"
+                        icon-style="outline"
+                        size="24px"
+                      ></hds-icon>
+                    </span>
+                  </a>
+                </li>
+              </ul>
+
+              <div class="hgs-next">
+                <div class="hgs-next__text">
+                  <h3 class="hgs-next__title">Build traffic-aware routing</h3>
+                  <p class="hgs-next__kicker">Next use case</p>
+                </div>
+                <hds-button
+                  variant="secondary"
+                  size="small"
+                  icon-right="arrow-right"
+                  icon-right-category="core-ui"
+                  onclick="location.href='/traffic-api/dev_guide/index.html'"
+                  >Open</hds-button
+                >
+              </div>
+            </section>
+          </div>
+
+          <!-- On this page — side navigation -->
+          <aside class="hgs-aside" aria-labelledby="hgs-aside-title">
+            <h2 class="hgs-visually-hidden" id="hgs-aside-title">On this page</h2>
+            <hds-vertical-navigation class="hgs-toc">
+              <hds-vertical-navigation-sub-list>
+                <hds-vertical-navigation-sub-list-item selected>
+                  <a href="#introduction">Introduction</a>
+                </hds-vertical-navigation-sub-list-item>
+                <hds-vertical-navigation-sub-list-item>
+                  <a href="#typical-scenarios">Typical scenarios</a>
+                </hds-vertical-navigation-sub-list-item>
+                <hds-vertical-navigation-sub-list-item>
+                  <a href="#flow">Flow</a>
+                </hds-vertical-navigation-sub-list-item>
+                <hds-vertical-navigation-sub-list-item>
+                  <a href="#code-example">Code example</a>
+                </hds-vertical-navigation-sub-list-item>
+                <hds-vertical-navigation-sub-list-item>
+                  <a href="#required-building-blocks">Required building block</a>
+                </hds-vertical-navigation-sub-list-item>
+                <hds-vertical-navigation-sub-list-item>
+                  <a href="#optional-building-blocks"
+                    >Optional building blocks</a
+                  >
+                </hds-vertical-navigation-sub-list-item>
+                <hds-vertical-navigation-sub-list-item>
+                  <a href="#where-next">Where do I go next?</a>
+                </hds-vertical-navigation-sub-list-item>
+              </hds-vertical-navigation-sub-list>
+            </hds-vertical-navigation>
+          </aside>
+        </div>
+      </div>
+    </main>
+
+    <!-- ===================================================================
+         FOOTER
+         =================================================================== -->
+    <footer class="hgs-footer" role="contentinfo" aria-label="Footer">
+      <div class="hgs-footer__inner">
+        <div class="hgs-footer__row">
+          <div class="hgs-footer__assist">
+            <hds-logo size="medium"></hds-logo>
+            <div class="hgs-footer__lang" role="group" aria-label="Language">
+              <button type="button" data-lang="en" aria-pressed="true">EN</button>
+              <button type="button" data-lang="ja" aria-pressed="false">
+                日本語
+              </button>
+            </div>
+          </div>
+
+          <div class="hgs-footer__spacer"></div>
+
+          <nav class="hgs-footer__column" aria-labelledby="hgs-footer-other">
+            <p class="hgs-footer__columnTitle" id="hgs-footer-other">
+              Other sites
+            </p>
+            <ul class="hgs-footer__list hgs-plain-list">
+              <li><a href="https://www.here.com" rel="noopener">here.com</a></li>
+              <li>
+                <a href="https://platform.here.com/" rel="noopener"
+                  >HERE platform</a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://www.here.com/learn/developer-blog"
+                  rel="noopener"
+                  >Developer blog</a
+                >
+              </li>
+              <li>
+                <a href="https://knowledge.here.com/csm_kb" rel="noopener"
+                  >Knowledge base</a
+                >
+              </li>
+            </ul>
+          </nav>
+        </div>
+
+        <hr class="hgs-footer__rule" />
+
+        <div class="hgs-footer__bottom">
+          <p class="hgs-footer__copyright">© 2026 HERE</p>
+          <nav class="hgs-footer__legal" aria-label="Legal links">
+            <a
+              href="https://www.here.com/contact?intref=dev_docum"
+              rel="noopener"
+              >Contact us</a
+            >
+            <a href="#" rel="noopener" data-hgs-cookie-prefs
+              >Cookie preferences</a
+            >
+            <a
+              href="https://www.here.com/here-responsible-ai-charter"
+              rel="noopener"
+              >Responsible AI</a
+            >
+            <a
+              href="https://legal.here.com/en-gb/terms/here-end-user-terms"
+              rel="noopener"
+              >Terms</a
+            >
+            <a href="https://legal.here.com/en-gb/security" rel="noopener"
+              >Security</a
+            >
+            <a href="https://legal.here.com/en-gb/privacy" rel="noopener"
+              >Privacy</a
+            >
+            <a href="https://www.here.com/here-privacy-charter" rel="noopener"
+              >Privacy charter</a
+            >
+            <a
+              href="https://www.here.com/here-modern-slavery-statement"
+              rel="noopener"
+              >Modern slavery statement</a
+            >
+            <a
+              href="https://legal.here.com/en-gb/privacy/do-not-sell"
+              rel="noopener"
+              >Do not sell my personal information</a
+            >
+          </nav>
+        </div>
+      </div>
+
+      <div class="hgs-footer__accentBar" aria-hidden="true"></div>
+    </footer>
+
+    <script src="doc-shell.js"></script>
+  </body>
+</html>
