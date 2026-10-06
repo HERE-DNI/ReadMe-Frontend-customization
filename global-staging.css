@@ -423,7 +423,7 @@ font-size: 14px !important;
 /* ======================================================================
    2a) GLOBAL LANDING PAGE (GLP) — HERO AREA
    ----------------------------------------------------------------------
-   Source: Figma "Documentation site 2026" — node 1177:68164 (Hero area)
+   Source: Figma "Documentation site 2026" — node 1177:68164, updated from 2411:102024 (adds Ask AI, left-aligns hero, 686px search row)
    Targets: .here-glp .here-hero and its children, rendered by
             index-staging.html (staging) / index.html (production).
    Why: 2026 redesign of the GLP hero. These rules REPLACE the hero
@@ -450,44 +450,100 @@ font-size: 14px !important;
   padding: 80px 0 !important;
 }
 
-/* Hero inner wrapper — centered column layout */
+/* Hero inner wrapper — left-aligned column inside the centered .here-wrap (Figma 2411:102024) */
 .here-glp .here-hero__wrap {
   display: flex !important;
   flex-direction: column !important;
   gap: 16px !important;
-  align-items: center !important;
+  align-items: flex-start !important;
 }
 
 /* Hero title */
 .here-glp .here-hero__wrap h1 {
-  text-align: center !important;
+  width: 100% !important;
+  text-align: left !important;
   font-weight: 600 !important;
 }
 
 /* Hero subtitle */
 .here-glp .here-hero__subtitle {
   margin: 0 !important;
+  width: 100% !important;
   font-size: 24px !important;
   line-height: 30px !important;
   font-weight: 400 !important;
   color: #2C596A !important;
   opacity: 1 !important;
-  text-align: center !important;
+  text-align: left !important;
 }
 
-/* Search field — 740px per Figma (replaces the old 640px HTML rules) */
-.here-glp .here-search-proxy,
+/* Search + Ask AI row — owns the 686px width per Figma; replaces the old 740px search rule */
+.here-glp .here-hero__search-row {
+  display: flex !important;
+  align-items: center !important;
+  gap: 16px !important;
+  width: min(686px, 100%) !important;
+}
+
+.here-glp .here-search-proxy {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+}
+
 .here-glp hds-hero-search[data-here-hero-search] {
-  width: min(740px, 100%) !important;
+  width: 100% !important;
 }
 
-/* Popular searches row */
+/* Ask AI button — light mode per Figma 2101:85090 (dark fill, teal ink); dark mode inverts it further down */
+.here-glp .here-hero__askai {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex: 0 0 auto !important;
+  gap: 8px !important;
+  height: 48px !important;
+  padding: 0 24px !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 50px !important;
+  background-color: #092732 !important;
+  color: #1EF3E4 !important;
+  font-family: "FiraGO", "Fira GO", "Fira Sans", system-ui, sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  line-height: 16px !important;
+  letter-spacing: -0.0286em !important;
+  white-space: nowrap !important;
+  cursor: pointer !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  transition: background-color 0.15s ease !important;
+}
+
+/* Hover/focus not specified in Figma — derived from the header Ask AI tokens */
+.here-glp .here-hero__askai:hover {
+  background-color: #0E3D50 !important;
+}
+
+.here-glp .here-hero__askai:focus-visible {
+  outline: 2px solid #092732 !important;
+  outline-offset: 2px !important;
+}
+
+.here-glp .here-hero__askai svg {
+  flex: 0 0 auto !important;
+  width: 16px !important;
+  height: 16px !important;
+  fill: currentColor !important;
+}
+
+/* Popular searches row — left-aligned with the rest of the hero */
 .here-glp .here-popular-searches {
   display: flex;
   align-items: center;
   gap: 16px;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-start;
   margin-top: 16px;
 }
 
@@ -532,6 +588,17 @@ font-size: 14px !important;
     font-size: 18px !important;
     line-height: 26px !important;
   }
+
+  /* Ask AI drops below the search field and spans the row on narrow screens */
+  .here-glp .here-hero__search-row {
+    flex-wrap: wrap !important;
+  }
+  .here-glp .here-search-proxy {
+    flex: 1 1 100% !important;
+  }
+  .here-glp .here-hero__askai {
+    width: 100% !important;
+  }
 }
 
 /* Dark mode — hero surface + text. Bg pattern is a transparent SVG (correct export, no baked-in fill) layered over the solid color. */
@@ -555,6 +622,17 @@ font-size: 14px !important;
 .here-glp[data-theme*="dark"] .here-popular-searches__links a.hds-button--variant-secondary[href]:hover {
   background-color: rgba(232, 237, 240, 0.10) !important;
 }
+/* Ask AI inverts in dark mode per Figma 2411:102024 — teal fill, dark ink */
+.here-glp[data-theme*="dark"] .here-hero__askai {
+  background-color: #1EF3E4 !important;
+  color: #092732 !important;
+}
+.here-glp[data-theme*="dark"] .here-hero__askai:hover {
+  background-color: #17D9CC !important;
+}
+.here-glp[data-theme*="dark"] .here-hero__askai:focus-visible {
+  outline-color: #ECF7FC !important;
+}
 
 /* Pre-paint guard mirror (no-flash) — .here-hero. Mirrors the post-paint block above; keep both in sync whenever this section changes. */
 [data-color-mode="dark"] .here-glp .here-hero {
@@ -575,6 +653,16 @@ font-size: 14px !important;
 }
 [data-color-mode="dark"] .here-glp .here-popular-searches__links a.hds-button--variant-secondary[href]:hover {
   background-color: rgba(232, 237, 240, 0.10) !important;
+}
+[data-color-mode="dark"] .here-glp .here-hero__askai {
+  background-color: #1EF3E4 !important;
+  color: #092732 !important;
+}
+[data-color-mode="dark"] .here-glp .here-hero__askai:hover {
+  background-color: #17D9CC !important;
+}
+[data-color-mode="dark"] .here-glp .here-hero__askai:focus-visible {
+  outline-color: #ECF7FC !important;
 }
 
 /* System-mode mirror (no-flash) — .here-hero. Keep in sync with the two blocks above whenever this section changes. */
@@ -597,6 +685,16 @@ font-size: 14px !important;
   }
   [data-color-mode="system"] .here-glp .here-popular-searches__links a.hds-button--variant-secondary[href]:hover {
     background-color: rgba(232, 237, 240, 0.10) !important;
+  }
+  [data-color-mode="system"] .here-glp .here-hero__askai {
+    background-color: #1EF3E4 !important;
+    color: #092732 !important;
+  }
+  [data-color-mode="system"] .here-glp .here-hero__askai:hover {
+    background-color: #17D9CC !important;
+  }
+  [data-color-mode="system"] .here-glp .here-hero__askai:focus-visible {
+    outline-color: #ECF7FC !important;
   }
 }
 
