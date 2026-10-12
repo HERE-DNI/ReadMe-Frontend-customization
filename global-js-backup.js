@@ -11,7 +11,6 @@
 // SECTION INDEX
 // =============================================================================
 //
-//   0. Editor preview nav fix         ~line   38   TEMPORARY workaround — see notes below
 //   1. Shared SPA Nav Bus             ~line   26   Core nav-change detection & dispatch
 //   2. HERE → ReadMe HDS Adapter      ~line  193   HDS widget conversion (callouts, accordions, etc.)
 //   3. HERE Mega Menu Injector        ~line  647   Product navigation mega menu
@@ -22,114 +21,9 @@
 //   8. Ask AI — Flyout Reskin         ~line 2212   Full visual reskin of Ask AI flyout panel
 //   9. Ask AI — Active Chat Header Title ~line 2728  Renames "Assistant" header in active chat
 //  10. Ask AI — Active Chat Header Chip  ~line 2808  Injects chip icon in active chat header
-//  11. Swagger / OAS Download Button  ~line 3579   Adds "Download Spec" button on Reference pages
+//  11. OpenAPI Download Label          near end-of-file  Adds "Download" text to ReadMe's native spec button
 //  12. Contact us Button (site-wide)  end-of-file  Adds Contact us pill next to Ask AI on every page
 //
-// ─────────────────────────────────────────────────────────────────────────────
-// 0. EDITOR PREVIEW NAV FIX  —  *** TEMPORARY WORKAROUND — REMOVE LATER ***
-//
-//    Symptom: in the ReadMe editor preview, clicking a link in the synced
-//    API-reference content blanks the frame with "docs.here.com refused to
-//    connect".
-//
-//    Cause: the synced content (Javadoc/jazzy output) links with bare relative
-//    hrefs, e.g. href="sdk-for-android-explore-com-here-sdk-animation-easing".
-//    A relative reference with no query component resolves WITHOUT the query
-//    string, so following one lands on the parameter-less URL. ReadMe serves the
-//    preview at ?isFramePreview=true (no X-Frame-Options); the same URL without
-//    the parameter responds with `x-frame-options: Deny`, so the frame is blocked.
-//
-//    Fix: intercept the click before ReadMe's router sees it, re-attach the
-//    parameter, and drive THIS frame's location. `window.location` inside an
-//    iframe always targets that iframe, so the navigation cannot escape to the
-//    top document. (Rewriting the hrefs instead does NOT work -- the router then
-//    navigates the top window out of the editor.)
-//
-//    SCOPE: Custom Page body content only -- an anchor must be inside both <main>
-//    and .rm-CustomPage. Sidebar, header, mega menu and footer links are left
-//    alone so they keep using ReadMe's client-side router.
-//
-//    TRADE-OFF: for those content links this replaces client-side routing with a
-//    full document load, inside the preview only. On the large API-reference
-//    pages that is slow, but the alternative is a blank frame.
-//
-//    SAFETY — two independent guards, BOTH must hold before anything happens:
-//      1) we are inside an iframe, and
-//      2) our own URL already carries isFramePreview=true
-//    Guard (2) is the important one: isFramePreview=true is what suppresses
-//    X-Frame-Options, so this must never affect public pages. On public docs the
-//    parameter is absent, the guard fails, and this module is inert.
-//
-//    Remove this once the router preserves the query string on its own.
-// ─────────────────────────────────────────────────────────────────────────────
-(function () {
-  var TAG = "__here_preview_nav_v1";
-  if (window[TAG]) return;
-
-  var framed = false;
-  try {
-    framed = window.self !== window.top;
-  } catch (e) {
-    // Cross-origin access to window.top threw, which means we are framed.
-    framed = true;
-  }
-  if (!framed) return;
-
-  try {
-    if (new URLSearchParams(window.location.search).get("isFramePreview") !== "true") return;
-  } catch (e) {
-    return;
-  }
-
-  window[TAG] = true;
-
-  document.addEventListener(
-    "click",
-    function (e) {
-      if (e.defaultPrevented || e.button !== 0) return;
-      // Leave cmd/ctrl/shift/alt-click to the browser (new tab, new window).
-      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-
-      var a = e.target && e.target.closest ? e.target.closest("a[href]") : null;
-      if (!a) return;
-
-      // SCOPE: body content of a Custom Page only. Site-wide chrome -- sidebar,
-      // header, mega menu, footer, breadcrumbs -- must keep using ReadMe's
-      // client-side router and HERE's own click handlers. Both conditions are
-      // checked independently so this holds regardless of whether
-      // .rm-CustomPage sits inside <main> or wraps it.
-      if (!a.closest("main")) return;
-      if (!a.closest(".rm-CustomPage")) return;
-
-      // The OAS download buttons have their own handler further down this file.
-      if (a.closest(".oas-link-btn")) return;
-
-      // Respect an explicit target (_blank, _top, named frames).
-      if (a.target && a.target !== "" && a.target !== "_self") return;
-
-      var u;
-      try {
-        u = new URL(a.href, window.location.href);
-      } catch (err) {
-        return;
-      }
-
-      if (u.origin !== window.location.origin) return;
-
-      // Pure in-page anchors: let the browser scroll normally.
-      if (u.pathname === window.location.pathname && u.hash) return;
-
-      u.searchParams.set("isFramePreview", "true");
-
-      e.preventDefault();
-      e.stopPropagation();
-      if (e.stopImmediatePropagation) e.stopImmediatePropagation();
-      window.location.assign(u.href);
-    },
-    true
-  );
-})();
-
 // ─────────────────────────────────────────────────────────────────────────────
 // 1. SHARED SPA NAV BUS
 //    Detects ReadMe SPA route changes via three complementary strategies and
@@ -971,7 +865,7 @@ function stampMarkdownScopes() {
             en: "/introduction-to-mapping-c",
             ja: "/traffic-api/ja/v1.0/docs/readme-developer-s-guide",
           },
-          showInJa: false,
+          showInJa: true,
         },
         {
           text: { en: "GIS Data Suite", ja: "GIS Data Suite" },
@@ -1199,7 +1093,7 @@ function stampMarkdownScopes() {
         },
         {
           text: { en: "HERE SDK", ja: "HERE SDK" },
-          href: { en: "/here-sdk", ja: "/here-sdk/ja/v4.25.5-0/docs" },
+          href: { en: "/here-sdk", ja: "/here-sdk/ja/v1.0/docs" },
           showInJa: true,
         },
         {
@@ -2418,7 +2312,7 @@ function stampMarkdownScopes() {
 
   function stampRoots() {
     var lang = detectLocale();
-    qsa(".rm-AskAi-empty, .EmptyChatOptions2sW9u7BPOSdJ").forEach(
+    qsa(".rm-AskAi-empty, .rm-AskAi-empty").forEach(
       function (root) {
         root.setAttribute(ROOT_ATTR, "1");
         root.setAttribute("data-lang", lang);
@@ -2438,11 +2332,11 @@ function stampMarkdownScopes() {
         font-family: ${T.font} !important;
       }
 
-      [${ROOT_ATTR}] .ChatInput1gosVX-YB6Kq,
       [${ROOT_ATTR}] .rm-AskAi-input,
-      [${ROOT_ATTR}] .EmptyChatOptions-inputWrapper1QdyF__AmKN8,
-      [${ROOT_ATTR}] .ChatInput-container3MZOOAd9XbeT,
-      [${ROOT_ATTR}] .ChatInput-container_empty2m20fqYvipb2 {
+      [${ROOT_ATTR}] .rm-AskAi-input,
+      [${ROOT_ATTR}] [class*="EmptyChatOptions-inputWrapper"],
+      [${ROOT_ATTR}] [class*="ChatInput-container"],
+      [${ROOT_ATTR}] [class*="ChatInput-container_empty"] {
         background: transparent !important;
         border: none !important;
         border-radius: 0 !important;
@@ -2451,7 +2345,7 @@ function stampMarkdownScopes() {
         padding: 0 !important;
       }
 
-      [${ROOT_ATTR}] .EmptyChatOptions-container1GBN5AsaTkak {
+      [${ROOT_ATTR}] [class*="EmptyChatOptions-container"] {
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
@@ -2482,7 +2376,7 @@ function stampMarkdownScopes() {
         flex-shrink: 0 !important;
       }
 
-      [${ROOT_ATTR}] .EmptyChatOptions-logo5bYNILYohem_ {
+      [${ROOT_ATTR}] [class*="EmptyChatOptions-logo"] {
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
@@ -2499,18 +2393,18 @@ function stampMarkdownScopes() {
         overflow: hidden !important;
       }
 
-      [${ROOT_ATTR}] .EmptyChatOptions-logo5bYNILYohem_ > *:not(.here-askai-chip-icon) {
+      [${ROOT_ATTR}] [class*="EmptyChatOptions-logo"] > *:not(.here-askai-chip-icon) {
         display: none !important;
       }
 
-      [${ROOT_ATTR}] .EmptyChatOptions-logo5bYNILYohem_ .here-askai-chip-icon {
+      [${ROOT_ATTR}] [class*="EmptyChatOptions-logo"] .here-askai-chip-icon {
         width: 16px !important;
         height: 16px !important;
         display: block !important;
         flex-shrink: 0 !important;
       }
 
-      [${ROOT_ATTR}] .EmptyChatOptions-header2zyKlLHvmD9r {
+      [${ROOT_ATTR}] [class*="EmptyChatOptions-header"] {
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
@@ -2520,14 +2414,14 @@ function stampMarkdownScopes() {
         border: none !important;
       }
 
-      [${ROOT_ATTR}] .EmptyChatOptions-titleL8D4DWQvtl5H {
+      [${ROOT_ATTR}] [class*="EmptyChatOptions-title"] {
         font-size: 0 !important;
         margin: 0 0 8px 0 !important;
         border: none !important;
         background: transparent !important;
       }
 
-      [${ROOT_ATTR}] .EmptyChatOptions-titleL8D4DWQvtl5H::before {
+      [${ROOT_ATTR}] [class*="EmptyChatOptions-title"]::before {
         content: 'Get answers with AI' !important;
         font-size: 24px !important;
         font-weight: 700 !important;
@@ -2538,11 +2432,11 @@ function stampMarkdownScopes() {
         text-align: center !important;
       }
 
-      [${ROOT_ATTR}][data-lang="ja"] .EmptyChatOptions-titleL8D4DWQvtl5H::before {
+      [${ROOT_ATTR}][data-lang="ja"] [class*="EmptyChatOptions-title"]::before {
         content: 'AIで答えを得る' !important;
       }
 
-      [${ROOT_ATTR}] .EmptyChatOptions-subtitle280IfSzee1D7 {
+      [${ROOT_ATTR}] [class*="EmptyChatOptions-subtitle"] {
         font-size: 0 !important;
         margin: 0 0 20px 0 !important;
         max-width: 348px !important;
@@ -2550,7 +2444,7 @@ function stampMarkdownScopes() {
         background: transparent !important;
       }
 
-      [${ROOT_ATTR}] .EmptyChatOptions-subtitle280IfSzee1D7::before {
+      [${ROOT_ATTR}] [class*="EmptyChatOptions-subtitle"]::before {
         content: 'Use AI to guide your solutions and explore HERE APIs, SDKs and documentation.' !important;
         font-size: 16px !important;
         line-height: 24px !important;
@@ -2561,20 +2455,20 @@ function stampMarkdownScopes() {
         text-align: center !important;
       }
 
-      [${ROOT_ATTR}][data-lang="ja"] .EmptyChatOptions-subtitle280IfSzee1D7::before {
+      [${ROOT_ATTR}][data-lang="ja"] [class*="EmptyChatOptions-subtitle"]::before {
         content: 'AIを使ってHERE API、SDK、ドキュメントのソリューションを見つけましょう。' !important;
       }
 
-      [${ROOT_ATTR}] .EmptyChatOptions-inputWrapper1QdyF__AmKN8 {
+      [${ROOT_ATTR}] [class*="EmptyChatOptions-inputWrapper"] {
         width: 100% !important;
         max-width: 416px !important;
       }
 
-      [${ROOT_ATTR}] .ChatInput1gosVX-YB6Kq {
+      [${ROOT_ATTR}] .rm-AskAi-input {
         width: 100% !important;
       }
 
-      [${ROOT_ATTR}] .ChatInput-formNLLC1VXSTzia {
+      [${ROOT_ATTR}] [class*="ChatInput-form"] {
         display: flex !important;
         flex-direction: row !important;
         align-items: flex-start !important;
@@ -2585,7 +2479,7 @@ function stampMarkdownScopes() {
         padding: 0 !important;
       }
 
-      [${ROOT_ATTR}] .ChatInput-container3MZOOAd9XbeT {
+      [${ROOT_ATTR}] [class*="ChatInput-container"] {
         display: flex !important;
         flex-direction: column !important;
         align-items: flex-start !important;
@@ -2594,7 +2488,7 @@ function stampMarkdownScopes() {
         min-width: 0 !important;
       }
 
-      [${ROOT_ATTR}] .ChatInput-textarea1adL3GkCQoYR {
+      [${ROOT_ATTR}] [class*="ChatInput-textarea"] {
         font-family: ${T.font} !important;
         font-size: 14px !important;
         line-height: 20px !important;
@@ -2614,21 +2508,21 @@ function stampMarkdownScopes() {
         box-shadow: none !important;
       }
 
-      [${ROOT_ATTR}] .ChatInput-textarea1adL3GkCQoYR:focus {
+      [${ROOT_ATTR}] [class*="ChatInput-textarea"]:focus {
         border-color: ${T.darkTeal} !important;
         box-shadow: 0 0 0 2px rgba(9,39,50,0.1) !important;
       }
 
-      [${ROOT_ATTR}] .ChatInput-textarea1adL3GkCQoYR::placeholder {
+      [${ROOT_ATTR}] [class*="ChatInput-textarea"]::placeholder {
         color: ${T.borderTeal} !important;
         opacity: 0.75 !important;
       }
 
-      [${ROOT_ATTR}] .ChatInput-textarea1adL3GkCQoYR::-webkit-resizer {
+      [${ROOT_ATTR}] [class*="ChatInput-textarea"]::-webkit-resizer {
         display: none !important;
       }
 
-      [${ROOT_ATTR}] .ChatInput-container3MZOOAd9XbeT::after {
+      [${ROOT_ATTR}] [class*="ChatInput-container"]::after {
         content: 'Answers are AI generated and may not be complete. Be sure to check for accuracy.' !important;
         display: block !important;
         font-family: ${T.font} !important;
@@ -2639,14 +2533,20 @@ function stampMarkdownScopes() {
         width: 100% !important;
       }
 
-      [${ROOT_ATTR}][data-lang="ja"] .ChatInput-container3MZOOAd9XbeT::after {
+      [${ROOT_ATTR}][data-lang="ja"] [class*="ChatInput-container"]::after {
         content: '回答はAIによって生成されたものであり、完全でない場合があります。正確性をご確認ください。' !important;
       }
 
-      [${ROOT_ATTR}] .ChatInput-button2URvzH34ra-j,
-      [${ROOT_ATTR}] .ChatInput-button2URvzH34ra-j.Button,
-      [${ROOT_ATTR}] .ChatInput-button2URvzH34ra-j.Button_secondary,
-      [${ROOT_ATTR}] .ChatInput-button2URvzH34ra-j.Button_secondary_outline {
+      /* Ask AI V2 renders ReadMe's default disclaimer right under the
+         input; HERE's own disclaimer (above) replaces it here. */
+      [${ROOT_ATTR}] [class*="EmptyChatOptions-disclaimer"] {
+        display: none !important;
+      }
+
+      [${ROOT_ATTR}] [class*="ChatInput-button"],
+      [${ROOT_ATTR}] [class*="ChatInput-button"].Button,
+      [${ROOT_ATTR}] [class*="ChatInput-button"].Button_secondary,
+      [${ROOT_ATTR}] [class*="ChatInput-button"].Button_secondary_outline {
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
@@ -2667,21 +2567,21 @@ function stampMarkdownScopes() {
         transition: background 0.18s ease !important;
       }
 
-      [${ROOT_ATTR}] .ChatInput-button2URvzH34ra-j:hover:not(:disabled) {
+      [${ROOT_ATTR}] [class*="ChatInput-button"]:hover:not(:disabled) {
         background: ${T.borderTeal} !important;
       }
 
-      [${ROOT_ATTR}] .ChatInput-button2URvzH34ra-j:disabled {
+      [${ROOT_ATTR}] [class*="ChatInput-button"]:disabled {
         opacity: 0.55 !important;
         cursor: default !important;
       }
 
-      [${ROOT_ATTR}] .ChatInput-button2URvzH34ra-j .IconWrapper,
-      [${ROOT_ATTR}] .ChatInput-button2URvzH34ra-j svg:not(.here-askai-send-icon) {
+      [${ROOT_ATTR}] [class*="ChatInput-button"] .IconWrapper,
+      [${ROOT_ATTR}] [class*="ChatInput-button"] svg:not(.here-askai-send-icon) {
         display: none !important;
       }
 
-      [${ROOT_ATTR}] .ChatInput-button2URvzH34ra-j .here-askai-send-icon {
+      [${ROOT_ATTR}] [class*="ChatInput-button"] .here-askai-send-icon {
         display: block !important;
         width: 16px !important;
         height: 16px !important;
@@ -2689,112 +2589,112 @@ function stampMarkdownScopes() {
 
       /* Dark mode */
       [data-color-mode="dark"] [${ROOT_ATTR}] .here-askai-chip-circle,
-      [data-color-mode="dark"] [${ROOT_ATTR}] .EmptyChatOptions-logo5bYNILYohem_ {
+      [data-color-mode="dark"] [${ROOT_ATTR}] [class*="EmptyChatOptions-logo"] {
         background: #ffffff !important;
         border-color: rgba(255,255,255,0.18) !important;
       }
 
       [data-color-mode="dark"] [${ROOT_ATTR}] .here-askai-chip-circle .here-askai-chip-icon path,
-      [data-color-mode="dark"] [${ROOT_ATTR}] .EmptyChatOptions-logo5bYNILYohem_ .here-askai-chip-icon path {
+      [data-color-mode="dark"] [${ROOT_ATTR}] [class*="EmptyChatOptions-logo"] .here-askai-chip-icon path {
         fill: #092732 !important;
       }
 
-      [data-color-mode="dark"] [${ROOT_ATTR}] .EmptyChatOptions-titleL8D4DWQvtl5H::before {
+      [data-color-mode="dark"] [${ROOT_ATTR}] [class*="EmptyChatOptions-title"]::before {
         color: rgba(232,237,240,0.92) !important;
       }
 
-      [data-color-mode="dark"] [${ROOT_ATTR}] .EmptyChatOptions-subtitle280IfSzee1D7::before {
+      [data-color-mode="dark"] [${ROOT_ATTR}] [class*="EmptyChatOptions-subtitle"]::before {
         color: rgba(232,237,240,0.72) !important;
       }
 
-      [data-color-mode="dark"] [${ROOT_ATTR}] .ChatInput-textarea1adL3GkCQoYR {
+      [data-color-mode="dark"] [${ROOT_ATTR}] [class*="ChatInput-textarea"] {
         color: rgba(232,237,240,0.92) !important;
         background: rgba(255,255,255,0.06) !important;
         border-color: rgba(255,255,255,0.18) !important;
       }
 
-      [data-color-mode="dark"] [${ROOT_ATTR}] .ChatInput-textarea1adL3GkCQoYR::placeholder {
+      [data-color-mode="dark"] [${ROOT_ATTR}] [class*="ChatInput-textarea"]::placeholder {
         color: rgba(232,237,240,0.55) !important;
         opacity: 1 !important;
       }
 
-      [data-color-mode="dark"] [${ROOT_ATTR}] .ChatInput-textarea1adL3GkCQoYR:focus {
+      [data-color-mode="dark"] [${ROOT_ATTR}] [class*="ChatInput-textarea"]:focus {
         border-color: rgba(72,218,208,0.9) !important;
         box-shadow: 0 0 0 2px rgba(72,218,208,0.14) !important;
       }
 
-      [data-color-mode="dark"] [${ROOT_ATTR}] .ChatInput-container3MZOOAd9XbeT::after {
+      [data-color-mode="dark"] [${ROOT_ATTR}] [class*="ChatInput-container"]::after {
         color: rgba(232,237,240,0.58) !important;
       }
 
-      [data-color-mode="dark"] [${ROOT_ATTR}] .ChatInput-button2URvzH34ra-j,
-      [data-color-mode="dark"] [${ROOT_ATTR}] .ChatInput-button2URvzH34ra-j.Button,
-      [data-color-mode="dark"] [${ROOT_ATTR}] .ChatInput-button2URvzH34ra-j.Button_secondary,
-      [data-color-mode="dark"] [${ROOT_ATTR}] .ChatInput-button2URvzH34ra-j.Button_secondary_outline {
+      [data-color-mode="dark"] [${ROOT_ATTR}] [class*="ChatInput-button"],
+      [data-color-mode="dark"] [${ROOT_ATTR}] [class*="ChatInput-button"].Button,
+      [data-color-mode="dark"] [${ROOT_ATTR}] [class*="ChatInput-button"].Button_secondary,
+      [data-color-mode="dark"] [${ROOT_ATTR}] [class*="ChatInput-button"].Button_secondary_outline {
         background: #10323b !important;
       }
 
-      [data-color-mode="dark"] [${ROOT_ATTR}] .ChatInput-button2URvzH34ra-j:hover:not(:disabled) {
+      [data-color-mode="dark"] [${ROOT_ATTR}] [class*="ChatInput-button"]:hover:not(:disabled) {
         background: #17414b !important;
       }
 
-      [data-color-mode="dark"] [${ROOT_ATTR}] .ChatInput-button2URvzH34ra-j:disabled {
+      [data-color-mode="dark"] [${ROOT_ATTR}] [class*="ChatInput-button"]:disabled {
         opacity: 0.45 !important;
       }
 
       /* System / auto dark mode */
       @media (prefers-color-scheme: dark) {
         [data-color-mode="system"] [${ROOT_ATTR}] .here-askai-chip-circle,
-        [data-color-mode="system"] [${ROOT_ATTR}] .EmptyChatOptions-logo5bYNILYohem_ {
+        [data-color-mode="system"] [${ROOT_ATTR}] [class*="EmptyChatOptions-logo"] {
           background: #ffffff !important;
           border-color: rgba(255,255,255,0.18) !important;
         }
 
         [data-color-mode="system"] [${ROOT_ATTR}] .here-askai-chip-circle .here-askai-chip-icon path,
-        [data-color-mode="system"] [${ROOT_ATTR}] .EmptyChatOptions-logo5bYNILYohem_ .here-askai-chip-icon path {
+        [data-color-mode="system"] [${ROOT_ATTR}] [class*="EmptyChatOptions-logo"] .here-askai-chip-icon path {
           fill: #092732 !important;
         }
 
-        [data-color-mode="system"] [${ROOT_ATTR}] .EmptyChatOptions-titleL8D4DWQvtl5H::before {
+        [data-color-mode="system"] [${ROOT_ATTR}] [class*="EmptyChatOptions-title"]::before {
           color: rgba(232,237,240,0.92) !important;
         }
 
-        [data-color-mode="system"] [${ROOT_ATTR}] .EmptyChatOptions-subtitle280IfSzee1D7::before {
+        [data-color-mode="system"] [${ROOT_ATTR}] [class*="EmptyChatOptions-subtitle"]::before {
           color: rgba(232,237,240,0.72) !important;
         }
 
-        [data-color-mode="system"] [${ROOT_ATTR}] .ChatInput-textarea1adL3GkCQoYR {
+        [data-color-mode="system"] [${ROOT_ATTR}] [class*="ChatInput-textarea"] {
           color: rgba(232,237,240,0.92) !important;
           background: rgba(255,255,255,0.06) !important;
           border-color: rgba(255,255,255,0.18) !important;
         }
 
-        [data-color-mode="system"] [${ROOT_ATTR}] .ChatInput-textarea1adL3GkCQoYR::placeholder {
+        [data-color-mode="system"] [${ROOT_ATTR}] [class*="ChatInput-textarea"]::placeholder {
           color: rgba(232,237,240,0.55) !important;
           opacity: 1 !important;
         }
 
-        [data-color-mode="system"] [${ROOT_ATTR}] .ChatInput-textarea1adL3GkCQoYR:focus {
+        [data-color-mode="system"] [${ROOT_ATTR}] [class*="ChatInput-textarea"]:focus {
           border-color: rgba(72,218,208,0.9) !important;
           box-shadow: 0 0 0 2px rgba(72,218,208,0.14) !important;
         }
 
-        [data-color-mode="system"] [${ROOT_ATTR}] .ChatInput-container3MZOOAd9XbeT::after {
+        [data-color-mode="system"] [${ROOT_ATTR}] [class*="ChatInput-container"]::after {
           color: rgba(232,237,240,0.58) !important;
         }
 
-        [data-color-mode="system"] [${ROOT_ATTR}] .ChatInput-button2URvzH34ra-j,
-        [data-color-mode="system"] [${ROOT_ATTR}] .ChatInput-button2URvzH34ra-j.Button,
-        [data-color-mode="system"] [${ROOT_ATTR}] .ChatInput-button2URvzH34ra-j.Button_secondary,
-        [data-color-mode="system"] [${ROOT_ATTR}] .ChatInput-button2URvzH34ra-j.Button_secondary_outline {
+        [data-color-mode="system"] [${ROOT_ATTR}] [class*="ChatInput-button"],
+        [data-color-mode="system"] [${ROOT_ATTR}] [class*="ChatInput-button"].Button,
+        [data-color-mode="system"] [${ROOT_ATTR}] [class*="ChatInput-button"].Button_secondary,
+        [data-color-mode="system"] [${ROOT_ATTR}] [class*="ChatInput-button"].Button_secondary_outline {
           background: #10323b !important;
         }
 
-        [data-color-mode="system"] [${ROOT_ATTR}] .ChatInput-button2URvzH34ra-j:hover:not(:disabled) {
+        [data-color-mode="system"] [${ROOT_ATTR}] [class*="ChatInput-button"]:hover:not(:disabled) {
           background: #17414b !important;
         }
 
-        [data-color-mode="system"] [${ROOT_ATTR}] .ChatInput-button2URvzH34ra-j:disabled {
+        [data-color-mode="system"] [${ROOT_ATTR}] [class*="ChatInput-button"]:disabled {
           opacity: 0.45 !important;
         }
       }
@@ -2807,10 +2707,10 @@ function stampMarkdownScopes() {
   }
 
   function moveSendButton(root) {
-    qsa(".ChatInput-formNLLC1VXSTzia", root).forEach(function (form) {
+    qsa("[class*='ChatInput-form']", root).forEach(function (form) {
       if (form.getAttribute(DONE_ATTR) === "1") return;
 
-      var btn = form.querySelector(".ChatInput-button2URvzH34ra-j");
+      var btn = form.querySelector("[class*='ChatInput-button']");
       if (btn && btn.parentElement !== form) {
         form.appendChild(btn);
       }
@@ -2821,7 +2721,7 @@ function stampMarkdownScopes() {
 
   function replaceLogo(root) {
     qsa(
-      ".EmptyChatOptions-logo5bYNILYohem_:not([" + REPLACED_ATTR + "])",
+      "[class*='EmptyChatOptions-logo']:not([" + REPLACED_ATTR + "])",
       root,
     ).forEach(function (logo) {
       if (!closestAskAiRoot(logo)) return;
@@ -2836,7 +2736,7 @@ function stampMarkdownScopes() {
   }
 
   function injectSendIcon(root) {
-    qsa(".ChatInput-button2URvzH34ra-j", root).forEach(function (btn) {
+    qsa("[class*='ChatInput-button']", root).forEach(function (btn) {
       if (!closestAskAiRoot(btn)) return;
       if (btn.querySelector(".here-askai-send-icon")) return;
       btn.insertAdjacentHTML("beforeend", SEND_SVG);
@@ -2900,7 +2800,7 @@ function stampMarkdownScopes() {
   function setActiveHeaderTitle(root) {
     if (!root) return;
 
-    var title = root.querySelector(".ChatInterface-headerTitleqnGqTmt9EuvI");
+    var title = root.querySelector("[class*='ChatHeader-headerTitle']");
     if (!title) return;
 
     var expected = HEADER_TITLES[detectLocale()] || HEADER_TITLES.en;
@@ -2914,10 +2814,10 @@ function stampMarkdownScopes() {
       // Only run on the active/non-empty state:
       // it has the real header AND a messages area.
       var activeHeader = chat.querySelector(
-        ".ChatInterface-headerunFkVAVMK-l-",
+        "[class*='ChatHeader-header']:not([class*='ChatHeader-headerButton']):not([class*='ChatHeader-headerTitle']):not([class*='ChatHeader-headerIcon']):not([class*='ChatHeader-headerEmpty'])",
       );
       var messagesArea = chat.querySelector(
-        ".ChatInterface-messagesAreaTsAFuFmLXi0L",
+        "[class*='ChatInterface-messagesArea']",
       );
 
       if (!activeHeader || !messagesArea) return;
@@ -3003,8 +2903,8 @@ function stampMarkdownScopes() {
   function processActiveHeader(header) {
     if (!header) return;
 
-    var title = header.querySelector(".ChatInterface-headerTitleqnGqTmt9EuvI");
-    var sparkle = header.querySelector(".ChatInterface-headerIcon1jHhVaQobI0F");
+    var title = header.querySelector("[class*='ChatHeader-headerTitle']");
+    var sparkle = header.querySelector("[class*='ChatHeader-headerIcon']");
 
     if (!title || !sparkle) return;
 
@@ -3023,10 +2923,10 @@ function stampMarkdownScopes() {
   function processAll() {
     document.querySelectorAll(".rm-AskAi-chat").forEach(function (chat) {
       var activeHeader = chat.querySelector(
-        ".ChatInterface-headerunFkVAVMK-l-",
+        "[class*='ChatHeader-header']:not([class*='ChatHeader-headerButton']):not([class*='ChatHeader-headerTitle']):not([class*='ChatHeader-headerIcon']):not([class*='ChatHeader-headerEmpty'])",
       );
       var messagesArea = chat.querySelector(
-        ".ChatInterface-messagesAreaTsAFuFmLXi0L",
+        "[class*='ChatInterface-messagesArea']",
       );
 
       if (!activeHeader || !messagesArea) return;
@@ -3712,590 +3612,65 @@ function stampMarkdownScopes() {
 })();
 
 // ─────────────────────────────────────────────────────────────────────────────
-// 11. SWAGGER / OAS DOWNLOAD BUTTON
-//     Adds a "Download API spec" button below the page title on Reference
-//     pages. Resolves the spec URL via data-raycast-oas or /openapi index
-//     fallback. Uses a forced Blob download to ensure the file saves locally.
+// 11. OPENAPI DOWNLOAD LABEL
+//     Enhances ReadMe's native OpenAPI download button by adding a visible
+//     "Download" label next to the existing download icon. Native href,
+//     download behavior, and accessibility attributes remain untouched.
 // ─────────────────────────────────────────────────────────────────────────────
-// ---------------- Custom Download Spec File Button ----------------
 (function () {
-  /* ===== CONFIG ===== */
-  const DEBUG = /\boasdebug=1\b/i.test(location.search);
-  const FALLBACK_DELAY_MS = 5000;
-  const log = (...a) => DEBUG && console.log('[oas-link]', ...a);
+  var TAG = "__here_openapi_download_label_v1";
+  if (window[TAG]) return;
+  window[TAG] = true;
 
-  /* ===== GUARD ===== */
-  if (window.__OAS_DL_INIT__) return;
-  window.__OAS_DL_INIT__ = true;
-
-  /* ===== STATE ===== */
-  const CACHE = new Map();
-  let currentAbort = null;
-  let runTimer     = null;
-  let lastCtxKey   = null;
-  let loadSeq      = 0;
-  let activeCtxKey = null;
-  let activeLoadId = null;
-  const fbTimers   = new Map();
-
-  /* ===== STYLES ===== */
   function ensureStyles() {
-    if (document.getElementById('oas-link-style')) return;
+    if (document.getElementById("here-openapi-download-label-styles")) return;
 
-    const s = document.createElement('style');
-    s.id = 'oas-link-style';
-    s.textContent = `
-      #oas-slot {
-        margin-top: 10px;
-      }
+    var s = document.createElement("style");
+    s.id = "here-openapi-download-label-styles";
+    s.textContent = [
+      "a.rm-OpenAPIDownload {",
+      "  display: inline-flex !important;",
+      "  align-items: center !important;",
+      "  gap: 6px !important;",
+      "  padding: 6px 10px !important;",
+      "  border-radius: 6px !important;",
+      "  font-size: 13px !important;",
+      "  font-weight: 500 !important;",
+      "  white-space: nowrap !important;",
+      "}",
+      "a.rm-OpenAPIDownload .here-oas-download-label {",
+      "  display: inline-block;",
+      "}"
+    ].join("\n");
 
-      @keyframes oasSpin {
-        to {
-          transform: rotate(360deg);
-        }
-      }
-
-      .oas-inline {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 13px;
-        color: #4b5563;
-      }
-
-      .oas-spin {
-        width: 14px;
-        height: 14px;
-        border-radius: 50%;
-        border: 2px solid #cbd5e1;
-        border-top-color: #3f7cfe;
-        animation: oasSpin 0.8s linear infinite;
-      }
-
-      .oas-link-btn {
-        display: inline-flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        gap: 6px !important;
-
-        margin: 5px auto !important;
-
-        background: #3f7cfeff !important;
-        color: #ffffff !important;
-
-        text-decoration: none !important;
-        border: 1px solid rgba(255, 255, 255, 0.08) !important;
-        cursor: pointer !important;
-
-        padding: 7px 13px !important;
-        font-size: 13px !important;
-        line-height: 1.2 !important;
-        font-weight: 600 !important;
-
-        border-radius: 999px !important;
-        box-shadow: 0 2px 8px rgba(17, 24, 39, 0.14) !important;
-
-        transition:
-          background-color 160ms ease,
-          box-shadow 160ms ease,
-          transform 160ms ease !important;
-      }
-
-      .oas-link-btn:hover {
-        background: #1f2937 !important;
-        box-shadow: 0 4px 12px rgba(17, 24, 39, 0.18) !important;
-        transform: translateY(-1px) !important;
-      }
-
-      .oas-link-btn:active {
-        transform: translateY(0) !important;
-        box-shadow: 0 2px 6px rgba(17, 24, 39, 0.14) !important;
-      }
-
-      .oas-link-btn:focus-visible {
-        outline: 2px solid rgba(0, 55, 255, 0.35) !important;
-        outline-offset: 2px !important;
-      }
-
-      .oas-link-btn[aria-busy="true"] {
-        opacity: 0.8 !important;
-        pointer-events: none !important;
-      }
-
-      #content-head.oas-loading [data-error-message="true"] {
-        display: none !important;
-      }
-    `;
-
-    document.head.appendChild(s);
+    (document.head || document.documentElement).appendChild(s);
   }
 
-  /* ===== DOM HELPERS ===== */
-  const getHead = () => document.querySelector('#content-head');
-  const getH1 = () => document.querySelector('#content-head h1');
-
-  const getHeaderRoot = () =>
-    document.querySelector('header[data-raycast-oas]') ||
-    getHead()?.closest('header') ||
-    document.querySelector('header');
-
-  function getSlot() {
+  function enhanceOpenApiDownload() {
     ensureStyles();
 
-    const head = getHead();
-    if (!head) return null;
+    document.querySelectorAll("a.rm-OpenAPIDownload").forEach(function (link) {
+      if (link.querySelector(".here-oas-download-label")) return;
 
-    let slot = head.querySelector('#oas-slot');
+      var label = document.createElement("span");
+      label.className = "here-oas-download-label";
+      label.textContent = "Download";
 
-    if (!slot) {
-      slot = document.createElement('div');
-      slot.id = 'oas-slot';
-
-      const h1 = getH1();
-
-      if (h1) h1.insertAdjacentElement('afterend', slot);
-      else head.appendChild(slot);
-    }
-
-    return slot;
-  }
-
-  function removeSlot() {
-    getHead()?.querySelector('#oas-slot')?.remove();
-    setHeadState(null);
-  }
-
-  function setHeadState(state) {
-    getHead()?.classList.toggle('oas-loading', state === 'loading');
-  }
-
-  function cleanFilename(filename, url) {
-    const fallback = (url || '').split('/').pop()?.split('?')[0] || 'openapi-spec.yml';
-    return (filename || fallback).replace(/[^\w.\- ()]/g, '_');
-  }
-
-  /* ===== RENDER ===== */
-  function renderLoading(loadId) {
-    const slot = getSlot();
-    if (!slot) return;
-
-    if (slot.querySelector('[data-oas-loading]')?.getAttribute('data-oas-loading') === String(loadId)) return;
-    if (slot.querySelector('[data-oas-link],[data-oas-msg]')) return;
-
-    setHeadState('loading');
-
-    slot.innerHTML = `
-      <div class="oas-inline" data-oas-loading="${loadId}" aria-live="polite">
-        <span class="oas-spin" aria-hidden="true"></span>
-        <span>Resolving API spec…</span>
-      </div>
-    `;
-  }
-
-  function renderButton(result) {
-    const slot = getSlot();
-    if (!slot) return;
-
-    setHeadState('ready');
-
-    const url = result.downloadUrl || result.url;
-    const filename = cleanFilename(result.filename, url);
-
-    slot.innerHTML = '';
-
-    const btn = document.createElement('a');
-    btn.className = 'oas-link-btn';
-    btn.setAttribute('data-oas-link', 'true');
-    btn.setAttribute('data-download-url', url);
-    btn.setAttribute('data-download-filename', filename);
-    btn.href = url;
-    btn.download = filename;
-    btn.rel = 'noopener';
-    btn.textContent = 'Download API spec';
-
-    slot.appendChild(btn);
-  }
-
-  function renderFallback() {
-    const slot = getSlot();
-    if (!slot) return;
-
-    setHeadState('fallback');
-
-    slot.innerHTML = `
-      <div class="oas-inline" data-oas-msg="true">
-        <span>Having trouble finding the proper spec? <a href="${projectRoot()}/openapi">View all API specs</a>.</span>
-      </div>
-    `;
-  }
-
-  function scheduleFallback(loadId) {
-    cancelFallback(loadId);
-
-    fbTimers.set(loadId, setTimeout(() => {
-      const slot = getSlot();
-      const cur = slot?.querySelector('[data-oas-loading]')?.getAttribute('data-oas-loading');
-
-      if (cur === String(loadId) && !slot.querySelector('[data-oas-link]')) {
-        renderFallback();
-      }
-    }, FALLBACK_DELAY_MS));
-  }
-
-  function cancelFallback(loadId) {
-    clearTimeout(fbTimers.get(loadId));
-    fbTimers.delete(loadId);
-  }
-
-  /* ===== CONTEXT ===== */
-  const isInReference = () =>
-    location.pathname.includes('/reference/') ||
-    !!document.querySelector('#reference-sidebar');
-  const projectRoot = () => location.pathname.replace(/\/reference.*/, '');
-  const currentSlug = () => (location.pathname.match(/\/reference\/([^/?#]+)/) || [])[1] || null;
-
-  function readmeVersion() {
-    const v = document.querySelector('meta[name="readme-version"]')?.content || '';
-    if (!v || v === 'default') return null;
-    return v.startsWith('v') ? v.slice(1) : v;
-  }
-
-  function isRealEndpoint() {
-    const header = getHeaderRoot();
-    if (!header) return false;
-
-    const method = header.querySelector('[data-testid="http-method"]')?.textContent?.trim().toLowerCase() || '';
-    const methodOk = /^(get|post|put|patch|delete|head|options)$/.test(method);
-    const hasUrl = !!header.querySelector('[data-testid="serverurl"], [data-testid="request-url"]');
-
-    return !!(methodOk && (hasUrl || header.hasAttribute('data-raycast-oas')));
-  }
-
-  /* ===== NETWORK / DOWNLOAD ===== */
-  async function headOk(url, signal) {
-    try {
-      const r = await fetch(url, {
-        method: 'HEAD',
-        credentials: 'include',
-        signal
-      });
-
-      return r.ok;
-    } catch {
-      return false;
-    }
-  }
-
-  const absoluteUrl = (u) => {
-    try {
-      return new URL(u, location.origin).href;
-    } catch {
-      return null;
-    }
-  };
-
-  async function forceFileDownload(url, filename) {
-    const res = await fetch(url, {
-      credentials: 'include'
-    });
-
-    if (!res.ok) {
-      throw new Error(`Download failed: ${res.status}`);
-    }
-
-    const blob = await res.blob();
-    const blobUrl = URL.createObjectURL(blob);
-
-    const a = document.createElement('a');
-    a.href = blobUrl;
-    a.download = cleanFilename(filename, url);
-    a.style.display = 'none';
-
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-
-    setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
-  }
-
-  /* ===== FALLBACK: name-match against /openapi index ===== */
-  async function findFromOpenapiIndex(signal) {
-    try {
-      const res = await fetch(`${projectRoot()}/openapi`, {
-        credentials: 'include',
-        signal
-      });
-
-      if (!res.ok) return null;
-
-      const doc = new DOMParser().parseFromString(await res.text(), 'text/html');
-
-      const links = [...doc.querySelectorAll('a[href$=".json"], a[href$=".yml"], a[href$=".yaml"]')]
-        .map(a => a.getAttribute('href'))
-        .filter(Boolean);
-
-      const tokens = projectRoot()
-        .replace(/^\//, '')
-        .split(/[-/]+/)
-        .filter(t => t.length > 3);
-
-      const best = links
-        .map(href => ({
-          href,
-          score: tokens.reduce((s, t) => s + (href.toLowerCase().includes(t) ? 1 : 0), 0)
-        }))
-        .sort((a, b) => b.score - a.score)[0];
-
-      if (!best || best.score === 0) return null;
-
-      const filename = best.href.split('/').pop();
-      const url = absoluteUrl(`${projectRoot()}/openapi/${filename}`);
-
-      return url ? { url, downloadUrl: url, filename } : null;
-    } catch (e) {
-      log('/openapi fallback miss:', e.message);
-      return null;
-    }
-  }
-
-  /* ===== WAIT FOR DOM ===== */
-  async function waitForHead(timeoutMs = 3000) {
-    if (getHead()) return true;
-
-    return new Promise((resolve) => {
-      const obs = new MutationObserver(() => {
-        if (getHead()) {
-          obs.disconnect();
-          resolve(true);
-        }
-      });
-
-      obs.observe(document.documentElement, {
-        childList: true,
-        subtree: true
-      });
-
-      setTimeout(() => {
-        obs.disconnect();
-        resolve(!!getHead());
-      }, timeoutMs);
+      link.appendChild(label);
     });
   }
 
-  /* ===== RUN ===== */
-  async function run() {
-    if (!isInReference()) {
-      moHead.disconnect();
-      moSide.disconnect();
-      moHdr.disconnect();
-      return;
-    }
+  enhanceOpenApiDownload();
 
-    if (!getHead()) {
-      if (!(await waitForHead(3000))) {
-        scheduleRun('no-head-yet');
-        return;
-      }
-
-      if (!getHead()) {
-        scheduleRun('no-head-postwait');
-        return;
-      }
-    }
-
-    bindObservers();
-
-    if (!isRealEndpoint()) {
-      removeSlot();
-      scheduleRun('await-endpoint-hydration');
-      return;
-    }
-
-    const start = performance.now();
-
-    while (!getH1() && performance.now() - start < 800) {
-      await new Promise(r => requestAnimationFrame(r));
-    }
-
-    const ver = readmeVersion() || 'default';
-    const slug = currentSlug() || '';
-    const raycastKey = getHeaderRoot()?.getAttribute('data-raycast-oas') || '';
-    const ctxKey = `${ver}::${slug}::${raycastKey}`;
-    const slot = getSlot();
-
-    if (activeCtxKey === ctxKey && currentAbort && !currentAbort.signal.aborted) {
-      log('dedupe: in-flight');
-      return;
-    }
-
-    if (ctxKey === lastCtxKey && slot?.querySelector('[data-oas-link],[data-oas-msg]')) {
-      log('skip: already rendered');
-      return;
-    }
-
-    lastCtxKey = ctxKey;
-
-    if (CACHE.has(ctxKey)) {
-      renderButton(CACHE.get(ctxKey));
-      return;
-    }
-
-    const myLoadId = ++loadSeq;
-    activeCtxKey = ctxKey;
-    activeLoadId = myLoadId;
-
-    renderLoading(myLoadId);
-    scheduleFallback(myLoadId);
-
-    if (currentAbort) currentAbort.abort();
-
-    currentAbort = new AbortController();
-    const { signal } = currentAbort;
-
-    try {
-      if (raycastKey) {
-        const filename = raycastKey.split('/').pop();
-        const openapiUrl = `${projectRoot()}/openapi/${filename}`;
-        const url = (await headOk(openapiUrl, signal)) ? openapiUrl : absoluteUrl(raycastKey);
-
-        if (myLoadId !== activeLoadId) return;
-
-        if (url) {
-          const r = {
-            url,
-            downloadUrl: url,
-            filename
-          };
-
-          cancelFallback(myLoadId);
-          CACHE.set(ctxKey, r);
-          renderButton(r);
-        }
-
-        return;
-      }
-
-      const result = await findFromOpenapiIndex(signal);
-
-      if (myLoadId !== activeLoadId) return;
-
-      if (result) {
-        cancelFallback(myLoadId);
-        CACHE.set(ctxKey, result);
-        renderButton(result);
-      }
-    } catch (e) {
-      log('run error:', e);
-    } finally {
-      if (activeLoadId === myLoadId) {
-        activeCtxKey = null;
-        activeLoadId = null;
-      }
-    }
-  }
-
-  /* ===== DOWNLOAD CLICK HANDLER ===== */
-  document.addEventListener('click', async function (e) {
-    const btn = e.target.closest('.oas-link-btn[data-oas-link]');
-    if (!btn) return;
-
-    e.preventDefault();
-    e.stopPropagation();
-
-    const url = btn.getAttribute('data-download-url') || btn.href;
-    const filename = btn.getAttribute('data-download-filename');
-
-    const originalText = btn.textContent;
-
-    try {
-      btn.textContent = 'Downloading…';
-      btn.setAttribute('aria-busy', 'true');
-
-      await forceFileDownload(url, filename);
-    } catch (err) {
-      console.warn('[oas-link] forced download failed, opening file instead:', err);
-      window.open(url, '_blank', 'noopener');
-    } finally {
-      btn.textContent = originalText;
-      btn.removeAttribute('aria-busy');
-    }
-  }, true);
-
-  /* ===== LIFECYCLE ===== */
-  function scheduleRun(why) {
-    log('scheduleRun:', why);
-    clearTimeout(runTimer);
-    runTimer = setTimeout(run, 120);
-  }
-
-  const moHead = new MutationObserver((ms) => {
-    if (ms.every(m => !m.target?.closest?.('#oas-slot'))) {
-      scheduleRun('mut:head');
-    }
+  new MutationObserver(enhanceOpenApiDownload).observe(document.body, {
+    childList: true,
+    subtree: true,
   });
 
-  const moSide = new MutationObserver(() => {
-    scheduleRun('mut:sidebar');
-  });
-
-  const moHdr = new MutationObserver((ms) => {
-    if (ms.every(m => !m.target?.closest?.('#oas-slot'))) {
-      scheduleRun('mut:header');
-    }
-  });
-
-  function bindObservers() {
-    moHead.disconnect();
-    moSide.disconnect();
-    moHdr.disconnect();
-
-    const head = getHead();
-
-    if (head) {
-      moHead.observe(head, {
-        childList: true,
-        subtree: true
-      });
-    }
-
-    const side = document.querySelector('#reference-sidebar');
-
-    if (side) {
-      moSide.observe(side, {
-        childList: true,
-        subtree: true
-      });
-    }
-
-    const hdr = getHeaderRoot();
-
-    if (hdr) {
-      moHdr.observe(hdr, {
-        childList: true,
-        subtree: true,
-        attributes: true,
-        attributeFilter: ['data-raycast-oas']
-      });
-    }
+  if (window.__here_nav_bus_v1 && window.__here_nav_bus_v1.onNav) {
+    window.__here_nav_bus_v1.onNav(enhanceOpenApiDownload);
   }
-
-  const onPageLoad = () => scheduleRun('pageLoad');
-
-  if (window.jQuery && jQuery(window).on) {
-    jQuery(window).on('pageLoad', onPageLoad);
-  }
-
-  window.addEventListener('pageLoad', onPageLoad);
-
-  if (document.readyState === 'complete' || document.readyState === 'interactive') {
-    onPageLoad();
-  } else {
-    document.addEventListener('DOMContentLoaded', onPageLoad);
-  }
-
-  bindObservers();
 })();
-
 
 
 // ─────────────────────────────────────────────────────────────────────────────

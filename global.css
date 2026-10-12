@@ -18,6 +18,13 @@
      14. CUSTOM EMBEDS / UTILITIES
      15. MISC / OVERRIDES
 ====================================================================== */
+a.rm-OpenAPIDownload .here-oas-download-label {
+    display: inline-block;
+  font-family: 'FiraGO-Medium';
+  font-weight:200;
+  color:grey;
+
+}
 
 img[class*="Header-logo-img"] {
   height: 50px !important;
@@ -562,7 +569,7 @@ button.Button.Button_slate_text.Button_md.NavItem2xSfFaVqfRjy.Button.Button_slat
 .ContentWithOwlbotx4PaFDoA1KMz {
   --AskAi-width: 600px;
 }
-.EmptyChatOptions2sW9u7BPOSdJ {
+.rm-AskAi-empty {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -2271,7 +2278,7 @@ header .LangPicker17mF-TSKPUmJ.undefined.Dropdown.Dropdown_closed {
   display: none;
 }
 
-.ChatInterface-headerTitleqnGqTmt9EuvI {
+[class*="ChatHeader-headerTitle"] {
     color: var(--color-text-default);
     -webkit-box-flex: 1;
     -ms-flex: 1;
@@ -2424,10 +2431,12 @@ header .LangPicker17mF-TSKPUmJ.undefined.Dropdown.Dropdown_closed {
 }
 
 /* Empty state area */
-.rm-SearchModal[data-styles="hds"] .SearchResults35_kFOb1zvxX,
-#AppSearch[data-styles="hds"] .SearchResults35_kFOb1zvxX {
+.rm-SearchModal[data-styles="hds"] .SearchResults35_kFOb1zvxX > div,
+#AppSearch[data-styles="hds"] .SearchResults35_kFOb1zvxX > div {
   background: #ffffff !important;
-  padding: 32px 24px !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  padding-left: 20px !important;
 }
 
 .rm-SearchModal[data-styles="hds"] .rm-SearchModal-empty,
@@ -2460,8 +2469,8 @@ header .LangPicker17mF-TSKPUmJ.undefined.Dropdown.Dropdown_closed {
 #AppSearch[data-styles="hds"] .SearchResults35_kFOb1zvxX article,
 .rm-SearchModal[data-styles="hds"] .SearchResults35_kFOb1zvxX > a,
 #AppSearch[data-styles="hds"] .SearchResults35_kFOb1zvxX > a,
-.rm-SearchModal[data-styles="hds"] .SearchResults35_kFOb1zvxX > div,
-#AppSearch[data-styles="hds"] .SearchResults35_kFOb1zvxX > div {
+.rm-SearchModal[data-styles="hds"] .SearchResults35_kFOb1zvxX > div:not(.SearchResults-scroll-to2dSeYK7ogCRo),
+#AppSearch[data-styles="hds"] .SearchResults35_kFOb1zvxX > div:not(.SearchResults-scroll-to2dSeYK7ogCRo) {
   border-bottom: 1px solid rgba(0, 129, 177, 0.25) !important;
 }
 
@@ -3064,4 +3073,57 @@ header .LangPicker17mF-TSKPUmJ.undefined.Dropdown.Dropdown_closed {
 .Header-search_featherYsmQBn55F3d9 {
   -webkit-box-shadow: none;
   box-shadow: none;
+}
+
+
+#AppSearch[data-styles=hds] [class*="SearchBox"]:not([class*="SearchBox-"]),
+.rm-SearchModal[data-styles=hds] [class*="SearchBox"]:not([class*="SearchBox-"]) {
+  position: static !important;
+}
+
+#AppSearch[data-styles=hds] [class*="SuperHubSearch-col"],
+.rm-SearchModal[data-styles=hds] [class*="SuperHubSearch-col"] {
+  position: relative !important;
+}
+
+#AppSearch[data-styles=hds] [class*="SearchBox-spinner"],
+.rm-SearchModal[data-styles=hds] [class*="SearchBox-spinner"] {
+  position: absolute !important;
+  top: 130px !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  margin: auto !important;
+}
+
+#AppSearch[data-styles=hds] [class*="SearchBox-spinner"],
+.rm-SearchModal[data-styles=hds] [class*="SearchBox-spinner"] {
+  position: absolute !important;
+  top: 130px !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  margin: auto !important;
+}
+
+/* Custom API-reference Index links — all color modes */
+.rm-CustomPage .navigation .item .title > a,
+.rm-CustomPage .navigation .item .title li a {
+  color: #FFFFFF !important;
+}
+
+/* Custom API-reference navigation — white links and list markers in all color modes */
+.rm-CustomPage .maps-api-for-javascript .navigation .itemMembers li,
+.rm-CustomPage .maps-api-for-javascript .navigation .itemMembers li::marker,
+.rm-CustomPage .maps-api-for-javascript .navigation .itemMembers a,
+.rm-CustomPage .maps-api-for-javascript .navigation .item .title > a {
+  color: #FFFFFF !important;
+}
+
+/* Ask AI answers render as .rm-Markdown blocks, so the dark page-surface
+   rule above painted them #092732 on top of the chat panel. Keep them on
+   the panel colour. */
+.rm-AskAi-chat .rm-Markdown.markdown-body {
+  background: transparent !important;
+  background-color: transparent !important;
 }

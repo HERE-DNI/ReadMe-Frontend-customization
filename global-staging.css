@@ -443,7 +443,7 @@ font-size: 14px !important;
 /* Hero section container. Bg pattern is a transparent SVG layered over the solid color. */
 .here-glp .here-hero {
   background-color: #ECF7FC !important;
-  background-image: url('https://here-dni.github.io/ReadMe-Frontend-customization/assets/images/hero-bg/hero-bg-pattern-light.svg') !important;
+  background-image: url('https://here-dni.github.io/ReadMe-Frontend-customization/assets/images/hero-bg/hero-truepath-light.svg') !important;
   background-repeat: no-repeat !important;
   background-position: center top !important;
   background-size: 100% auto !important;
@@ -494,47 +494,13 @@ font-size: 14px !important;
   width: 100% !important;
 }
 
-/* Ask AI button — light mode per Figma 2101:85090 (dark fill, teal ink); dark mode inverts it further down */
+/* Ask AI button — all visuals come from the shared .rm-AskAi-button rule so the hero and header buttons stay identical. Row sizing only here. */
 .here-glp .here-hero__askai {
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
   flex: 0 0 auto !important;
-  gap: 8px !important;
-  height: 48px !important;
-  padding: 0 24px !important;
   margin: 0 !important;
-  border: 0 !important;
-  border-radius: 50px !important;
-  background-color: #092732 !important;
-  color: #1EF3E4 !important;
-  font-family: "FiraGO", "Fira GO", "Fira Sans", system-ui, sans-serif !important;
-  font-size: 14px !important;
-  font-weight: 500 !important;
-  line-height: 16px !important;
-  letter-spacing: -0.0286em !important;
-  white-space: nowrap !important;
   cursor: pointer !important;
   appearance: none !important;
   -webkit-appearance: none !important;
-  transition: background-color 0.15s ease !important;
-}
-
-/* Hover/focus not specified in Figma — derived from the header Ask AI tokens */
-.here-glp .here-hero__askai:hover {
-  background-color: #0E3D50 !important;
-}
-
-.here-glp .here-hero__askai:focus-visible {
-  outline: 2px solid #092732 !important;
-  outline-offset: 2px !important;
-}
-
-.here-glp .here-hero__askai svg {
-  flex: 0 0 auto !important;
-  width: 16px !important;
-  height: 16px !important;
-  fill: currentColor !important;
 }
 
 /* Popular searches row — left-aligned with the rest of the hero */
@@ -598,13 +564,14 @@ font-size: 14px !important;
   }
   .here-glp .here-hero__askai {
     width: 100% !important;
+    justify-content: center !important;
   }
 }
 
 /* Dark mode — hero surface + text. Bg pattern is a transparent SVG (correct export, no baked-in fill) layered over the solid color. */
 .here-glp[data-theme*="dark"] .here-hero {
   background-color: #153947 !important;
-  background-image: url('https://here-dni.github.io/ReadMe-Frontend-customization/assets/images/hero-bg/hero-bg-pattern-dark.svg') !important;
+  background-image: url('https://here-dni.github.io/ReadMe-Frontend-customization/assets/images/hero-bg/hero-truepath-dark.svg') !important;
   background-repeat: no-repeat !important;
   background-position: center top !important;
   background-size: 100% auto !important;
@@ -622,22 +589,10 @@ font-size: 14px !important;
 .here-glp[data-theme*="dark"] .here-popular-searches__links a.hds-button--variant-secondary[href]:hover {
   background-color: rgba(232, 237, 240, 0.10) !important;
 }
-/* Ask AI inverts in dark mode per Figma 2411:102024 — teal fill, dark ink */
-.here-glp[data-theme*="dark"] .here-hero__askai {
-  background-color: #1EF3E4 !important;
-  color: #092732 !important;
-}
-.here-glp[data-theme*="dark"] .here-hero__askai:hover {
-  background-color: #17D9CC !important;
-}
-.here-glp[data-theme*="dark"] .here-hero__askai:focus-visible {
-  outline-color: #ECF7FC !important;
-}
-
 /* Pre-paint guard mirror (no-flash) — .here-hero. Mirrors the post-paint block above; keep both in sync whenever this section changes. */
 [data-color-mode="dark"] .here-glp .here-hero {
   background-color: #153947 !important;
-  background-image: url('https://here-dni.github.io/ReadMe-Frontend-customization/assets/images/hero-bg/hero-bg-pattern-dark.svg') !important;
+  background-image: url('https://here-dni.github.io/ReadMe-Frontend-customization/assets/images/hero-bg/hero-truepath-dark.svg') !important;
   background-repeat: no-repeat !important;
   background-position: center top !important;
   background-size: 100% auto !important;
@@ -654,22 +609,11 @@ font-size: 14px !important;
 [data-color-mode="dark"] .here-glp .here-popular-searches__links a.hds-button--variant-secondary[href]:hover {
   background-color: rgba(232, 237, 240, 0.10) !important;
 }
-[data-color-mode="dark"] .here-glp .here-hero__askai {
-  background-color: #1EF3E4 !important;
-  color: #092732 !important;
-}
-[data-color-mode="dark"] .here-glp .here-hero__askai:hover {
-  background-color: #17D9CC !important;
-}
-[data-color-mode="dark"] .here-glp .here-hero__askai:focus-visible {
-  outline-color: #ECF7FC !important;
-}
-
 /* System-mode mirror (no-flash) — .here-hero. Keep in sync with the two blocks above whenever this section changes. */
 @media (prefers-color-scheme: dark) {
   [data-color-mode="system"] .here-glp .here-hero {
     background-color: #153947 !important;
-    background-image: url('https://here-dni.github.io/ReadMe-Frontend-customization/assets/images/hero-bg/hero-bg-pattern-dark.svg') !important;
+    background-image: url('https://here-dni.github.io/ReadMe-Frontend-customization/assets/images/hero-bg/hero-truepath-dark.svg') !important;
     background-repeat: no-repeat !important;
     background-position: center top !important;
     background-size: 100% auto !important;
@@ -685,16 +629,6 @@ font-size: 14px !important;
   }
   [data-color-mode="system"] .here-glp .here-popular-searches__links a.hds-button--variant-secondary[href]:hover {
     background-color: rgba(232, 237, 240, 0.10) !important;
-  }
-  [data-color-mode="system"] .here-glp .here-hero__askai {
-    background-color: #1EF3E4 !important;
-    color: #092732 !important;
-  }
-  [data-color-mode="system"] .here-glp .here-hero__askai:hover {
-    background-color: #17D9CC !important;
-  }
-  [data-color-mode="system"] .here-glp .here-hero__askai:focus-visible {
-    outline-color: #ECF7FC !important;
   }
 }
 
@@ -1862,7 +1796,8 @@ button.Button.Button_slate_text.Button_md.NavItem2xSfFaVqfRjy.Button.Button_slat
 /* Ask AI button — HDS button small (primary). HDS small = padding 8px 16px,
    min-height 2rem (32px). Keeps HERE accent fill via --color-ai-bg/-fg. */
 .rm-AskAi-button,
-.Header-askai1MTDknILiJku .Button {
+.Header-askai1MTDknILiJku .Button,
+.here-hero__askai {
   background: var(--color-ai-bg) !important;
   color: var(--color-ai-fg) !important;
   border: none !important;
@@ -1879,7 +1814,8 @@ button.Button.Button_slate_text.Button_md.NavItem2xSfFaVqfRjy.Button.Button_slat
   white-space: nowrap !important;
 }
 .rm-AskAi-button *,
-.Header-askai1MTDknILiJku .Button * {
+.Header-askai1MTDknILiJku .Button *,
+.here-hero__askai * {
   color: var(--color-ai-fg) !important;
 }
 .rm-AskAi-button:hover,
@@ -1892,7 +1828,11 @@ button.Button.Button_slate_text.Button_md.NavItem2xSfFaVqfRjy.Button.Button_slat
 .Header-askai1MTDknILiJku .Button:focus-visible,
 .rm-AskAi .Button:hover,
 .rm-AskAi .Button:focus,
-.rm-AskAi .Button:active {
+.rm-AskAi .Button:active,
+.here-hero__askai:hover,
+.here-hero__askai:focus,
+.here-hero__askai:active,
+.here-hero__askai:focus-visible {
   background: var(--color-ai-hover-bg) !important;
   color: var(--color-ai-fg) !important;
   border: none !important;
@@ -1903,11 +1843,13 @@ button.Button.Button_slate_text.Button_md.NavItem2xSfFaVqfRjy.Button.Button_slat
 .rm-AskAi-button .Sparkle2v30M7Hw3dl4 path,
 .rm-AskAi-button:hover .Sparkle2v30M7Hw3dl4 path,
 .rm-AskAi-button:focus .Sparkle2v30M7Hw3dl4 path,
-.rm-AskAi-button svg path {
+.rm-AskAi-button svg path,
+.here-hero__askai svg path {
   fill: var(--color-ai-icon) !important;
   stroke: none !important;
 }
-.rm-AskAi-button svg {
+.rm-AskAi-button svg,
+.here-hero__askai svg {
   width: 16px !important;
   height: 16px !important;
   flex-shrink: 0 !important;
