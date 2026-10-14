@@ -1666,13 +1666,15 @@
       }
 
       function navigate(lang) {
-        // TESTING:         if (isProductionRoute()) {
-        // TESTING:           var target = lang === "ja"
-        // TESTING:             ? "https://docs.here.com/ja"
-        // TESTING:             : "https://docs.here.com/";
-        // TESTING:           window.location.assign(target);
-        // TESTING:           return;
+        /* TESTING: Redirect disabled for testing
+        if (isProductionRoute()) {
+          var target = lang === "ja"
+            ? "https://docs.here.com/ja"
+            : "https://docs.here.com/";
+          window.location.assign(target);
+          return;
         }
+        */
 
         // Non-production route (e.g. test Custom Page): toggle in place.
         langOverride = lang;
@@ -2181,19 +2183,45 @@
 
     /* Ask AI proxy — forwards hero Ask AI clicks to the header trigger so both open the same flyout */
     (function () {
-      /* Guard: the loader re-executes inline scripts on SPA re-mount, and a second listener would toggle the flyout shut */
       if (window.__hereHeroAskAi) return;
       window.__hereHeroAskAi = true;
-      /* :not([data-here-hero-askai]) keeps the hero button from matching itself */
+      
       var SEL = ".rm-AskAi-button:not([data-here-hero-askai]),.Header-askai1MTDknILiJku .Button,.rm-AskAi .Button";
-      document.addEventListener("click", function (e) {
-        if (!e.target.closest || !e.target.closest("[data-here-hero-askai]")) return;
-        e.preventDefault();
+      
+      function findHeaderButton() {
         var btn = document.querySelector(SEL);
-        /* Custom-page content is iframed in ReadMe's frame preview, so the header lives in the top document */
-        try { if (!btn && window.top !== window) btn = window.top.document.querySelector(SEL); } catch (err) {}
-        if (btn) btn.click();
-      });
+        try { 
+          if (!btn && window.top !== window) {
+            btn = window.top.document.querySelector(SEL);
+          }
+        } catch (err) {}
+        return btn;
+      }
+      
+      function clickHandler(e) {
+        if (!e.target.closest || !e.target.closest("[data-here-hero-askai]")) return;
+        
+        e.preventDefault();
+        e.stopPropagation();
+        
+        var btn = findHeaderButton();
+        
+        if (btn) {
+          btn.click();
+        } else {
+          // Fallback: wait and retry if button not loaded yet
+          setTimeout(function() {
+            var retryBtn = findHeaderButton();
+            if (retryBtn) {
+              retryBtn.click();
+            } else {
+              console.warn("Ask AI: Header button not found. Selector:", SEL);
+            }
+          }, 100);
+        }
+      }
+      
+      document.addEventListener("click", clickHandler, true);
     })();
 
     /* ── Video play ──
