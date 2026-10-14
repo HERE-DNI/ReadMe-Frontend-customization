@@ -444,6 +444,17 @@
     }
 
 
+    /* ================================================================
+       DISABLE HDS-SWITCHER BUILT-IN BEHAVIOR - TESTING ONLY
+       ================================================================ */
+    hds-switcher[data-here-lang-toggle] {
+      pointer-events: none !important;
+    }
+    hds-switcher[data-here-lang-toggle] hds-switcher-tab {
+      pointer-events: auto !important;
+      cursor: pointer !important;
+    }
+
 
     /* ================================================================
        DARK MODE — header chrome (outside .here-glp, uses data-color-mode)
@@ -1729,21 +1740,43 @@
           } catch (e) {}
         });
 
-        /* Sync footer lang buttons */
-        document.querySelectorAll(".here-footer__lang button[data-lang]").forEach(function(b) {
-          b.setAttribute("aria-pressed", b.getAttribute("data-lang") === correctLang ? "true" : "false");
-        });
-      }
-
-      function bindClicks() {
-        document.querySelectorAll("hds-switcher[data-here-lang-toggle]").forEach(function(sw) {
-          if (sw.__hereBound) return;
+          var newSw = sw.cloneNode(true);
+          sw.parentNode.replaceChild(newSw, sw);
+          sw = newSw;
           sw.__hereBound = true;
 
           sw.addEventListener("click", function(e) {
             alert("🚨 CLICK DETECTED! Target=" + (e.target ? e.target.tagName : "null"));
+            e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+
             var tab = e.target && e.target.closest
               ? e.target.closest("hds-switcher-tab[data-lang]")
+              : null;
+            if (!tab) return;
+
+            var lang = tab.getAttribute("data-lang");
+            var currentLang = getCurrentLang();
+            if (!lang || lang === currentLang) return;
+
+            navigate(lang);
+          }, true);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
               : null;
             if (!tab) return;
 
