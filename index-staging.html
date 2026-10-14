@@ -1674,20 +1674,21 @@
       }
 
       function navigate(lang) {
-        console.log("🟢 TESTING MODE ACTIVE: Redirect disabled - v2.0");
-        /* TESTING: Redirect disabled for testing
-        if (isProductionRoute()) {
-          var target = lang === "ja"
-            ? "https://docs.here.com/ja"
-            : "https://docs.here.com/";
-          window.location.assign(target);
-          return;
-        }
-        */
-
-        // Non-production route (e.g. test Custom Page): toggle in place.
+        alert("🚨 NAVIGATE CALLED! Lang=" + lang + " | isProductionRoute=" + isProductionRoute());
+        console.log("🟢 NAVIGATE CALLED - Lang:", lang);
+        console.log("🟢 TESTING MODE: Redirect is DISABLED");
+        
+        // ORIGINAL REDIRECT CODE - COMPLETELY DISABLED FOR TESTING
+        // if (isProductionRoute()) {
+        //   var target = lang === "ja" ? "https://docs.here.com/ja" : "https://docs.here.com/";
+        //   window.location.assign(target);
+        //   return;
+        // }
+        
+        // Toggle in place
         langOverride = lang;
         enforce();
+        console.log("🟢 Language toggled to:", lang);
       }
 
       function enforce() {
@@ -1730,6 +1731,7 @@
           sw.__hereBound = true;
 
           sw.addEventListener("click", function(e) {
+            alert("🚨 CLICK DETECTED! Target=" + (e.target ? e.target.tagName : "null"));
             var tab = e.target && e.target.closest
               ? e.target.closest("hds-switcher-tab[data-lang]")
               : null;
@@ -1740,6 +1742,7 @@
             if (!lang || lang === currentLang) return;
 
             e.preventDefault();
+            e.stopImmediatePropagation();
             e.stopPropagation();
             navigate(lang);
           }, true);
