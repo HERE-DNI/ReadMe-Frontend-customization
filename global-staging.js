@@ -2502,7 +2502,7 @@ function stampMarkdownScopes() {
       }
 
       [${ROOT_ATTR}][data-lang="ja"] .EmptyChatOptions-subtitle280IfSzee1D7::before {
-        content: 'AIを使ってHERE API、SDK、ドキュメントのソリューションを見つけましょう。' !important;
+        content: 'AIを活用してソリューションの指針とし、HEREのAPI、SDK、ドキュメントをご覧ください。' !important;
       }
 
       [${ROOT_ATTR}] .EmptyChatOptions-inputWrapper1QdyF__AmKN8 {
@@ -2829,7 +2829,7 @@ function stampMarkdownScopes() {
   if (window[TAG]) return;
   window[TAG] = true;
 
-  var HEADER_TITLES = { en: "Ask AI", ja: "AIに聞く" };
+  var HEADER_TITLES = { en: "Ask AI", ja: "AIに質問する" };
 
   function detectLocale() {
     var match = (window.location.pathname || '').match(/\/([a-z]{2})(?:\/|$)/i);
