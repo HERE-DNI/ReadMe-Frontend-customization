@@ -1650,6 +1650,17 @@
         if (mode === "light" || mode === "dark") return mode;
         return "system";
       }
+      // TESTING: Override HDS switcher to prevent redirect
+      (function() {
+        var originalAddEventListener = HTMLElement.prototype.addEventListener;
+        HTMLElement.prototype.addEventListener = function(type, listener, options) {
+          if (type === "click" && this.tagName === "HDS-SWITCHER-TAB") {
+            return;
+          }
+          originalAddEventListener.call(this, type, listener, options);
+        };
+      })();
+
       function prefersDark() {
         try { return !!(window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches); } catch(e) { return false; }
       }
