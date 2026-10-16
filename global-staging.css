@@ -22,7 +22,7 @@
 ====================================================================== */
 
 img[class*="Header-logo-img"] {
-  height: 50px !important;
+  height: 64px !important;
   width: auto;
   margin-top: 3px !important;
 }
@@ -152,7 +152,7 @@ button.Button.Button_slate_text.Button_md.Header-link2tXYTgXq85zW.NavItem2xSfFaV
             stylesheet). Rules outside that scope must use the legacy
             --color-* / --here-font* vars defined below.
    ====================================================================== */
-.App header .rm-Container { height: 48px; }
+.App header .rm-Container { height: 64px; }
 
 .ThemeContext_line:not(:has(.Header-links-buttons)) .Header-subnavnVH8URdkgvEl {
     position: relative;
@@ -445,8 +445,8 @@ font-size: 14px !important;
   background-color: #ECF7FC !important;
   background-image: url('https://here-dni.github.io/ReadMe-Frontend-customization/assets/images/hero-bg/hero-truepath-light.svg') !important;
   background-repeat: no-repeat !important;
-  background-position: center top !important;
-  background-size: 100% auto !important;
+  background-position: center bottom !important;
+  background-size: 120% auto !important;
   padding: 80px 0 !important;
 }
 
@@ -573,8 +573,8 @@ font-size: 14px !important;
   background-color: #153947 !important;
   background-image: url('https://here-dni.github.io/ReadMe-Frontend-customization/assets/images/hero-bg/hero-truepath-dark.svg') !important;
   background-repeat: no-repeat !important;
-  background-position: center top !important;
-  background-size: 100% auto !important;
+  background-position: center bottom !important;
+  background-size: 120% auto !important;
 }
 
 .here-glp[data-theme*="dark"] .here-hero__subtitle,
@@ -594,8 +594,8 @@ font-size: 14px !important;
   background-color: #153947 !important;
   background-image: url('https://here-dni.github.io/ReadMe-Frontend-customization/assets/images/hero-bg/hero-truepath-dark.svg') !important;
   background-repeat: no-repeat !important;
-  background-position: center top !important;
-  background-size: 100% auto !important;
+  background-position: center bottom !important;
+  background-size: 120% auto !important;
 }
 [data-color-mode="dark"] .here-glp .here-hero__subtitle,
 [data-color-mode="dark"] .here-glp .here-popular-searches__label {
@@ -615,8 +615,8 @@ font-size: 14px !important;
     background-color: #153947 !important;
     background-image: url('https://here-dni.github.io/ReadMe-Frontend-customization/assets/images/hero-bg/hero-truepath-dark.svg') !important;
     background-repeat: no-repeat !important;
-    background-position: center top !important;
-    background-size: 100% auto !important;
+    background-position: center bottom !important;
+    background-size: 120% auto !important;
   }
   [data-color-mode="system"] .here-glp .here-hero__subtitle,
   [data-color-mode="system"] .here-glp .here-popular-searches__label {
@@ -1738,7 +1738,7 @@ font-size: 14px !important;
 }
 
 .Header-logo-img_small1Whup8HPsbv4 {
-  height: 50px;
+  height: 64px;
   margin-top: 5px;
 }
 

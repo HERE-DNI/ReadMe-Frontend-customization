@@ -2079,6 +2079,60 @@ function stampMarkdownScopes() {
     if (initFooterLangPicker()) stopPolling();
   }
 
+  // Intercept ReadMe's language picker to preserve staging parameters
+  (function interceptLanguageToggle() {
+    var TAG = "__here_lang_intercept_v1";
+    if (window[TAG]) return;
+    window[TAG] = true;
+
+    // Intercept window.location.assign to preserve query parameters
+    var originalAssign = window.location.assign.bind(window.location);
+    
+    window.location.assign = function(url) {
+      try {
+        // Check if this is a language toggle (switching between /ja and non-/ja paths)
+        var currentPath = window.location.pathname || "";
+        var currentSearch = window.location.search || "";
+        var currentHash = window.location.hash || "";
+        
+        // Parse the target URL
+        var targetUrl = new URL(url, window.location.origin);
+        var targetPath = targetUrl.pathname || "";
+        
+        // Check if it's a language toggle (same base path, just adding/removing /ja/)
+        var isLanguageToggle = false;
+        
+        // Detect if switching to Japanese (adding /ja/)
+        if (!currentPath.match(/\/ja(\/|$)/) && targetPath.match(/\/ja(\/|$)/)) {
+          isLanguageToggle = true;
+        }
+        // Detect if switching to English (removing /ja/)
+        else if (currentPath.match(/\/ja(\/|$)/) && !targetPath.match(/\/ja(\/|$)/)) {
+          isLanguageToggle = true;
+        }
+        
+        // If it's a language toggle and we have query parameters, preserve them
+        if (isLanguageToggle && currentSearch) {
+          // Preserve current query parameters if target URL doesn't have them
+          if (!targetUrl.search) {
+            targetUrl.search = currentSearch;
+          }
+          // Preserve current hash if target URL doesn't have it
+          if (!targetUrl.hash && currentHash) {
+            targetUrl.hash = currentHash;
+          }
+          
+          url = targetUrl.href;
+        }
+      } catch (e) {
+        // If anything goes wrong, fall back to original behavior
+        console.warn("Language toggle intercept error:", e);
+      }
+      
+      return originalAssign(url);
+    };
+  })();
+
   startPolling();
 
   try {
