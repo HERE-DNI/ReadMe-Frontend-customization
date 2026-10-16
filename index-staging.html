@@ -1706,38 +1706,14 @@
       }
 
       function navigate(lang) {
-        // For non-GLP pages (any page other than / or /ja), redirect to the same page in the target language
-        if (!isProductionRoute()) {
-          var currentPath = window.location.pathname || "/";
-          var currentLang = getCurrentLang();
-          var targetPath;
-          
-          if (lang === "ja") {
-            // Switching to Japanese
-            if (currentLang === "en") {
-              // Add /ja/ after the first path segment
-              var parts = currentPath.split("/").filter(function(p) { return p; });
-              if (parts.length > 0) {
-                targetPath = "/" + parts[0] + "/ja/" + parts.slice(1).join("/");
-              } else {
-                targetPath = "/ja";
-              }
-            } else {
-              targetPath = currentPath;
-            }
-          } else {
-            // Switching to English - remove /ja/ segment
-            targetPath = currentPath.replace(/\/ja(\/|$)/, "/");
-          }
-          
-          // Preserve all query parameters including staging parameters
-          var search = window.location.search || "";
-          var hash = window.location.hash || "";
-          window.location.assign(targetPath + search + hash);
+        // Real GLP routes: go to the other language root, keeping the query string (e.g. staging flags).
+        if (isProductionRoute()) {
+          var target = (lang === "ja" ? "/ja" : "/") + (window.location.search || "");
+          window.location.assign(target);
           return;
         }
-        
-        // For GLP (/ or /ja), just toggle in place
+
+        // Test Custom Page (e.g. /test-doptools/page/glp): no /ja twin exists, so toggle in place.
         langOverride = lang;
         enforce();
       }
@@ -1793,16 +1769,25 @@
         });
       }
 
+      // Capture on document so footer-global.html's own button listener (hardcoded docs.here.com/ja) never fires on the GLP.
+      var footerCaptureBound = false;
       function bindFooter() {
-        document.querySelectorAll(".here-footer__lang button[data-lang]:not([data-fb])").forEach(function(b) {
-          b.setAttribute("data-fb", "1");
-          b.addEventListener("click", function() {
-            var lang = b.getAttribute("data-lang");
-            var currentLang = getCurrentLang();
-            if (!lang || lang === currentLang) return;
-            navigate(lang);
-          });
-        });
+        if (footerCaptureBound) return;
+        footerCaptureBound = true;
+        document.addEventListener("click", function(e) {
+          var b = e.target && e.target.closest
+            ? e.target.closest(".here-footer__lang button[data-lang]")
+            : null;
+          if (!b || !document.querySelector(".here-glp")) return;
+
+          e.preventDefault();
+          e.stopPropagation();
+          e.stopImmediatePropagation();
+
+          var lang = b.getAttribute("data-lang");
+          if (!lang || lang === getCurrentLang()) return;
+          navigate(lang);
+        }, true);
       }
 
       enforce();
