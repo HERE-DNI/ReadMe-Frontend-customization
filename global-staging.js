@@ -808,7 +808,7 @@ function stampMarkdownScopes() {
           showInJa: false,
         },
         {
-          text: { en: "Map Content", ja: "Map Content" },
+          text: { en: "HERE Map Content", ja: "HERE Map Content" },
           href: { en: "/map-content/docs", ja: "/map-content/docs" },
           showInJa: false,
         },
