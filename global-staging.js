@@ -4261,47 +4261,9 @@ function stampMarkdownScopes() {
     ja: "https://www.here.com/jp/contact"
   };
   var LABELS = { en: "Contact us", ja: "お問い合わせ" };
-  var ASK_AI_LABELS = { en: "Ask AI", ja: "AIに尋ねる" };
-  var ASK_AI_ORIGINAL_ATTR = "data-here-label-original";
 
-  // GLP in-place toggle doesn't change the URL, so its data-active-lang wins when present.
   function currentLang() {
-    var glp = document.querySelector(".here-glp[data-active-lang]");
-    if (glp) return glp.getAttribute("data-active-lang") === "ja" ? "ja" : "en";
     return /\/ja(\/|$|\?)/.test(window.location.href) ? "ja" : "en";
-  }
-
-  function askAiLabelNode(button) {
-    var walker = document.createTreeWalker(button, NodeFilter.SHOW_TEXT, null);
-    var node;
-    while ((node = walker.nextNode())) {
-      if (!node.nodeValue.trim()) continue;
-      if (node.parentNode && node.parentNode.closest && node.parentNode.closest("svg")) continue;
-      return node;
-    }
-    return null;
-  }
-
-  function syncAskAiLabel(lang) {
-    document.querySelectorAll(".rm-AskAi-button").forEach(function (button) {
-      // Only touch ReadMe's label once we need JA; afterwards restore whatever ReadMe rendered.
-      if (lang !== "ja" && !button.hasAttribute(ASK_AI_ORIGINAL_ATTR)) return;
-      var node = askAiLabelNode(button);
-      if (!node) return;
-      if (!button.hasAttribute(ASK_AI_ORIGINAL_ATTR)) {
-        button.setAttribute(ASK_AI_ORIGINAL_ATTR, node.nodeValue.trim() || ASK_AI_LABELS.en);
-      }
-      var want = lang === "ja" ? ASK_AI_LABELS.ja : button.getAttribute(ASK_AI_ORIGINAL_ATTR);
-      if (node.nodeValue.trim() !== want) node.nodeValue = want;
-    });
-  }
-
-  function syncLang() {
-    var lang = currentLang();
-    var btn = document.getElementById(LINK_ID);
-    var label = LABELS[lang] || LABELS.en;
-    if (btn && btn.textContent !== label) btn.textContent = label;
-    syncAskAiLabel(lang);
   }
 
   function currentTheme() {
@@ -4366,12 +4328,12 @@ function stampMarkdownScopes() {
     var existing = document.getElementById(LINK_ID);
     if (existing && existing.parentNode === headerRight) {
       syncTheme();
-      syncLang();
       return;
     }
     if (existing) existing.remove();
 
     var lang = currentLang();
+    var url = URLS[lang] || URLS.en;
 
     var btn = document.createElement("hds-button");
     btn.id = LINK_ID;
@@ -4382,14 +4344,13 @@ function stampMarkdownScopes() {
     btn.setAttribute("size", "small");
     btn.textContent = LABELS[lang] || LABELS.en;
     btn.addEventListener("click", function () {
-      window.open(URLS[currentLang()] || URLS.en, "_blank", "noopener");
+      window.open(url, "_blank", "noopener");
     });
 
     // Sit immediately to the RIGHT of Ask AI in DOM order.
     var afterAskAi = askAiSlot.nextSibling;
     if (afterAskAi) headerRight.insertBefore(btn, afterAskAi);
     else headerRight.appendChild(btn);
-    syncAskAiLabel(lang);
   }
 
   function run() {
@@ -4438,25 +4399,6 @@ function stampMarkdownScopes() {
   if (window.__here_nav_bus_v1 && window.__here_nav_bus_v1.onNav) {
     window.__here_nav_bus_v1.onNav(run);
   }
-
-  // Re-label on GLP language toggle and whenever ReadMe re-renders the header; rAF-batched, writes only on change.
-  var langSyncQueued = false;
-  function queueLangSync() {
-    if (langSyncQueued) return;
-    langSyncQueued = true;
-    requestAnimationFrame(function () {
-      langSyncQueued = false;
-      syncLang();
-    });
-  }
-  try {
-    new MutationObserver(queueLangSync).observe(document.documentElement, {
-      childList: true,
-      subtree: true,
-      attributes: true,
-      attributeFilter: ["data-active-lang"]
-    });
-  } catch (e) {}
 
   // Follow dark mode: watch .here-glp[data-theme] on landing page,
   // <html data-color-mode> on interior doc pages, and OS-level
