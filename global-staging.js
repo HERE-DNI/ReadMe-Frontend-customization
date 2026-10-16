@@ -2085,34 +2085,45 @@ function stampMarkdownScopes() {
     if (window[TAG]) return;
     window[TAG] = true;
 
-    // Intercept window.location.assign to preserve query parameters
-    var originalAssign = window.location.assign.bind(window.location);
-    
-    window.location.assign = function(url) {
+    var currentSearch = "";
+    var currentHash = "";
+    var lastInterceptedUrl = "";
+
+    function shouldPreserveParams(currentPath, targetPath) {
+      // Check if this is a language toggle
+      var isLanguageToggle = false;
+      
+      // Switching to Japanese (adding /ja/)
+      if (!currentPath.match(/\/ja(\/|$)/) && targetPath.match(/\/ja(\/|$)/)) {
+        isLanguageToggle = true;
+      }
+      // Switching to English (removing /ja/)
+      else if (currentPath.match(/\/ja(\/|$)/) && !targetPath.match(/\/ja(\/|$)/)) {
+        isLanguageToggle = true;
+      }
+      
+      return isLanguageToggle;
+    }
+
+    function enhanceUrl(url) {
       try {
-        // Check if this is a language toggle (switching between /ja and non-/ja paths)
         var currentPath = window.location.pathname || "";
-        var currentSearch = window.location.search || "";
-        var currentHash = window.location.hash || "";
+        currentSearch = window.location.search || "";
+        currentHash = window.location.hash || "";
         
         // Parse the target URL
-        var targetUrl = new URL(url, window.location.origin);
+        var targetUrl;
+        try {
+          targetUrl = new URL(url, window.location.origin);
+        } catch (e) {
+          // If URL parsing fails, might be a relative URL
+          targetUrl = new URL(url, window.location.href);
+        }
+        
         var targetPath = targetUrl.pathname || "";
         
-        // Check if it's a language toggle (same base path, just adding/removing /ja/)
-        var isLanguageToggle = false;
-        
-        // Detect if switching to Japanese (adding /ja/)
-        if (!currentPath.match(/\/ja(\/|$)/) && targetPath.match(/\/ja(\/|$)/)) {
-          isLanguageToggle = true;
-        }
-        // Detect if switching to English (removing /ja/)
-        else if (currentPath.match(/\/ja(\/|$)/) && !targetPath.match(/\/ja(\/|$)/)) {
-          isLanguageToggle = true;
-        }
-        
-        // If it's a language toggle and we have query parameters, preserve them
-        if (isLanguageToggle && currentSearch) {
+        // Check if it's a language toggle
+        if (shouldPreserveParams(currentPath, targetPath) && currentSearch) {
           // Preserve current query parameters if target URL doesn't have them
           if (!targetUrl.search) {
             targetUrl.search = currentSearch;
@@ -2122,15 +2133,44 @@ function stampMarkdownScopes() {
             targetUrl.hash = currentHash;
           }
           
-          url = targetUrl.href;
+          lastInterceptedUrl = targetUrl.href;
+          return targetUrl.href;
         }
       } catch (e) {
-        // If anything goes wrong, fall back to original behavior
         console.warn("Language toggle intercept error:", e);
       }
       
+      return url;
+    }
+
+    // Intercept window.location.assign
+    var originalAssign = window.location.assign.bind(window.location);
+    window.location.assign = function(url) {
+      url = enhanceUrl(url);
       return originalAssign(url);
     };
+
+    // Intercept window.location.replace
+    var originalReplace = window.location.replace.bind(window.location);
+    window.location.replace = function(url) {
+      url = enhanceUrl(url);
+      return originalReplace(url);
+    };
+
+    // Intercept window.location.href setter
+    var originalHref = Object.getOwnPropertyDescriptor(window.location, 'href');
+    if (originalHref && originalHref.set) {
+      Object.defineProperty(window.location, 'href', {
+        get: function() {
+          return originalHref.get.call(window.location);
+        },
+        set: function(url) {
+          url = enhanceUrl(url);
+          return originalHref.set.call(window.location, url);
+        },
+        configurable: true
+      });
+    }
   })();
 
   startPolling();
