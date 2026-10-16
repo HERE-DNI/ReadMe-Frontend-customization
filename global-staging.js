@@ -2085,59 +2085,69 @@ function stampMarkdownScopes() {
     if (window[TAG]) return;
     window[TAG] = true;
 
-    var currentSearch = "";
-    var currentHash = "";
-    var lastInterceptedUrl = "";
+    var stagingParams = window.location.search || "";
+    var stagingHash = window.location.hash || "";
+    var interceptCount = 0;
 
-    function shouldPreserveParams(currentPath, targetPath) {
-      // Check if this is a language toggle
-      var isLanguageToggle = false;
-      
-      // Switching to Japanese (adding /ja/)
-      if (!currentPath.match(/\/ja(\/|$)/) && targetPath.match(/\/ja(\/|$)/)) {
-        isLanguageToggle = true;
-      }
-      // Switching to English (removing /ja/)
-      else if (currentPath.match(/\/ja(\/|$)/) && !targetPath.match(/\/ja(\/|$)/)) {
-        isLanguageToggle = true;
-      }
-      
-      return isLanguageToggle;
-    }
-
-    function enhanceUrl(url) {
+    function enhanceUrl(url, method) {
       try {
-        var currentPath = window.location.pathname || "";
-        currentSearch = window.location.search || "";
-        currentHash = window.location.hash || "";
+        if (!stagingParams) return url;
         
-        // Parse the target URL
+        var currentPath = window.location.pathname || "";
+        
         var targetUrl;
         try {
           targetUrl = new URL(url, window.location.origin);
         } catch (e) {
-          // If URL parsing fails, might be a relative URL
-          targetUrl = new URL(url, window.location.href);
+          try {
+            targetUrl = new URL(url, window.location.href);
+          } catch (e2) {
+            return url;
+          }
         }
         
         var targetPath = targetUrl.pathname || "";
         
         // Check if it's a language toggle
-        if (shouldPreserveParams(currentPath, targetPath) && currentSearch) {
-          // Preserve current query parameters if target URL doesn't have them
-          if (!targetUrl.search) {
-            targetUrl.search = currentSearch;
-          }
-          // Preserve current hash if target URL doesn't have it
-          if (!targetUrl.hash && currentHash) {
-            targetUrl.hash = currentHash;
+        var isLanguageToggle = false;
+        
+        // Switching to Japanese (adding /ja/)
+        if (!currentPath.match(/\/ja(\/|$)/) && targetPath.match(/\/ja(\/|$)/)) {
+          isLanguageToggle = true;
+        }
+        // Switching to English (removing /ja/)
+        else if (currentPath.match(/\/ja(\/|$)/) && !targetPath.match(/\/ja(\/|$)/)) {
+          isLanguageToggle = true;
+        }
+        
+        if (isLanguageToggle) {
+          interceptCount++;
+          
+          // Preserve query parameters if target doesn't have them
+          if (!targetUrl.search && stagingParams) {
+            targetUrl.search = stagingParams;
           }
           
-          lastInterceptedUrl = targetUrl.href;
-          return targetUrl.href;
+          // Preserve hash if target doesn't have it
+          if (!targetUrl.hash && stagingHash) {
+            targetUrl.hash = stagingHash;
+          }
+          
+          var enhancedUrl = targetUrl.href;
+          
+          // Show alert so you can see what's happening
+          alert(
+            "🔍 Language Toggle Intercept #" + interceptCount + "\n\n" +
+            "Method: " + method + "\n\n" +
+            "Original URL:\n" + url + "\n\n" +
+            "Enhanced URL:\n" + enhancedUrl + "\n\n" +
+            "Staging params: " + stagingParams
+          );
+          
+          return enhancedUrl;
         }
       } catch (e) {
-        console.warn("Language toggle intercept error:", e);
+        alert("❌ Intercept Error: " + e.message);
       }
       
       return url;
@@ -2146,31 +2156,34 @@ function stampMarkdownScopes() {
     // Intercept window.location.assign
     var originalAssign = window.location.assign.bind(window.location);
     window.location.assign = function(url) {
-      url = enhanceUrl(url);
+      url = enhanceUrl(url, "assign");
       return originalAssign(url);
     };
 
     // Intercept window.location.replace
     var originalReplace = window.location.replace.bind(window.location);
     window.location.replace = function(url) {
-      url = enhanceUrl(url);
+      url = enhanceUrl(url, "replace");
       return originalReplace(url);
     };
 
     // Intercept window.location.href setter
-    var originalHref = Object.getOwnPropertyDescriptor(window.location, 'href');
-    if (originalHref && originalHref.set) {
-      Object.defineProperty(window.location, 'href', {
-        get: function() {
-          return originalHref.get.call(window.location);
-        },
+    var locationProto = Object.getPrototypeOf(window.location);
+    var originalHrefDesc = Object.getOwnPropertyDescriptor(locationProto, 'href');
+    
+    if (originalHrefDesc && originalHrefDesc.set) {
+      Object.defineProperty(locationProto, 'href', {
+        get: originalHrefDesc.get,
         set: function(url) {
-          url = enhanceUrl(url);
-          return originalHref.set.call(window.location, url);
+          url = enhanceUrl(url, "href");
+          return originalHrefDesc.set.call(this, url);
         },
-        configurable: true
+        configurable: true,
+        enumerable: true
       });
     }
+
+    alert("✅ Language Toggle Intercept Installed\n\nStaging params: " + stagingParams);
   })();
 
   startPolling();
