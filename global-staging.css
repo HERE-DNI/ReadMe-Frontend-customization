@@ -445,7 +445,7 @@ font-size: 14px !important;
   background-color: #ECF7FC !important;
   background-image: url('https://here-dni.github.io/ReadMe-Frontend-customization/assets/images/hero-bg/hero-truepath-light.svg') !important;
   background-repeat: no-repeat !important;
-  background-position: center bottom !important;
+  background-position: right bottom !important;
   background-size: 120% auto !important;
   padding: 80px 0 !important;
 }
@@ -573,7 +573,7 @@ font-size: 14px !important;
   background-color: #153947 !important;
   background-image: url('https://here-dni.github.io/ReadMe-Frontend-customization/assets/images/hero-bg/hero-truepath-dark.svg') !important;
   background-repeat: no-repeat !important;
-  background-position: center bottom !important;
+  background-position: right bottom !important;
   background-size: 120% auto !important;
 }
 
@@ -594,7 +594,7 @@ font-size: 14px !important;
   background-color: #153947 !important;
   background-image: url('https://here-dni.github.io/ReadMe-Frontend-customization/assets/images/hero-bg/hero-truepath-dark.svg') !important;
   background-repeat: no-repeat !important;
-  background-position: center bottom !important;
+  background-position: right bottom !important;
   background-size: 120% auto !important;
 }
 [data-color-mode="dark"] .here-glp .here-hero__subtitle,
@@ -615,7 +615,7 @@ font-size: 14px !important;
     background-color: #153947 !important;
     background-image: url('https://here-dni.github.io/ReadMe-Frontend-customization/assets/images/hero-bg/hero-truepath-dark.svg') !important;
     background-repeat: no-repeat !important;
-    background-position: center bottom !important;
+    background-position: right bottom !important;
     background-size: 120% auto !important;
   }
   [data-color-mode="system"] .here-glp .here-hero__subtitle,
