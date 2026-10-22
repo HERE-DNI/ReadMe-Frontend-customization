@@ -436,15 +436,6 @@
       .here-lang-row { justify-content: flex-start; }
     }
     /* ================================================================
-       HIDE SOLUTION FILTER (Show all products & services dropdown)
-       ================================================================ */
-    
-    .here-solfilter[data-here-solfilter] {
-      display: none !important;
-    }
-
-
-    /* ================================================================
        DISABLE HDS-SWITCHER BUILT-IN BEHAVIOR - TESTING ONLY
        ================================================================ */
     hds-switcher[data-here-lang-toggle] {
@@ -878,15 +869,15 @@
           </div>
 
           <div class="here-resources__filters" role="group" aria-label="Filters">
-            <span class="here-solfilter" data-here-solfilter data-here-solfilter-labels='{"all":"Show all products &amp; services","adas":"ADAS Solutions","navigation":"Navigation Solutions","fleet":"Fleet &amp; Mobility Solutions","gis":"GIS &amp; Location Intelligence"}'>
+            <span class="here-solfilter" data-here-solfilter data-here-solfilter-labels='{"all":"Show all products &amp; services","adas":"ADAS &amp; AD","navigation":"Explore &amp; Navigate","fleet":"Fleet, Mobility &amp; Transportation","gis":"GIS &amp; Location Intelligence"}'>
               <hds-button variant="secondary" size="small" data-here-solfilter-trigger aria-haspopup="true" aria-expanded="false">Show all products &amp; services</hds-button>
               <span class="here-dd-chevron" aria-hidden="true"></span>
               <div class="here-solfilter__menu" role="menu" hidden>
                 <button type="button" class="here-solfilter__opt here-solfilter__opt--active" role="menuitemradio" aria-checked="true" data-sol="all">Show all products &amp; services</button>
                 <span class="here-solfilter__label" aria-hidden="true">Filter by:</span>
-                <button type="button" class="here-solfilter__opt" role="menuitemradio" aria-checked="false" data-sol="adas">ADAS Solutions</button>
-                <button type="button" class="here-solfilter__opt" role="menuitemradio" aria-checked="false" data-sol="navigation">Navigation Solutions</button>
-                <button type="button" class="here-solfilter__opt" role="menuitemradio" aria-checked="false" data-sol="fleet">Fleet &amp; Mobility Solutions</button>
+                <button type="button" class="here-solfilter__opt" role="menuitemradio" aria-checked="false" data-sol="adas">ADAS &amp; AD</button>
+                <button type="button" class="here-solfilter__opt" role="menuitemradio" aria-checked="false" data-sol="navigation">Explore &amp; Navigate</button>
+                <button type="button" class="here-solfilter__opt" role="menuitemradio" aria-checked="false" data-sol="fleet">Fleet, Mobility &amp; Transportation</button>
                 <button type="button" class="here-solfilter__opt" role="menuitemradio" aria-checked="false" data-sol="gis">GIS &amp; Location Intelligence</button>
               </div>
             </span>
@@ -1314,9 +1305,9 @@
           </div>
 
           <div class="here-resources__filters" role="group" aria-label="フィルター">
-            <span class="here-solfilter" data-here-solfilter data-here-solfilter-labels='{"all":"Show all products &amp; services","adas":"ADAS Solutions","navigation":"Navigation Solutions","fleet":"Fleet &amp; Mobility Solutions","gis":"GIS &amp; Location Intelligence"}'> <hds-button variant="secondary" size="small" data-here-solfilter-trigger aria-haspopup="true" aria-expanded="false">すべての製品とサービスを表示</hds-button> <span class="here-dd-chevron" aria-hidden="true"></span>
+            <span class="here-solfilter" data-here-solfilter data-here-solfilter-labels='{"all":"Show all products &amp; services","adas":"ADAS &amp; AD","navigation":"Explore &amp; Navigate","fleet":"Fleet, Mobility &amp; Transportation","gis":"GIS &amp; Location Intelligence"}'> <hds-button variant="secondary" size="small" data-here-solfilter-trigger aria-haspopup="true" aria-expanded="false">すべての製品とサービスを表示</hds-button> <span class="here-dd-chevron" aria-hidden="true"></span>
               <div class="here-solfilter__menu" role="menu" hidden>
-                <button type="button" class="here-solfilter__opt here-solfilter__opt--active" role="menuitemradio" aria-checked="true" data-sol="all">すべての製品とサービスを表示</button> <span class="here-solfilter__label" aria-hidden="true">フィルターで:</span><button type="button" class="here-solfilter__opt" role="menuitemradio" aria-checked="false" data-sol="adas">ADASソリューション</button> <button type="button" class="here-solfilter__opt" role="menuitemradio" aria-checked="false" data-sol="navigation">ナビゲーションソリューション</button> <button type="button" class="here-solfilter__opt" role="menuitemradio" aria-checked="false" data-sol="fleet">フリート＆モビリティソリューション</button> <button type="button" class="here-solfilter__opt" role="menuitemradio" aria-checked="false" data-sol="gis">GIS＆ロケーションインテリジェンス</button>
+                <button type="button" class="here-solfilter__opt here-solfilter__opt--active" role="menuitemradio" aria-checked="true" data-sol="all">すべての製品とサービスを表示</button> <span class="here-solfilter__label" aria-hidden="true">フィルターで:</span><button type="button" class="here-solfilter__opt" role="menuitemradio" aria-checked="false" data-sol="adas">ADAS＆AD</button> <button type="button" class="here-solfilter__opt" role="menuitemradio" aria-checked="false" data-sol="navigation">探索＆ナビゲーション</button> <button type="button" class="here-solfilter__opt" role="menuitemradio" aria-checked="false" data-sol="fleet">フリート、モビリティ＆輸送</button> <button type="button" class="here-solfilter__opt" role="menuitemradio" aria-checked="false" data-sol="gis">GIS＆ロケーションインテリジェンス</button>
               </div>
             </span> <hds-chip size="medium" selectable data-here-apis-chip>APIを表示</hds-chip> <hds-toggle aria-label="Show all descriptions" data-here-desc-toggle>すべての説明を表示</hds-toggle> <span class="here-filter-divider" aria-hidden="true"></span> <span class="here-sort" data-here-sort data-here-sort-labels='{"most":"Sort by: Most viewed","az":"Sort by: A - Z","za":"Sort by: Z - A"}'> <hds-button variant="subtle" size="small" data-here-sort-trigger aria-haspopup="true" aria-expanded="false">並べ替え:最も閲覧された</hds-button> <span class="here-dd-chevron" aria-hidden="true"></span>
               <div class="here-sort__menu" role="menu" hidden>
@@ -2086,22 +2077,23 @@
       if (window[TAG]) return;
       window[TAG] = true;
 
-      // Product→solution mapping goes here once finalized, keyed by solution id
-      // ("adas"|"navigation"|"fleet"|"gis") -> array of title-text names.
-      // Empty for now: filtering is a no-op until provided.
-      var SOLUTIONS = {};
+      // Solution portfolio -> product slugs (first segment of item href), per DOPTOOLS-2679.
+      var SOLUTIONS = {
+        adas: ["anonymizer", "automated-driving-zones", "behavioral-maneuvers", "ev-charge-points", "hd-live-map", "location-reasoning", "road-alerts", "safety-cameras", "scenextract"],
+        navigation: ["traffic-api", "anonymizer", "destination-weather", "ev-charge-points", "fuel-prices", "geocoding-and-search", "here-sdk", "location-reasoning", "map-attributes", "map-rendering", "parking", "positioning", "road-alerts", "routing-api", "safety-cameras", "transit", "what3words"],
+        fleet: ["anonymizer", "destination-weather", "ev-charge-points", "fuel-prices", "geocoding-and-search", "here-sdk", "location-reasoning", "map-attributes", "map-rendering", "maps-api-for-js", "positioning", "road-alerts", "routing-api", "safety-cameras", "tour-planning", "tracking", "traffic-api", "transit", "here-wego-pro"],
+        gis: ["anonymizer", "destination-weather", "ev-charge-points", "fuel-prices", "geocoding-and-search", "gis-data-suite", "here-sdk", "indoor-map", "location-reasoning", "map-attributes", "map-rendering", "phonetic-training-data", "positioning", "routing-api", "safety-cameras", "tour-planning", "traffic-analytics", "traffic-api", "transit"]
+      };
 
       function applyFilter(sol) {
         var hasMap = sol !== "all" && SOLUTIONS[sol] && SOLUTIONS[sol].length;
         document.querySelectorAll(".here-resources").forEach(function (section) {
           section.setAttribute("data-sol-filter", sol);
-          // Only filter items if we have a mapping for this solution; otherwise
-          // leave everything visible (UI-only until mapping is available).
           section.querySelectorAll(".here-res-list__item").forEach(function (item) {
             if (!hasMap) { item.removeAttribute("data-sol-hidden"); return; }
-            var t = item.querySelector(".here-res-list__title-text");
-            var name = t ? (t.textContent || "").trim() : "";
-            var show = SOLUTIONS[sol].indexOf(name) !== -1;
+            var a = item.querySelector("a[href]");
+            var slug = a ? (a.getAttribute("href") || "").split("/")[1] || "" : "";
+            var show = SOLUTIONS[sol].indexOf(slug) !== -1;
             if (show) item.removeAttribute("data-sol-hidden");
             else item.setAttribute("data-sol-hidden", "1");
           });
