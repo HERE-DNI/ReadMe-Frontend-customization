@@ -989,9 +989,20 @@ font-size: 14px !important;
   opacity: 1;
 }
 
-/* Solution filter — hide items not in the selected solution (set by JS once the product→solution mapping is available). */
-.here-glp .here-res-list__item[data-sol-hidden] {
-  display: none;
+/* Solution filter — same gray-out treatment as "Show APIs": items outside the selected solution are dimmed + non-interactive. */
+.here-glp .here-resources .here-res-list__item[data-sol-hidden] {
+  opacity: 0.35;
+  pointer-events: none;
+}
+.here-glp .here-resources[data-sol-filter]:not([data-sol-filter="all"]) .here-res-card__title,
+.here-glp .here-resources[data-sol-filter]:not([data-sol-filter="all"]) .here-res-card__intro,
+.here-glp .here-resources[data-sol-filter]:not([data-sol-filter="all"]) .here-res-card__icon {
+  opacity: 0.35;
+}
+.here-glp .here-resources[data-sol-filter]:not([data-sol-filter="all"]) .here-res-card--has-sol .here-res-card__title,
+.here-glp .here-resources[data-sol-filter]:not([data-sol-filter="all"]) .here-res-card--has-sol .here-res-card__intro,
+.here-glp .here-resources[data-sol-filter]:not([data-sol-filter="all"]) .here-res-card--has-sol .here-res-card__icon {
+  opacity: 1;
 }
 
 /* Extended variant (descriptions visible) needs extra bottom padding to

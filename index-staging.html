@@ -1903,7 +1903,10 @@
             chip.setAttribute("aria-pressed", on ? "true" : "false");
           });
         });
+        // Latest filter wins: turning APIs on resets the solution filter.
+        if (on && typeof window.__hereSolFilterReset === "function") window.__hereSolFilterReset();
       }
+      window.__hereApisChipOff = function () { setState(false); };
 
       function isOn() {
         var section = document.querySelector(".here-resources");
@@ -2078,7 +2081,10 @@
       };
 
       function applyFilter(sol) {
-        var hasMap = sol !== "all" && SOLUTIONS[sol] && SOLUTIONS[sol].length;
+        var hasMap = !!(sol !== "all" && SOLUTIONS[sol] && SOLUTIONS[sol].length);
+        if (!hasMap) sol = "all";
+        // Latest filter wins: picking a specific solution turns Show APIs off.
+        if (hasMap && typeof window.__hereApisChipOff === "function") window.__hereApisChipOff();
         document.querySelectorAll(".here-resources").forEach(function (section) {
           section.setAttribute("data-sol-filter", sol);
           section.querySelectorAll(".here-res-list__item").forEach(function (item) {
@@ -2088,6 +2094,10 @@
             var show = SOLUTIONS[sol].indexOf(slug) !== -1;
             if (show) item.removeAttribute("data-sol-hidden");
             else item.setAttribute("data-sol-hidden", "1");
+          });
+          section.querySelectorAll(".here-res-card").forEach(function (card) {
+            var hasMatch = hasMap && !!card.querySelector(".here-res-list__item:not([data-sol-hidden])");
+            card.classList.toggle("here-res-card--has-sol", hasMatch);
           });
         });
         // Sync every widget (EN + JA): label, active option, aria.
@@ -2103,6 +2113,8 @@
           });
         });
       }
+
+      window.__hereSolFilterReset = function () { applyFilter("all"); };
 
       function closeAll() {
         document.querySelectorAll("[data-here-solfilter] .here-solfilter__menu").forEach(function (m) {
