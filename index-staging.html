@@ -1949,30 +1949,30 @@
       if (window[TAG]) return;
       window[TAG] = true;
 
-      // Most-viewed order per category (from MostPopularRanking_Sorted.xlsx).
-      // Ranks are assigned by position; lower = more viewed = shown first.
+      // Most-viewed order by product slug (first href segment), per MostPopular-corrected.xlsx.
       var MOST_VIEWED = [
-        "Map Rendering", "Map Attributes API", "Introduction to Mapping Concepts",
-        "Map Feedback API", "Indoor Maps", "HERE Map Content", "HD Live Map",
-        "Optimized Client Map", "Maps XML", "Mapmaking", "Custom Attributes",
-        "Automated Driving Zones", "Map Object Model", "NDS.Live",
-        "Geocoding & Search", "HERE SDK", "Data API", "GIS Data Suite",
-        "Positioning", "Data SDK", "Fuel Prices API", "Traffic Analytics",
-        "Destination Weather", "Tracking API", "Parking",
-        "HERE-hosted what3words API", "Phonetic Training Data", "Road Alerts",
-        "Traffic API", "Tour Planning API", "EV Charge Points API", "Transit APIs",
-        "HERE WeGo Pro", "Safety Cameras API", "Real-Time Traffic",
-        "Behavioral Maneuvers", "Routing APIs", "Last Meter Guidance",
-        "Maps API for JavaScript", "Identity & Access Management", "Workspace",
-        "Style Editor", "Anonymizer", "Embedded Editor", "System Status API",
-        "SceneXtract", "Cost Management", "Location Reasoning"
+        "maps-api-for-js", "identity-and-access-management", "workspace", "style-editor",
+        "anonymizer", "embedded-editor", "system-status", "scenextract",
+        "geocoding-and-search", "here-sdk", "data-api", "gis-data-suite", "positioning",
+        "data-sdk", "fuel-prices", "traffic-analytics", "destination-weather", "tracking",
+        "parking", "what3words", "phonetic-training-data",
+        "map-rendering", "map-attributes", "mapping-concepts", "map-feedback", "indoor-map",
+        "map-content", "hd-live-map", "optimized-client-map", "maps-xml", "mapmaking",
+        "custom-attributes",
+        "routing-api", "traffic-api", "tour-planning", "transit", "here-wego-pro",
+        "safety-cameras", "real-time-traffic", "behavioral-maneuvers"
       ];
       var RANK = {};
-      MOST_VIEWED.forEach(function (name, i) { RANK[name] = i; });
+      MOST_VIEWED.forEach(function (slug, i) { RANK[slug] = i; });
 
       function titleOf(li) {
         var t = li.querySelector(".here-res-list__title-text");
         return t ? (t.textContent || "").trim() : "";
+      }
+
+      function slugOf(li) {
+        var a = li.querySelector("a[href]");
+        return a ? (a.getAttribute("href") || "").split("/")[1] || "" : "";
       }
 
       function sortList(list, mode) {
@@ -1982,8 +1982,9 @@
           if (mode === "az") return na.localeCompare(nb);
           if (mode === "za") return nb.localeCompare(na);
           // most viewed: known rank first (in order), unknown items keep after
-          var ra = (na in RANK) ? RANK[na] : Number.MAX_SAFE_INTEGER;
-          var rb = (nb in RANK) ? RANK[nb] : Number.MAX_SAFE_INTEGER;
+          var sa = slugOf(a), sb = slugOf(b);
+          var ra = (sa in RANK) ? RANK[sa] : Number.MAX_SAFE_INTEGER;
+          var rb = (sb in RANK) ? RANK[sb] : Number.MAX_SAFE_INTEGER;
           return ra - rb;
         });
         items.forEach(function (li) { list.appendChild(li); });
