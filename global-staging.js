@@ -734,6 +734,9 @@ function stampMarkdownScopes() {
   }
 
   function getCurrentLocale() {
+    // GLP test page toggles language in place, so its override wins over the URL.
+    var glp = document.querySelector(".here-glp[data-here-lang-override]");
+    if (glp) return glp.getAttribute("data-here-lang-override") === "ja" ? "ja" : DEFAULT_LOCALE;
     return detectLocaleFromPath(window.location.pathname);
   }
 
@@ -1615,6 +1618,11 @@ function stampMarkdownScopes() {
   }
 
   window.__here_nav_bus_v1.onNav(function () {
+    tryInject();
+  });
+
+  document.addEventListener("here:langchange", function () {
+    closeMenu();
     tryInject();
   });
 })();
@@ -4263,7 +4271,17 @@ function stampMarkdownScopes() {
   var LABELS = { en: "Contact us", ja: "お問い合わせ" };
 
   function currentLang() {
+    // GLP test page toggles language in place, so its override wins over the URL.
+    var glp = document.querySelector(".here-glp[data-here-lang-override]");
+    if (glp) return glp.getAttribute("data-here-lang-override") === "ja" ? "ja" : "en";
     return /\/ja(\/|$|\?)/.test(window.location.href) ? "ja" : "en";
+  }
+
+  function syncLang() {
+    var btn = document.getElementById(LINK_ID);
+    if (!btn) return;
+    var label = LABELS[currentLang()] || LABELS.en;
+    if (btn.textContent !== label) btn.textContent = label;
   }
 
   function currentTheme() {
@@ -4328,12 +4346,12 @@ function stampMarkdownScopes() {
     var existing = document.getElementById(LINK_ID);
     if (existing && existing.parentNode === headerRight) {
       syncTheme();
+      syncLang();
       return;
     }
     if (existing) existing.remove();
 
     var lang = currentLang();
-    var url = URLS[lang] || URLS.en;
 
     var btn = document.createElement("hds-button");
     btn.id = LINK_ID;
@@ -4344,7 +4362,7 @@ function stampMarkdownScopes() {
     btn.setAttribute("size", "small");
     btn.textContent = LABELS[lang] || LABELS.en;
     btn.addEventListener("click", function () {
-      window.open(url, "_blank", "noopener");
+      window.open(URLS[currentLang()] || URLS.en, "_blank", "noopener");
     });
 
     // Sit immediately to the RIGHT of Ask AI in DOM order.
@@ -4399,6 +4417,8 @@ function stampMarkdownScopes() {
   if (window.__here_nav_bus_v1 && window.__here_nav_bus_v1.onNav) {
     window.__here_nav_bus_v1.onNav(run);
   }
+
+  document.addEventListener("here:langchange", syncLang);
 
   // Follow dark mode: watch .here-glp[data-theme] on landing page,
   // <html data-color-mode> on interior doc pages, and OS-level

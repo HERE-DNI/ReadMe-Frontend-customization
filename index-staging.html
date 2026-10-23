@@ -1676,6 +1676,11 @@
       // "/ja" equivalent to navigate to — so we toggle the language
       // in place instead, without leaving the page.
       var langOverride = null;
+      var CONTACT_LABELS = { en: "Contact us", ja: "お問い合わせ" };
+      var CONTACT_URLS = {
+        en: "https://www.here.com/contact?intref=dev_docum",
+        ja: "https://www.here.com/jp/contact"
+      };
 
       function isProductionRoute() {
         var path = (window.location.pathname || "/").replace(/\/+$/, "") || "/";
@@ -1704,7 +1709,28 @@
       function enforce() {
         var correctLang = getCurrentLang();
         var glp = document.querySelector(".here-glp");
-        if (glp) glp.setAttribute("data-active-lang", correctLang);
+        if (glp) {
+          glp.setAttribute("data-active-lang", correctLang);
+          // Lets the global header/footer follow an in-place toggle that the URL does not reflect.
+          if (langOverride && glp.getAttribute("data-here-lang-override") !== langOverride) {
+            glp.setAttribute("data-here-lang-override", langOverride);
+            try { document.dispatchEvent(new CustomEvent("here:langchange", { detail: { lang: langOverride } })); } catch (e) {}
+          }
+        }
+
+        // Global footer only reads the URL, so mirror the GLP language onto it here.
+        var footer = document.querySelector(".here-footer");
+        if (footer && footer.getAttribute("data-active-lang") !== correctLang) {
+          footer.setAttribute("data-active-lang", correctLang);
+        }
+        document.querySelectorAll(".here-footer__lang button[data-lang]").forEach(function(b) {
+          b.setAttribute("aria-pressed", b.getAttribute("data-lang") === correctLang ? "true" : "false");
+        });
+
+        // Header Contact us pill comes from global.js, which only reads the URL.
+        var contactBtn = document.getElementById("here-contact-us-btn");
+        var contactLabel = CONTACT_LABELS[correctLang] || CONTACT_LABELS.en;
+        if (contactBtn && contactBtn.textContent !== contactLabel) contactBtn.textContent = contactLabel;
 
         document.querySelectorAll("hds-switcher[data-here-lang-toggle] hds-switcher-tab[data-lang]").forEach(function(tab) {
           var on = tab.getAttribute("data-lang") === correctLang;
@@ -1772,6 +1798,16 @@
           navigate(lang);
         }, true);
       }
+
+      // global.js binds the Contact us URL at inject time from the URL, so override it while the GLP is shown.
+      document.addEventListener("click", function(e) {
+        var c = e.target && e.target.closest ? e.target.closest("#here-contact-us-btn") : null;
+        if (!c || !document.querySelector(".here-glp")) return;
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        window.open(CONTACT_URLS[getCurrentLang()] || CONTACT_URLS.en, "_blank", "noopener");
+      }, true);
 
       enforce();
       bindClicks();
