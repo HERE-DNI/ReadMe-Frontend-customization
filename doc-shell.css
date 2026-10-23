@@ -56,6 +56,20 @@
   -webkit-font-smoothing: antialiased;
 }
 
+/* ReadMe Custom Page: break the mounted page out of ReadMe's narrow content column to full viewport width. */
+#here-doc-mount.hgs {
+  width: 100vw;
+  max-width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+}
+
+/* 100vw includes the scrollbar, so clip the few pixels of horizontal overflow it causes (clip keeps sticky working). */
+html:has(#here-doc-mount),
+body:has(#here-doc-mount) {
+  overflow-x: clip;
+}
+
 .hgs *,
 .hgs *::before,
 .hgs *::after {
