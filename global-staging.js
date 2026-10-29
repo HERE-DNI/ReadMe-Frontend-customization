@@ -846,19 +846,19 @@ function stampMarkdownScopes() {
             en: "Introduction to Mapping Concepts",
             ja: "Introduction to Mapping Concepts",
           },
-          href: { en: "/mapping-concepts/docs", ja: "/mapping-concepts/docs" },
+          href: { en: "/intro-to-mapping-concepts", ja: "/intro-to-mapping-concepts" },
           showInJa: false,
         },
         {
-          text: { en: "Mapmaking", ja: "Mapmaking" },
-          href: { en: "/mapmaking/docs", ja: "/mapmaking/docs" },
+          text: { en: "Custom Map Builder", ja: "カスタムマップビルダー" },
+          href: { en: "/custom-map-builder", ja: "/custom-map-builder" },
           showInJa: false,
         },
         {
           text: { en: "Map Object Model", ja: "Map Object Model" },
           href: {
-            en: "/map-object-model/docs",
-            ja: "/map-object-model/docs",
+            en: "/platform-mom",
+            ja: "/platform-mom",
           },
           showInJa: false,
         },
@@ -872,7 +872,7 @@ function stampMarkdownScopes() {
         },
         {
           text: { en: "NDS.Live", ja: "NDS.Live" },
-          href: { en: "/nds-live/docs", ja: "/nds-live/docs" },
+          href: { en: "/ndslive", ja: "/ndslive" },
           showInJa: false,
         },
         {
@@ -987,8 +987,8 @@ function stampMarkdownScopes() {
         {
           text: { en: "EV Charge Points API", ja: "EV Charge Points API" },
           href: {
-            en: "/ev-charge-points/docs",
-            ja: "/ev-charge-points/docs",
+            en: "/ev-products",
+            ja: "/ev-products",
           },
           showInJa: false,
         },
@@ -1003,16 +1003,16 @@ function stampMarkdownScopes() {
         {
           text: { en: "HERE WeGo Pro", ja: "HERE WeGo Pro" },
           href: {
-            en: "/here-wego-pro/docs",
-            ja: "/here-wego-pro/docs",
+            en: "/wego-pro",
+            ja: "/wego-pro",
           },
           showInJa: false,
         },
         {
           text: { en: "Routing APIs", ja: "Routing APIs" },
           href: {
-            en: "/routing-api/docs",
-            ja: "/routing/ja/v1.0/docs/routing-intro",
+            en: "/routing",
+            ja: "/routing",
           },
           showInJa: true,
         },
@@ -1106,7 +1106,7 @@ function stampMarkdownScopes() {
           showInJa: false,
         },
         {
-          text: { en: "System Status API", ja: "System Status API" },
+          text: { en: "Platform Status API", ja: "プラットフォームステータスAPI" },
           href: { en: "/system-status/docs", ja: "/system-status/docs" },
           showInJa: false,
         },
