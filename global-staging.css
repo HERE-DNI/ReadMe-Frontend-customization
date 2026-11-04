@@ -443,10 +443,10 @@ font-size: 14px !important;
 /* Hero section container. Bg pattern is a transparent SVG layered over the solid color. */
 .here-glp .here-hero {
   background-color: #ECF7FC !important;
-  background-image: url('https://here-dni.github.io/ReadMe-Frontend-customization/assets/images/hero-bg/hero-truepath-light.svg') !important;
+  background-image: url('https://here-dni.github.io/ReadMe-Frontend-customization/assets/images/hero-bg/hero-truepath-v2-light.svg') !important;
   background-repeat: no-repeat !important;
-  background-position: right center !important;
-  background-size: auto 100% !important;
+  background-position: right bottom !important;
+  background-size: cover !important;
   padding: 80px 0 !important;
 }
 
@@ -571,10 +571,10 @@ font-size: 14px !important;
 /* Dark mode — hero surface + text. Bg pattern is a transparent SVG (correct export, no baked-in fill) layered over the solid color. */
 .here-glp[data-theme*="dark"] .here-hero {
   background-color: #153947 !important;
-  background-image: url('https://here-dni.github.io/ReadMe-Frontend-customization/assets/images/hero-bg/hero-truepath-dark.svg') !important;
+  background-image: url('https://here-dni.github.io/ReadMe-Frontend-customization/assets/images/hero-bg/hero-truepath-v2-dark.svg') !important;
   background-repeat: no-repeat !important;
-  background-position: right center !important;
-  background-size: auto 100% !important;
+  background-position: right bottom !important;
+  background-size: cover !important;
 }
 
 .here-glp[data-theme*="dark"] .here-hero__subtitle,
@@ -592,10 +592,10 @@ font-size: 14px !important;
 /* Pre-paint guard mirror (no-flash) — .here-hero. Mirrors the post-paint block above; keep both in sync whenever this section changes. */
 [data-color-mode="dark"] .here-glp .here-hero {
   background-color: #153947 !important;
-  background-image: url('https://here-dni.github.io/ReadMe-Frontend-customization/assets/images/hero-bg/hero-truepath-dark.svg') !important;
+  background-image: url('https://here-dni.github.io/ReadMe-Frontend-customization/assets/images/hero-bg/hero-truepath-v2-dark.svg') !important;
   background-repeat: no-repeat !important;
-  background-position: right center !important;
-  background-size: auto 100% !important;
+  background-position: right bottom !important;
+  background-size: cover !important;
 }
 [data-color-mode="dark"] .here-glp .here-hero__subtitle,
 [data-color-mode="dark"] .here-glp .here-popular-searches__label {
@@ -613,10 +613,10 @@ font-size: 14px !important;
 @media (prefers-color-scheme: dark) {
   [data-color-mode="system"] .here-glp .here-hero {
     background-color: #153947 !important;
-    background-image: url('https://here-dni.github.io/ReadMe-Frontend-customization/assets/images/hero-bg/hero-truepath-dark.svg') !important;
+    background-image: url('https://here-dni.github.io/ReadMe-Frontend-customization/assets/images/hero-bg/hero-truepath-v2-dark.svg') !important;
     background-repeat: no-repeat !important;
-    background-position: right center !important;
-    background-size: auto 100% !important;
+    background-position: right bottom !important;
+    background-size: cover !important;
   }
   [data-color-mode="system"] .here-glp .here-hero__subtitle,
   [data-color-mode="system"] .here-glp .here-popular-searches__label {
@@ -700,7 +700,7 @@ font-size: 14px !important;
   line-height: 24px;
   letter-spacing: -0.0125em;
   color: #2C596A;
-  margin: 0 0 24px;
+  margin: 0 0 16px;
 }
 
 /* --- Filter bar ------------------------------------------------------
@@ -1374,21 +1374,18 @@ font-size: 14px !important;
   letter-spacing: -0.0278em !important;
   font-weight: 600 !important;
   color: #051920 !important;
-  /* Normalize heading→content gap to 24px, matching the __inner gap used by
-     Explore / Get started / Policies sections (Figma feedback). */
-  margin: 0 0 24px !important;
+  /* Figma header alignments: 4px heading→subtitle, subtitle→cards set on .here-wn-sub. */
+  margin: 0 0 4px !important;
 }
 
-/* Popular videos header row — title on the left, "Go to more videos"
-   link aligned to the right (Figma feedback). The 24px heading→content
-   gap now lives on this row so the link baselines with the title. */
+/* Popular videos header row: title left, "Go to more videos" bottom-aligned right, 16px to content (Figma). */
 .here-glp .here-videos__head {
   display: flex;
-  align-items: baseline;
+  align-items: flex-end;
   justify-content: space-between;
   gap: 16px;
   flex-wrap: wrap;
-  margin: 0 0 24px;
+  margin: 0 0 16px;
 }
 .here-glp .here-videos__head h2.here-section-title {
   margin: 0 !important;
@@ -1816,8 +1813,8 @@ button.Button.Button_slate_text.Button_md.NavItem2xSfFaVqfRjy.Button.Button_slat
   padding: 8px 16px !important;
   height: auto !important;
   min-height: 2rem !important;
-  font-size: 13px !important;
-  font-weight: 700 !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
   display: inline-flex !important;
   align-items: center !important;
   gap: 6px !important;

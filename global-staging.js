@@ -4316,16 +4316,35 @@ function stampMarkdownScopes() {
     // of load order. Applies at the html-level so it works on landing
     // page (nested inside .here-glp on some layouts) and doc pages alike.
     s.textContent =
-      "html hds-button#here-contact-us-btn.here-contact-us[variant='secondary'] {" +
+      "html button#here-contact-us-btn.here-contact-us {" +
       "  display: inline-flex !important;" +
+      "  align-items: center !important;" +
+      "  justify-content: center !important;" +
       "  align-self: center !important;" +
-      "  vertical-align: middle !important;" +
-      "  background: transparent !important;" +
-      "  background-color: transparent !important;" +
-      "  border: 0 !important;" +
+      "  box-sizing: border-box !important;" +
+      "  height: 32px !important;" +
+      "  min-height: 32px !important;" +
+      "  padding: 8px 12px !important;" +
+      "  margin: 0 !important;" +
+      "  background: rgba(0, 153, 204, 0.04) !important;" +
+      "  border: 1px solid #3F7183 !important;" +
+      "  border-radius: 999px !important;" +
       "  box-shadow: none !important;" +
+      "  color: #051920 !important;" +
+      "  font-family: 'FiraGO', 'Fira GO', 'Fira Sans', system-ui, sans-serif !important;" +
+      "  font-size: 14px !important;" +
+      "  font-weight: 500 !important;" +
+      "  line-height: 16px !important;" +
+      "  letter-spacing: -0.0286em !important;" +
+      "  white-space: nowrap !important;" +
       "  text-decoration: none !important;" +
-      "}";
+      "  cursor: pointer !important;" +
+      "}" +
+      "html button#here-contact-us-btn.here-contact-us:hover { background: rgba(0, 153, 204, 0.08) !important; }" +
+      "html button#here-contact-us-btn.here-contact-us:active { background: rgba(0, 153, 204, 0.13) !important; }" +
+      "html button#here-contact-us-btn.here-contact-us:focus-visible { outline: 2px solid #0071a4 !important; outline-offset: 2px !important; }" +
+      "html button#here-contact-us-btn.here-contact-us[data-theme*='dark'] { background: rgba(232, 237, 240, 0.05) !important; border-color: rgba(232, 237, 240, 0.25) !important; color: #ECF7FC !important; }" +
+      "html button#here-contact-us-btn.here-contact-us[data-theme*='dark']:hover { background: rgba(232, 237, 240, 0.10) !important; }";
     document.head.appendChild(s);
   }
 
@@ -4353,13 +4372,11 @@ function stampMarkdownScopes() {
 
     var lang = currentLang();
 
-    var btn = document.createElement("hds-button");
+    var btn = document.createElement("button");
+    btn.type = "button";
     btn.id = LINK_ID;
     btn.className = "here-contact-us";
-    btn.setAttribute("data-styles", "hds");
     btn.setAttribute("data-theme", currentTheme());
-    btn.setAttribute("variant", "secondary");
-    btn.setAttribute("size", "small");
     btn.textContent = LABELS[lang] || LABELS.en;
     btn.addEventListener("click", function () {
       window.open(URLS[currentLang()] || URLS.en, "_blank", "noopener");
