@@ -443,7 +443,7 @@ font-size: 14px !important;
 /* Hero section container. Bg pattern is a transparent SVG layered over the solid color. */
 .here-glp .here-hero {
   background-color: #ECF7FC !important;
-  background-image: url('https://here-dni.github.io/ReadMe-Frontend-customization/assets/images/hero-bg/hero-truepath-v2-light.svg') !important;
+  background-image: url('https://here-dni.github.io/ReadMe-Frontend-customization/assets/images/hero-bg/hero-truepath-light.svg') !important;
   background-repeat: no-repeat !important;
   background-position: right bottom !important;
   background-size: cover !important;
@@ -571,7 +571,7 @@ font-size: 14px !important;
 /* Dark mode — hero surface + text. Bg pattern is a transparent SVG (correct export, no baked-in fill) layered over the solid color. */
 .here-glp[data-theme*="dark"] .here-hero {
   background-color: #153947 !important;
-  background-image: url('https://here-dni.github.io/ReadMe-Frontend-customization/assets/images/hero-bg/hero-truepath-v2-dark.svg') !important;
+  background-image: url('https://here-dni.github.io/ReadMe-Frontend-customization/assets/images/hero-bg/hero-truepath-dark.svg') !important;
   background-repeat: no-repeat !important;
   background-position: right bottom !important;
   background-size: cover !important;
@@ -592,7 +592,7 @@ font-size: 14px !important;
 /* Pre-paint guard mirror (no-flash) — .here-hero. Mirrors the post-paint block above; keep both in sync whenever this section changes. */
 [data-color-mode="dark"] .here-glp .here-hero {
   background-color: #153947 !important;
-  background-image: url('https://here-dni.github.io/ReadMe-Frontend-customization/assets/images/hero-bg/hero-truepath-v2-dark.svg') !important;
+  background-image: url('https://here-dni.github.io/ReadMe-Frontend-customization/assets/images/hero-bg/hero-truepath-dark.svg') !important;
   background-repeat: no-repeat !important;
   background-position: right bottom !important;
   background-size: cover !important;
@@ -613,7 +613,7 @@ font-size: 14px !important;
 @media (prefers-color-scheme: dark) {
   [data-color-mode="system"] .here-glp .here-hero {
     background-color: #153947 !important;
-    background-image: url('https://here-dni.github.io/ReadMe-Frontend-customization/assets/images/hero-bg/hero-truepath-v2-dark.svg') !important;
+    background-image: url('https://here-dni.github.io/ReadMe-Frontend-customization/assets/images/hero-bg/hero-truepath-dark.svg') !important;
     background-repeat: no-repeat !important;
     background-position: right bottom !important;
     background-size: cover !important;
