@@ -846,7 +846,7 @@
             <span class="here-popular-searches__label">Popular searches:</span>
             <div class="here-popular-searches__links">
               <a class="hds-button hds-button--variant-secondary hds-button--size-extra-small" href="/geocoding-and-search/docs">Geocoding and search</a>
-              <a class="hds-button hds-button--variant-secondary hds-button--size-extra-small" href="/routing-api/docs">HERE Routing API v8</a>
+              <a class="hds-button hds-button--variant-secondary hds-button--size-extra-small" data-here-skip-access-guard href="/routing/docs/routing-v8-intro">HERE Routing API v8</a>
               <a class="hds-button hds-button--variant-secondary hds-button--size-extra-small" href="/maps-api-for-js/docs">Maps API for JavaScript</a>
               <a class="hds-button hds-button--variant-secondary hds-button--size-extra-small" href="/here-sdk/docs">HERE SDK for Android</a>
             </div>
@@ -1279,7 +1279,7 @@
           <div class="here-popular-searches" aria-label="人気の検索">
             <span class="here-popular-searches__label">人気の検索:</span>
             <div class="here-popular-searches__links">
-              <a class="hds-button hds-button--variant-secondary hds-button--size-extra-small" href="/geocoding-and-search/docs">ジオコーディングと検索</a> <a class="hds-button hds-button--variant-secondary hds-button--size-extra-small" href="/routing-api/docs">HERE Routing API v8</a> <a class="hds-button hds-button--variant-secondary hds-button--size-extra-small" href="/maps-api-for-js/docs">Maps API for JavaScript</a> <a class="hds-button hds-button--variant-secondary hds-button--size-extra-small" href="/here-sdk/docs">HERE SDK for Android</a>
+              <a class="hds-button hds-button--variant-secondary hds-button--size-extra-small" href="/geocoding-and-search/docs">ジオコーディングと検索</a> <a class="hds-button hds-button--variant-secondary hds-button--size-extra-small" data-here-skip-access-guard href="/routing/docs/routing-v8-intro">HERE Routing API v8</a> <a class="hds-button hds-button--variant-secondary hds-button--size-extra-small" href="/maps-api-for-js/docs">Maps API for JavaScript</a> <a class="hds-button hds-button--variant-secondary hds-button--size-extra-small" href="/here-sdk/docs">HERE SDK for Android</a>
             </div>
           </div>
         </div>
@@ -1985,21 +1985,12 @@
       if (window[TAG]) return;
       window[TAG] = true;
 
-      // Most-viewed order by product slug (first href segment), per MostPopular-corrected.xlsx.
-      var MOST_VIEWED = [
-        "maps-api-for-js", "identity-and-access-management", "workspace", "style-editor",
-        "anonymizer", "embedded-editor", "system-status", "scenextract",
-        "geocoding-and-search", "here-sdk", "data-api", "gis-data-suite", "positioning",
-        "data-sdk", "fuel-prices", "traffic-analytics", "destination-weather", "tracking",
-        "parking", "what3words", "phonetic-training-data",
-        "map-rendering", "map-attributes", "intro-to-mapping-concepts", "map-feedback", "indoor-map",
-        "map-content", "hd-live-map", "optimized-client-map", "maps-xml", "custom-map-builder",
-        "custom-attributes",
-        "routing", "traffic-api", "tour-planning", "transit", "wego-pro",
-        "safety-cameras", "real-time-traffic", "behavioral-maneuvers"
-      ];
-      var RANK = {};
-      MOST_VIEWED.forEach(function (slug, i) { RANK[slug] = i; });
+      // Most-viewed order comes from window.HERE_MOST_VIEWED_ORDER, defined in global(-staging).js and shared with the mega menu.
+      function getRank() {
+        var rank = {};
+        (window.HERE_MOST_VIEWED_ORDER || []).forEach(function (slug, i) { rank[slug] = i; });
+        return rank;
+      }
 
       function titleOf(li) {
         var t = li.querySelector(".here-res-list__title-text");
@@ -2013,6 +2004,7 @@
 
       function sortList(list, mode) {
         var items = Array.prototype.slice.call(list.querySelectorAll(".here-res-list__item"));
+        var RANK = getRank();
         items.sort(function (a, b) {
           var na = titleOf(a), nb = titleOf(b);
           if (mode === "az") return na.localeCompare(nb);
@@ -2093,6 +2085,16 @@
 
       bind();
       applySort("most"); // default order on load
+      if (!window.HERE_MOST_VIEWED_ORDER) {
+        // Shared ranking not loaded yet; retry for up to 5s unless the user already picked a sort.
+        var tries = 0;
+        var retry = setInterval(function () {
+          var w = document.querySelector("[data-here-sort]");
+          var picked = w && w.getAttribute("data-here-sort-mode") !== "most";
+          if (window.HERE_MOST_VIEWED_ORDER && !picked) applySort("most");
+          if (window.HERE_MOST_VIEWED_ORDER || picked || ++tries > 50) clearInterval(retry);
+        }, 100);
+      }
       try {
         new MutationObserver(function () { bind(); }).observe(document.documentElement, { childList: true, subtree: true });
       } catch (e) {}

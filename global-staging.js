@@ -689,6 +689,23 @@ function stampMarkdownScopes() {
 
 // Hide ReadMe's native dropdown immediately to prevent flash before injection.
 (function () {
+  // Single source of truth for "Most viewed" order; used by the mega menu and the GLP resources sort.
+  if (window.HERE_MOST_VIEWED_ORDER) return;
+  window.HERE_MOST_VIEWED_ORDER = [
+    "maps-api-for-js", "identity-and-access-management", "workspace", "style-editor",
+    "anonymizer", "embedded-editor", "system-status", "scenextract",
+    "geocoding-and-search", "here-sdk", "data-api", "gis-data-suite", "positioning",
+    "data-sdk", "fuel-prices", "traffic-analytics", "destination-weather", "tracking",
+    "parking", "what3words", "phonetic-training-data",
+    "map-rendering", "map-attributes", "intro-to-mapping-concepts", "map-feedback", "indoor-map",
+    "map-content", "hd-live-map", "optimized-client-map", "maps-xml", "custom-map-builder",
+    "custom-attributes",
+    "routing", "traffic-api", "tour-planning", "transit", "wego-pro",
+    "safety-cameras", "real-time-traffic", "behavioral-maneuvers"
+  ];
+})();
+
+(function () {
   var STYLE_ID = "here-mm-boot-hide";
   if (document.getElementById(STYLE_ID)) return;
 
@@ -758,6 +775,24 @@ function stampMarkdownScopes() {
     return true;
   }
 
+  function slugOfItem(item) {
+    var href = resolveLocalizedValue(item.href, DEFAULT_LOCALE);
+    return href.split("/")[1] || "";
+  }
+
+  function sortItemsByMostViewed(items) {
+    var order = window.HERE_MOST_VIEWED_ORDER || [];
+    function rankOf(item) {
+      var i = order.indexOf(slugOfItem(item));
+      return i === -1 ? Number.MAX_SAFE_INTEGER : i;
+    }
+    // Stable: unranked items keep their authored order after ranked ones, same as the GLP sort.
+    return items
+      .map(function (item, idx) { return { item: item, idx: idx, rank: rankOf(item) }; })
+      .sort(function (a, b) { return a.rank - b.rank || a.idx - b.idx; })
+      .map(function (o) { return o.item; });
+  }
+
   function getVisibleColumnsForLocale(locale) {
     var visibleColumns = [];
 
@@ -765,6 +800,8 @@ function stampMarkdownScopes() {
       var visibleItems = col.items.filter(function (item) {
         return shouldShowItemInLocale(item, locale);
       });
+
+      if (col.sortByMostViewed) visibleItems = sortItemsByMostViewed(visibleItems);
 
       if (visibleItems.length) {
         visibleColumns.push({
@@ -788,6 +825,7 @@ function stampMarkdownScopes() {
   var COLUMNS = [
     {
       label: { en: "Maps", ja: "地図" },
+      sortByMostViewed: true,
       items: [
         {
           text: { en: "Map Rendering", ja: "Map Rendering" },
@@ -887,6 +925,7 @@ function stampMarkdownScopes() {
     },
     {
       label: { en: "Location data", ja: "位置データ" },
+      sortByMostViewed: true,
       items: [
         {
           text: { en: "Geocoding & Search", ja: "Geocoding & Search" },
@@ -983,6 +1022,7 @@ function stampMarkdownScopes() {
     },
     {
       label: { en: "Navigation", ja: "ナビゲーション" },
+      sortByMostViewed: true,
       items: [
         {
           text: { en: "EV Charge Points API", ja: "EV Charge Points API" },
@@ -1062,6 +1102,7 @@ function stampMarkdownScopes() {
     },
     {
       label: { en: "Development tools", ja: "開発ツール" },
+      sortByMostViewed: true,
       items: [
         {
           text: {

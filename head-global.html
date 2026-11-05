@@ -305,6 +305,7 @@
     function (e) {
       const link = e.target.closest('a[href]');
       if (!link) return;
+      if (link.hasAttribute('data-here-skip-access-guard')) return;
 
       const url = new URL(link.href, window.location.origin);
       if (url.origin !== window.location.origin) return;
