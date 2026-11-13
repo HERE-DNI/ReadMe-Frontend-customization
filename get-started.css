@@ -104,6 +104,62 @@
   margin-left: -12px;
 }
 
+/* Numbered instructions inside a step keep the HDS list markers and use body copy type. */
+.hgs-step__list {
+  margin: var(--hds-spacing-2, 8px) 0 0;
+  color: var(--hds-foreground-secondary);
+  font-family: var(--hgs-font-regular);
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.0125em;
+}
+
+.hgs-step__list strong,
+.hgs-prose strong {
+  color: var(--hds-foreground-primary);
+  font-family: var(--hgs-font-medium);
+  font-weight: 500;
+}
+
+.hgs-step__list code,
+.hgs-prose code {
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: var(--hds-background-object);
+  color: var(--hds-foreground-primary);
+  font-family: var(--hgs-font-mono);
+  font-size: 14px;
+}
+
+/* Animated walkthrough below the introduction copy. */
+.hgs-figure {
+  margin: var(--hds-spacing-6, 24px) 0 0;
+  overflow: hidden;
+  border: 1px solid var(--hds-foreground-divider);
+  border-radius: 8px;
+}
+
+.hgs-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* HDS gives every ul li a 7px 0 1px padding at (0,2,2), which beats the card's own padding. */
+[data-styles="hds"] .hgs-cards > li.hgs-card {
+  padding: var(--hds-spacing-4, 16px);
+}
+
+.hgs-card__icon {
+  display: inline-flex;
+  color: var(--hds-foreground-primary);
+  --hds-icon-color: var(--hds-foreground-primary);
+}
+
+.hgs-card__action hds-button {
+  margin-left: -12px;
+}
+
 /* ==========================================================================
    VIDEO LIBRARY
    ========================================================================== */

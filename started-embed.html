@@ -1,0 +1,278 @@
+<HTMLBlock>{`
+<!-- Paste this whole file into the ReadMe custom page (MDX). Inside the block use only HTML comments, and no backticks or dollar-brace pairs. -->
+
+<!-- Shared shell CSS, same on every page. -->
+<link rel="stylesheet" href="https://here-dni.github.io/ReadMe-Frontend-customization/doc-shell.css" />
+<!-- Page CSS: get-started.css for the steps, use-case.css for the code panels and cards. -->
+<link rel="stylesheet" href="https://here-dni.github.io/ReadMe-Frontend-customization/get-started.css" />
+<link rel="stylesheet" href="https://here-dni.github.io/ReadMe-Frontend-customization/use-case.css" />
+
+<!-- Wrapper: keep the id and classes, they drive the full-width layout and the HDS theme. -->
+<div id="here-doc-mount" class="hgs" data-styles="hds" data-theme="hds-web-product-light-theme">
+  <!-- Hero -->
+  <section class="hgs-hero" aria-labelledby="hgs-hero-title">
+    <div class="hgs-hero__inner">
+      <hds-button class="hgs-hero__back" variant="subtle" size="small" icon="arrow-left" icon-category="core-ui" data-hgs-href="/">Back to documentation</hds-button>
+
+      <div class="hgs-hero__flags">
+        <hds-flag class="hgs-hero__flag" variant="custom" size="medium">Get started</hds-flag>
+      </div>
+
+      <h1 class="hgs-hero__title" id="hgs-hero-title">Send your first HERE API request</h1>
+
+      <p class="hgs-hero__intro">
+        Create a HERE account, generate an API key, and use it to send your
+        first HERE API request.
+      </p>
+
+      <div class="hgs-hero__meta">
+        <span class="hgs-meta-item">
+          <hds-icon name="time" category="core-ui" icon-style="outline" size="24px"></hds-icon>
+          <span class="hgs-meta-item__text">3 minute read</span>
+        </span>
+
+        <span class="hgs-meta-divider" role="separator" aria-hidden="true"></span>
+
+        <span class="hgs-meta-item">
+          <span class="hgs-meta-item__text">
+            Last updated:
+            <time datetime="2026-11-12">Nov 12, 2026</time>
+          </span>
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Body: content column and side navigation -->
+  <div class="hgs-body">
+    <div class="hgs-grid">
+      <div class="hgs-content">
+        <!-- Introduction -->
+        <section class="hgs-section" id="introduction">
+          <header class="hgs-section__head">
+            <h2 class="hgs-section__title hgs-section__title--lead">Introduction</h2>
+            <p class="hgs-section__kicker">Overview</p>
+          </header>
+
+          <p class="hgs-prose">
+            HERE gives you maps, location data, and developer tools to build
+            location-based experiences. This page provides a direct path from a
+            blank editor to a working API request.
+          </p>
+
+          <figure class="hgs-figure">
+            <img src="https://files.readme.io/970a9f9c90d1da54bd6f2dd807064b19ac0f56a0a7c822e020f42eb1b72d3ec2-output.gif" alt="Walkthrough of creating a HERE project, generating an API key, and sending a request" loading="lazy" />
+          </figure>
+        </section>
+
+        <!-- Quick start: copy one li.hgs-step to add a step, and give the last one the hgs-step--last class -->
+        <section class="hgs-section" id="quick-start">
+          <header class="hgs-section__head">
+            <h2 class="hgs-section__title">Quick start</h2>
+            <p class="hgs-section__kicker">In four steps</p>
+          </header>
+
+          <ol class="hgs-steps hgs-plain-list">
+            <!-- Step 1 -->
+            <li class="hgs-step" id="sign-up">
+              <div class="hgs-step__rail" aria-hidden="true">
+                <span class="hgs-step__badge">
+                  <hds-icon name="add-user" category="core-ui" icon-style="outline" size="24px"></hds-icon>
+                </span>
+                <span class="hgs-step__line"></span>
+              </div>
+
+              <div class="hgs-step__body">
+                <div class="hgs-step__text">
+                  <hds-flag variant="subtle" size="medium">Step 1</hds-flag>
+                  <h3 class="hgs-step__title">Sign up for a HERE account</h3>
+                  <p class="hgs-prose">
+                    Create a HERE account to access the HERE platform and
+                    generate credentials for your applications.
+                  </p>
+                  <ol class="hgs-step__list">
+                    <li>Go to the <a href="https://platform.here.com">HERE platform</a>.</li>
+                    <li>Select <strong>Sign up</strong>.</li>
+                    <li>Enter your email address and complete the registration steps.</li>
+                    <li>Verify your email address.</li>
+                    <li>Click <strong>Sign in</strong> on the <a href="https://platform.here.com">HERE platform</a> and enter your HERE account credentials.</li>
+                  </ol>
+                </div>
+
+                <div class="hgs-step__links">
+                  <hds-button variant="link" size="small" icon-right="chevron-right" icon-right-category="core-ui" data-hgs-href="https://platform.here.com">Go to the HERE platform</hds-button>
+                </div>
+              </div>
+            </li>
+
+            <!-- Step 2 -->
+            <li class="hgs-step" id="create-project">
+              <div class="hgs-step__rail" aria-hidden="true">
+                <span class="hgs-step__badge">
+                  <hds-icon name="project" category="misc" icon-style="outline" size="24px"></hds-icon>
+                </span>
+                <span class="hgs-step__line"></span>
+              </div>
+
+              <div class="hgs-step__body">
+                <div class="hgs-step__text">
+                  <hds-flag variant="subtle" size="medium">Step 2</hds-flag>
+                  <h3 class="hgs-step__title">Create a project and app</h3>
+                  <p class="hgs-prose">
+                    A project contains the HERE services your application can
+                    use. An app represents your application and stores the
+                    credentials it uses to access those services.
+                  </p>
+                  <ol class="hgs-step__list">
+                    <li>Select <strong>Projects Manager</strong> from the launcher.</li>
+                    <li>Select <strong>Create new project</strong>, fill in the required fields, and then select <strong>Create</strong>.</li>
+                    <li>In the project, select the <strong>Resources</strong> tab.</li>
+                    <li>Link the HERE service that you want to call. For the request in this guide, link <strong>Geocoding and Search</strong>.</li>
+                    <li>Select <strong>Access Manager</strong> from the launcher.</li>
+                    <li>On the <strong>Apps</strong> tab, select <strong>Create new app</strong>.</li>
+                    <li>Enter the required information, then select <strong>Create app</strong>.</li>
+                  </ol>
+                </div>
+              </div>
+            </li>
+
+            <!-- Step 3 -->
+            <li class="hgs-step" id="generate-api-key">
+              <div class="hgs-step__rail" aria-hidden="true">
+                <span class="hgs-step__badge">
+                  <hds-icon name="key" category="misc" icon-style="outline" size="24px"></hds-icon>
+                </span>
+                <span class="hgs-step__line"></span>
+              </div>
+
+              <div class="hgs-step__body">
+                <div class="hgs-step__text">
+                  <hds-flag variant="subtle" size="medium">Step 3</hds-flag>
+                  <h3 class="hgs-step__title">Generate an API key</h3>
+                  <p class="hgs-prose">
+                    An API key authenticates your application when it sends
+                    requests to HERE APIs.
+                  </p>
+                  <ol class="hgs-step__list">
+                    <li>On the <strong>Apps</strong> tab, select the app that you registered.</li>
+                    <li>On the <em>Credentials</em> tab, click <strong>Create API key</strong>.</li>
+                    <li>Copy the API key. You will use it to authenticate the request in the next step.</li>
+                  </ol>
+                </div>
+              </div>
+            </li>
+
+            <!-- Step 4: each code sample needs a unique id, and its copy button points at it with data-hgs-copy -->
+            <li class="hgs-step hgs-step--last" id="send-first-request">
+              <div class="hgs-step__rail" aria-hidden="true">
+                <span class="hgs-step__badge">
+                  <hds-icon name="code" category="misc" icon-style="outline" size="24px"></hds-icon>
+                </span>
+                <span class="hgs-step__line"></span>
+              </div>
+
+              <div class="hgs-step__body">
+                <div class="hgs-step__text">
+                  <hds-flag variant="subtle" size="medium">Step 4</hds-flag>
+                  <h3 class="hgs-step__title">Send your first request</h3>
+                  <p class="hgs-prose">
+                    This request uses your API key to call the Geocoding and
+                    Search service that you linked to your project.
+                  </p>
+                </div>
+
+                <div class="hgs-code">
+                  <div class="hgs-code__panel">
+                    <hds-button class="hgs-code__copy" variant="subtle" size="extra-small" icon="copy" icon-category="file" data-hgs-copy="gs-request">Copy</hds-button>
+                    <pre class="hgs-code__pre" id="gs-request"><code>curl "https://geocode.search.hereapi.com/v1/geocode?q=Berlin&amp;apiKey=YOUR_API_KEY"</code></pre>
+                  </div>
+                </div>
+
+                <p class="hgs-prose">The request returns a JSON response with location results:</p>
+
+                <div class="hgs-code">
+                  <div class="hgs-code__panel">
+                    <hds-button class="hgs-code__copy" variant="subtle" size="extra-small" icon="copy" icon-category="file" data-hgs-copy="gs-response">Copy</hds-button>
+                    <pre class="hgs-code__pre" id="gs-response"><code>{
+  "items": [
+    {
+      "title": "Berlin, Deutschland",
+      "id": "here:cm:namedplace:20187429",
+      "resultType": "locality"
+    }
+  ]
+}</code></pre>
+                  </div>
+                </div>
+
+                <p class="hgs-prose">
+                  If the request returns an authentication error, verify that
+                  you replaced <code>YOUR_API_KEY</code> with the complete API
+                  key and linked Geocoding and Search to your project.
+                </p>
+              </div>
+            </li>
+          </ol>
+        </section>
+
+        <!-- Where do I go next: copy one li.hgs-card to add a card -->
+        <section class="hgs-section" id="where-next">
+          <header class="hgs-section__head">
+            <h2 class="hgs-section__title">Where do I go next?</h2>
+            <p class="hgs-section__kicker">Keep exploring with your new HERE app</p>
+          </header>
+
+          <ul class="hgs-cards hgs-cards--3 hgs-plain-list">
+            <li class="hgs-card">
+              <span class="hgs-card__icon" aria-hidden="true">
+                <hds-icon name="search" category="core-ui" icon-style="outline" size="24px"></hds-icon>
+              </span>
+              <h3 class="hgs-card__title">Search for a place and show it on a map</h3>
+              <p class="hgs-card__body">Search for a place, retrieve its coordinates, and display it on an interactive map.</p>
+              <div class="hgs-card__action">
+                <hds-button variant="link" size="small" icon-right="chevron-right" icon-right-category="core-ui" data-hgs-href="/get-started/page/search-for-a-place-and-show-it-on-a-map">Read the guide</hds-button>
+              </div>
+            </li>
+
+            <li class="hgs-card">
+              <span class="hgs-card__icon" aria-hidden="true">
+                <hds-icon name="route" category="travel-transport-tracking" icon-style="outline" size="24px"></hds-icon>
+              </span>
+              <h3 class="hgs-card__title">Calculate a route between two locations</h3>
+              <p class="hgs-card__body">Calculate a route between an origin and destination with the Routing API.</p>
+              <div class="hgs-card__action">
+                <hds-button variant="link" size="small" icon-right="chevron-right" icon-right-category="core-ui" data-hgs-href="/get-started/update/page/calculate-a-route-between-two-locations">Read the guide</hds-button>
+              </div>
+            </li>
+
+            <li class="hgs-card">
+              <span class="hgs-card__icon" aria-hidden="true">
+                <hds-icon name="traffic-lights" category="travel-transport-tracking" icon-style="outline" size="24px"></hds-icon>
+              </span>
+              <h3 class="hgs-card__title">Build traffic-aware routing</h3>
+              <p class="hgs-card__body">Calculate routes that account for current traffic conditions.</p>
+              <div class="hgs-card__action">
+                <hds-button variant="link" size="small" icon-right="chevron-right" icon-right-category="core-ui" data-hgs-href="/get-started/update/page/build-traffic-aware-routing">Read the guide</hds-button>
+              </div>
+            </li>
+          </ul>
+        </section>
+      </div>
+
+      <!-- On this page: one sub-list-item per section id above, first one selected -->
+      <aside class="hgs-aside" aria-labelledby="hgs-aside-title">
+        <h2 class="hgs-visually-hidden" id="hgs-aside-title">On this page</h2>
+        <hds-vertical-navigation class="hgs-toc">
+          <hds-vertical-navigation-sub-list>
+            <hds-vertical-navigation-sub-list-item selected><a href="#introduction">Introduction</a></hds-vertical-navigation-sub-list-item>
+            <hds-vertical-navigation-sub-list-item><a href="#quick-start">Quick start</a></hds-vertical-navigation-sub-list-item>
+            <hds-vertical-navigation-sub-list-item><a href="#where-next">Where do I go next?</a></hds-vertical-navigation-sub-list-item>
+          </hds-vertical-navigation-sub-list>
+        </hds-vertical-navigation>
+      </aside>
+    </div>
+  </div>
+</div>
+
+<!-- doc-shell.js comes from ReadMe global JS, because scripts inside page content do not run. -->
+`}</HTMLBlock>
