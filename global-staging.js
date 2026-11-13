@@ -1680,7 +1680,6 @@ function stampMarkdownScopes() {
   var ASSET_BASE = "https://here-dni.github.io/ReadMe-Frontend-customization/assets/images/";
   var JA_LIGHT = ASSET_BASE + "header-logo-ja-light.svg";
   var JA_DARK = ASSET_BASE + "header-logo-ja-dark.svg";
-  var EN_MARKER = "Logo__Primary_Navigation";
   var EN_ATTR = "data-here-logo-en";
 
   function currentLang() {
@@ -1694,11 +1693,12 @@ function stampMarkdownScopes() {
     var ja = currentLang() === "ja";
     document.querySelectorAll('img[class*="Header-logo-img"]').forEach(function (img) {
       var src = img.getAttribute("src") || "";
-      // Remember ReadMe's own EN asset (and refresh it if ReadMe re-renders with a new one).
-      if (src.indexOf(EN_MARKER) !== -1) img.setAttribute(EN_ATTR, src);
+      // Any src that is not our JA asset is ReadMe's own logo; remember it so EN can be restored.
+      if (src && src !== JA_LIGHT && src !== JA_DARK) img.setAttribute(EN_ATTR, src);
       var en = img.getAttribute(EN_ATTR);
       if (!en) return;
-      var target = ja ? (en.indexOf("darkmode") !== -1 ? JA_DARK : JA_LIGHT) : en;
+      var dark = /Header-logo-img_dark/.test(img.className) || /dark/i.test(en);
+      var target = ja ? (dark ? JA_DARK : JA_LIGHT) : en;
       if (src !== target) img.setAttribute("src", target);
       var alt = ja ? "HERE ドキュメント" : "HERE Technologies Documentation | HERE Docs";
       if (img.getAttribute("alt") !== alt) img.setAttribute("alt", alt);
