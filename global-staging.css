@@ -731,35 +731,23 @@ font-size: 14px !important;
   align-self: center;
 }
 
-/* Down-chevron affordance for the filter/sort dropdown triggers (bespoke CSS
-   chevron — HDS has no "chevron-down" icon token, and the icon-right fallback
-   rendered a wrong glyph). Rotates 180deg when its trigger is expanded. */
-.here-glp .here-dd-chevron {
-  position: absolute;
-  right: 14px;
-  top: 50%;
-  width: 6px;
-  height: 6px;
-  border-right: 1.5px solid #051920;
-  border-bottom: 1.5px solid #051920;
-  transform: translateY(-50%) rotate(45deg);
+/* Inline chevron inside the filter/sort triggers; flips when its dropdown is open. */
+.here-glp .here-btn-chevron {
+  margin-left: 8px;
+  vertical-align: middle;
+  flex: none;
   transition: transform 0.15s ease;
-  pointer-events: none;
 }
-/* Chevron is a sibling of the trigger button; flip it when the button
-   in the same wrapper is expanded. */
-.here-glp .here-sort:has([aria-expanded="true"]) .here-dd-chevron,
-.here-glp .here-solfilter:has([aria-expanded="true"]) .here-dd-chevron {
-  transform: translateY(-50%) rotate(-135deg);
+.here-glp [aria-expanded="true"] .here-btn-chevron {
+  transform: rotate(180deg);
 }
-.here-glp[data-theme*="dark"] .here-dd-chevron {
-  border-right-color: #ECF7FC;
-  border-bottom-color: #ECF7FC;
+
+/* "Clear all" text button — Figma blue #1F28E8 (lighter blue in dark mode). */
+.here-glp [data-here-clear-all] {
+  --hds-foreground-primary: #1F28E8;
 }
-/* Make room for the absolute chevron inside the trigger button. */
-.here-glp .here-sort [data-here-sort-trigger],
-.here-glp .here-solfilter [data-here-solfilter-trigger] {
-  padding-right: 28px !important;
+.here-glp[data-theme*="dark"] [data-here-clear-all] {
+  --hds-foreground-primary: var(--tertiary-link-dark, #A0B7F0);
 }
 
 /* Sort by dropdown — bespoke menu anchored to the "Sort by" hds-button. */

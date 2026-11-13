@@ -1,4 +1,5 @@
-<!-- Paste this whole file into a ReadMe custom page (HTML). Writers edit only the content between the wrapper tags. -->
+<HTMLBlock>{`
+<!-- Paste this whole file into the ReadMe custom page (MDX). Inside the block use only HTML comments, and no backticks or dollar-brace pairs. -->
 
 <!-- Shared shell CSS, same on every page. -->
 <link rel="stylesheet" href="https://here-dni.github.io/ReadMe-Frontend-customization/doc-shell.css" />
@@ -10,10 +11,10 @@
   <!-- Hero -->
   <section class="hgs-hero" aria-labelledby="hgs-hero-title">
     <div class="hgs-hero__inner">
-      <a class="hgs-btn hgs-btn--back hgs-hero__back" href="/">Back to documentation</a>
+      <hds-button class="hgs-hero__back" variant="subtle" size="small" icon="arrow-left" icon-category="core-ui" data-hgs-href="/">Back to documentation</hds-button>
 
       <div class="hgs-hero__flags">
-        <span class="hgs-flag hgs-flag--custom hgs-hero__flag">Get started</span>
+        <hds-flag class="hgs-hero__flag" variant="custom" size="medium">Get started</hds-flag>
       </div>
 
       <h1 class="hgs-hero__title" id="hgs-hero-title">Build your first HERE integration</h1>
@@ -25,7 +26,7 @@
 
       <div class="hgs-hero__meta">
         <span class="hgs-meta-item">
-          <i class="hds-iconlibrary-24px hds-icon-core-ui-time_outline_24px" aria-hidden="true"></i>
+          <hds-icon name="time" category="core-ui" icon-style="outline" size="24px"></hds-icon>
           <span class="hgs-meta-item__text">6 minute read</span>
         </span>
 
@@ -75,14 +76,14 @@
             <li class="hgs-step">
               <div class="hgs-step__rail" aria-hidden="true">
                 <span class="hgs-step__badge">
-                  <i class="hds-iconlibrary-24px hds-icon-misc-key_outline_24px" aria-hidden="true"></i>
+                  <hds-icon name="key" category="misc" icon-style="outline" size="24px"></hds-icon>
                 </span>
                 <span class="hgs-step__line"></span>
               </div>
 
               <div class="hgs-step__body">
                 <div class="hgs-step__text">
-                  <span class="hgs-flag">Step 1</span>
+                  <hds-flag variant="subtle" size="medium">Step 1</hds-flag>
                   <h3 class="hgs-step__title">Create an account and get an API key</h3>
                   <p class="hgs-prose">
                     Every HERE request needs an API key. Sign up for a free
@@ -98,9 +99,9 @@
                 </div>
 
                 <div class="hgs-step__links">
-                  <a class="hgs-btn hgs-btn--link" href="https://platform.here.com/sign-up">Create a free developer account</a>
-                  <a class="hgs-btn hgs-btn--link" href="/identity-and-access-management/dev_guide/topics/plat-using-apikeys.html">Generate an API key</a>
-                  <a class="hgs-btn hgs-btn--link" href="/identity-and-access-management/dev_guide/index.html">Keep your credentials safe</a>
+                  <hds-button variant="link" size="small" icon-right="chevron-right" icon-right-category="core-ui" data-hgs-href="https://platform.here.com/sign-up">Create a free developer account</hds-button>
+                  <hds-button variant="link" size="small" icon-right="chevron-right" icon-right-category="core-ui" data-hgs-href="/identity-and-access-management/dev_guide/topics/plat-using-apikeys.html">Generate an API key</hds-button>
+                  <hds-button variant="link" size="small" icon-right="chevron-right" icon-right-category="core-ui" data-hgs-href="/identity-and-access-management/dev_guide/index.html">Keep your credentials safe</hds-button>
                 </div>
               </div>
             </li>
@@ -109,14 +110,14 @@
             <li class="hgs-step">
               <div class="hgs-step__rail" aria-hidden="true">
                 <span class="hgs-step__badge">
-                  <i class="hds-iconlibrary-24px hds-icon-misc-code_outline_24px" aria-hidden="true"></i>
+                  <hds-icon name="code" category="misc" icon-style="outline" size="24px"></hds-icon>
                 </span>
                 <span class="hgs-step__line"></span>
               </div>
 
               <div class="hgs-step__body">
                 <div class="hgs-step__text">
-                  <span class="hgs-flag">Step 2</span>
+                  <hds-flag variant="subtle" size="medium">Step 2</hds-flag>
                   <h3 class="hgs-step__title">Make your first request</h3>
                   <p class="hgs-prose">
                     Start with Geocoding &amp; Search. A single GET request
@@ -131,9 +132,9 @@
                 </div>
 
                 <div class="hgs-step__links">
-                  <a class="hgs-btn hgs-btn--link" href="/geocoding-and-search/dev_guide/index.html">Geocoding &amp; Search quick start</a>
-                  <a class="hgs-btn hgs-btn--link" href="/routing-api/dev_guide/index.html">Calculate a route</a>
-                  <a class="hgs-btn hgs-btn--link" href="/maps-api-for-js/dev_guide/index.html">Render your first map</a>
+                  <hds-button variant="link" size="small" icon-right="chevron-right" icon-right-category="core-ui" data-hgs-href="/geocoding-and-search/dev_guide/index.html">Geocoding &amp; Search quick start</hds-button>
+                  <hds-button variant="link" size="small" icon-right="chevron-right" icon-right-category="core-ui" data-hgs-href="/routing-api/dev_guide/index.html">Calculate a route</hds-button>
+                  <hds-button variant="link" size="small" icon-right="chevron-right" icon-right-category="core-ui" data-hgs-href="/maps-api-for-js/dev_guide/index.html">Render your first map</hds-button>
                 </div>
               </div>
             </li>
@@ -142,14 +143,14 @@
             <li class="hgs-step">
               <div class="hgs-step__rail" aria-hidden="true">
                 <span class="hgs-step__badge">
-                  <i class="hds-iconlibrary-24px hds-icon-poi-library_outline_24px" aria-hidden="true"></i>
+                  <hds-icon name="library" category="poi" icon-style="outline" size="24px"></hds-icon>
                 </span>
                 <span class="hgs-step__line"></span>
               </div>
 
               <div class="hgs-step__body">
                 <div class="hgs-step__text">
-                  <span class="hgs-flag">Step 3</span>
+                  <hds-flag variant="subtle" size="medium">Step 3</hds-flag>
                   <h3 class="hgs-step__title">Learn the core concepts</h3>
                   <p class="hgs-prose">
                     A short read goes a long way. The basics cover how
@@ -163,9 +164,9 @@
                 </div>
 
                 <div class="hgs-step__links">
-                  <a class="hgs-btn hgs-btn--link" href="/intro-to-mapping-concepts/dev_guide/index.html">Intro to mapping concepts</a>
-                  <a class="hgs-btn hgs-btn--link" href="/usage/dev_guide/index.html">Rate limits and quotas</a>
-                  <a class="hgs-btn hgs-btn--link" href="/intro-to-mapping-concepts/dev_guide/topics/glossary.html">Mapping glossary</a>
+                  <hds-button variant="link" size="small" icon-right="chevron-right" icon-right-category="core-ui" data-hgs-href="/intro-to-mapping-concepts/dev_guide/index.html">Intro to mapping concepts</hds-button>
+                  <hds-button variant="link" size="small" icon-right="chevron-right" icon-right-category="core-ui" data-hgs-href="/usage/dev_guide/index.html">Rate limits and quotas</hds-button>
+                  <hds-button variant="link" size="small" icon-right="chevron-right" icon-right-category="core-ui" data-hgs-href="/intro-to-mapping-concepts/dev_guide/topics/glossary.html">Mapping glossary</hds-button>
                 </div>
               </div>
             </li>
@@ -174,14 +175,14 @@
             <li class="hgs-step hgs-step--last">
               <div class="hgs-step__rail" aria-hidden="true">
                 <span class="hgs-step__badge">
-                  <i class="hds-iconlibrary-24px hds-icon-tools-wrench_outline_24px" aria-hidden="true"></i>
+                  <hds-icon name="wrench" category="tools" icon-style="outline" size="24px"></hds-icon>
                 </span>
                 <span class="hgs-step__line"></span>
               </div>
 
               <div class="hgs-step__body">
                 <div class="hgs-step__text">
-                  <span class="hgs-flag">Step 4</span>
+                  <hds-flag variant="subtle" size="medium">Step 4</hds-flag>
                   <h3 class="hgs-step__title">Build your first integration</h3>
                   <p class="hgs-prose">
                     When you're ready to ship something real, follow a guided
@@ -195,9 +196,9 @@
                 </div>
 
                 <div class="hgs-step__links">
-                  <a class="hgs-btn hgs-btn--link" href="/getting-started/docs">Follow a guided tutorial</a>
-                  <a class="hgs-btn hgs-btn--link" href="/getting-started/docs">Browse the use cases</a>
-                  <a class="hgs-btn hgs-btn--link" href="https://github.com/heremaps">Sample projects on GitHub</a>
+                  <hds-button variant="link" size="small" icon-right="chevron-right" icon-right-category="core-ui" data-hgs-href="/getting-started/docs">Follow a guided tutorial</hds-button>
+                  <hds-button variant="link" size="small" icon-right="chevron-right" icon-right-category="core-ui" data-hgs-href="/getting-started/docs">Browse the use cases</hds-button>
+                  <hds-button variant="link" size="small" icon-right="chevron-right" icon-right-category="core-ui" data-hgs-href="https://github.com/heremaps">Sample projects on GitHub</hds-button>
                 </div>
               </div>
             </li>
@@ -225,10 +226,10 @@
                   data-hgs-video="set-up-your-here-account"
                   aria-label="Play: Set up your HERE account"
                 >
-                  <i class="hds-iconlibrary-24px hds-icon-navigation-image-video-tutorial_solid_24px" aria-hidden="true"></i>
+                  <hds-icon name="video-tutorial" category="navigation-image" icon-style="solid" size="24px"></hds-icon>
                 </button>
                 <div class="hgs-video__duration">
-                  <span class="hgs-flag hgs-flag--small">04:12</span>
+                  <hds-flag variant="subtle" size="small">04:12</hds-flag>
                 </div>
               </div>
               <div class="hgs-video__content">
@@ -245,10 +246,10 @@
                   data-hgs-video="your-first-geocoding-request"
                   aria-label="Play: Your first Geocoding request"
                 >
-                  <i class="hds-iconlibrary-24px hds-icon-navigation-image-video-tutorial_solid_24px" aria-hidden="true"></i>
+                  <hds-icon name="video-tutorial" category="navigation-image" icon-style="solid" size="24px"></hds-icon>
                 </button>
                 <div class="hgs-video__duration">
-                  <span class="hgs-flag hgs-flag--small">06:45</span>
+                  <hds-flag variant="subtle" size="small">06:45</hds-flag>
                 </div>
               </div>
               <div class="hgs-video__content">
@@ -265,10 +266,10 @@
                   data-hgs-video="render-a-map-in-the-browser"
                   aria-label="Play: Render a map in the browser"
                 >
-                  <i class="hds-iconlibrary-24px hds-icon-navigation-image-video-tutorial_solid_24px" aria-hidden="true"></i>
+                  <hds-icon name="video-tutorial" category="navigation-image" icon-style="solid" size="24px"></hds-icon>
                 </button>
                 <div class="hgs-video__duration">
-                  <span class="hgs-flag hgs-flag--small">05:30</span>
+                  <hds-flag variant="subtle" size="small">05:30</hds-flag>
                 </div>
               </div>
               <div class="hgs-video__content">
@@ -279,7 +280,7 @@
           </ul>
 
           <div class="hgs-section__cta">
-            <a class="hgs-btn hgs-btn--link" href="/getting-started/docs">See the full video library</a>
+            <hds-button variant="link" size="small" icon-right="chevron-right" icon-right-category="core-ui" data-hgs-href="/getting-started/docs">See the full video library</hds-button>
           </div>
         </section>
 
@@ -295,7 +296,7 @@
               <a class="hgs-crosslink__link" href="/geocoding-and-search/dev_guide/index.html">
                 <span class="hgs-crosslink__label">Geocoding &amp; Search API - Get started</span>
                 <span class="hgs-crosslink__icon" aria-hidden="true">
-                  <i class="hds-iconlibrary-24px hds-icon-core-ui-arrow-right_outline_24px" aria-hidden="true"></i>
+                  <hds-icon name="arrow-right" category="core-ui" icon-style="outline" size="24px"></hds-icon>
                 </span>
               </a>
             </li>
@@ -304,7 +305,7 @@
               <a class="hgs-crosslink__link" href="/geocoding-and-search/dev_guide/topics/endpoint-discover-brief.html">
                 <span class="hgs-crosslink__label">Geocoding &amp; Search API - Discover endpoint</span>
                 <span class="hgs-crosslink__icon" aria-hidden="true">
-                  <i class="hds-iconlibrary-24px hds-icon-core-ui-arrow-right_outline_24px" aria-hidden="true"></i>
+                  <hds-icon name="arrow-right" category="core-ui" icon-style="outline" size="24px"></hds-icon>
                 </span>
               </a>
             </li>
@@ -313,7 +314,7 @@
               <a class="hgs-crosslink__link" href="/maps-api-for-js/dev_guide/topics/marker-objects.html">
                 <span class="hgs-crosslink__label">Maps API for JavaScript - Add markers</span>
                 <span class="hgs-crosslink__icon" aria-hidden="true">
-                  <i class="hds-iconlibrary-24px hds-icon-core-ui-arrow-right_outline_24px" aria-hidden="true"></i>
+                  <hds-icon name="arrow-right" category="core-ui" icon-style="outline" size="24px"></hds-icon>
                 </span>
               </a>
             </li>
@@ -322,7 +323,7 @@
               <a class="hgs-crosslink__link" href="/maps-api-for-js/dev_guide/topics/best-practices.html">
                 <span class="hgs-crosslink__label">Maps API for JavaScript - Best practices</span>
                 <span class="hgs-crosslink__icon" aria-hidden="true">
-                  <i class="hds-iconlibrary-24px hds-icon-core-ui-arrow-right_outline_24px" aria-hidden="true"></i>
+                  <hds-icon name="arrow-right" category="core-ui" icon-style="outline" size="24px"></hds-icon>
                 </span>
               </a>
             </li>
@@ -331,7 +332,7 @@
               <a class="hgs-crosslink__link" href="/identity-and-access-management/dev_guide/topics/plat-using-apikeys.html">
                 <span class="hgs-crosslink__label">HERE platform - Create an API key</span>
                 <span class="hgs-crosslink__icon" aria-hidden="true">
-                  <i class="hds-iconlibrary-24px hds-icon-core-ui-arrow-right_outline_24px" aria-hidden="true"></i>
+                  <hds-icon name="arrow-right" category="core-ui" icon-style="outline" size="24px"></hds-icon>
                 </span>
               </a>
             </li>
@@ -339,20 +340,21 @@
         </section>
       </div>
 
-      <!-- On this page: one li per section id above -->
-      <aside class="hgs-aside">
-        <nav class="hgs-toc" aria-label="On this page">
-          <ul class="hgs-plain-list">
-            <li><a href="#introduction">Introduction</a></li>
-            <li><a href="#quick-start">Quick start</a></li>
-            <li><a href="#video-library">Video library</a></li>
-            <li><a href="#where-next">Where do I go next?</a></li>
-          </ul>
-        </nav>
+      <!-- On this page: one sub-list-item per section id above, first one selected -->
+      <aside class="hgs-aside" aria-labelledby="hgs-aside-title">
+        <h2 class="hgs-visually-hidden" id="hgs-aside-title">On this page</h2>
+        <hds-vertical-navigation class="hgs-toc">
+          <hds-vertical-navigation-sub-list>
+            <hds-vertical-navigation-sub-list-item selected><a href="#introduction">Introduction</a></hds-vertical-navigation-sub-list-item>
+            <hds-vertical-navigation-sub-list-item><a href="#quick-start">Quick start</a></hds-vertical-navigation-sub-list-item>
+            <hds-vertical-navigation-sub-list-item><a href="#video-library">Video library</a></hds-vertical-navigation-sub-list-item>
+            <hds-vertical-navigation-sub-list-item><a href="#where-next">Where do I go next?</a></hds-vertical-navigation-sub-list-item>
+          </hds-vertical-navigation-sub-list>
+        </hds-vertical-navigation>
       </aside>
     </div>
   </div>
 </div>
 
-<!-- Shared shell JS (side nav scroll spy), same on every page. -->
-<script src="https://here-dni.github.io/ReadMe-Frontend-customization/doc-shell.js"></script>
+<!-- doc-shell.js comes from ReadMe global JS, because scripts inside page content do not run. -->
+`}</HTMLBlock>

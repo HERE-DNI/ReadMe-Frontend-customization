@@ -856,7 +856,7 @@
     </section>
 
     <!-- ── Explore technical resources (Figma 2101:82535) ── -->
-    <section class="here-resources" aria-label="Explore technical resources">
+    <section class="here-resources" aria-label="Explore technical resources" data-show-desc="1">
       <div class="here-wrap">
         <div class="here-resources__inner">
 
@@ -866,9 +866,8 @@
           </div>
 
           <div class="here-resources__filters" role="group" aria-label="Filters">
-            <span class="here-solfilter" data-here-solfilter data-here-solfilter-labels='{"all":"Show all products &amp; services","adas":"ADAS &amp; AD","navigation":"Explore &amp; Navigate","fleet":"Fleet, Mobility &amp; Transportation","gis":"GIS &amp; Location Intelligence"}'>
-              <hds-button variant="secondary" size="small" data-here-solfilter-trigger aria-haspopup="true" aria-expanded="false">Show all products &amp; services</hds-button>
-              <span class="here-dd-chevron" aria-hidden="true"></span>
+            <span class="here-solfilter" data-here-solfilter data-here-solfilter-labels='{"all":"Show solution portfolio","adas":"ADAS &amp; AD","navigation":"Explore &amp; Navigate","fleet":"Fleet, Mobility &amp; Transportation","gis":"GIS &amp; Location Intelligence"}'>
+              <hds-button variant="secondary" size="small" data-here-solfilter-trigger aria-haspopup="true" aria-expanded="false">Show solution portfolio<svg class="here-btn-chevron" aria-hidden="true" viewBox="0 0 16 16" width="16" height="16" fill="none"><path d="M3.5 6l4.5 4.5L12.5 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></hds-button>
               <div class="here-solfilter__menu" role="menu" hidden>
                 <button type="button" class="here-solfilter__opt here-solfilter__opt--active" role="menuitemradio" aria-checked="true" data-sol="all">Show all products &amp; services</button>
                 <span class="here-solfilter__label" aria-hidden="true">Filter by:</span>
@@ -878,12 +877,12 @@
                 <button type="button" class="here-solfilter__opt" role="menuitemradio" aria-checked="false" data-sol="gis">GIS &amp; Location Intelligence</button>
               </div>
             </span>
-            <hds-chip size="medium" selectable data-here-apis-chip>Show APIs</hds-chip>
-            <hds-toggle aria-label="Show all descriptions" data-here-desc-toggle>Show all descriptions</hds-toggle>
+            <hds-button variant="secondary" size="small" selectable data-here-apis-chip>Show APIs</hds-button>
+            <hds-button variant="subtle" size="small" data-here-clear-all>Clear all</hds-button>
+            <hds-toggle aria-label="Show descriptions" data-here-desc-toggle checked>Show descriptions</hds-toggle>
             <span class="here-filter-divider" aria-hidden="true"></span>
             <span class="here-sort" data-here-sort data-here-sort-labels='{"most":"Sort by: Most viewed","az":"Sort by: A - Z","za":"Sort by: Z - A"}'>
-              <hds-button variant="subtle" size="small" data-here-sort-trigger aria-haspopup="true" aria-expanded="false">Sort by: Most viewed</hds-button>
-              <span class="here-dd-chevron" aria-hidden="true"></span>
+              <hds-button variant="subtle" size="small" data-here-sort-trigger aria-haspopup="true" aria-expanded="false">Sort by: Most viewed<svg class="here-btn-chevron" aria-hidden="true" viewBox="0 0 16 16" width="16" height="16" fill="none"><path d="M3.5 6l4.5 4.5L12.5 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></hds-button>
               <div class="here-sort__menu" role="menu" hidden>
                 <button type="button" class="here-sort__opt here-sort__opt--active" role="menuitemradio" aria-checked="true" data-sort="most">Most viewed</button>
                 <button type="button" class="here-sort__opt" role="menuitemradio" aria-checked="false" data-sort="az">A - Z</button>
@@ -1266,7 +1265,7 @@
           <div class="here-hero__search-row">
             <!-- Search proxy: overlay button intercepts click → opens ReadMe ⌘K modal -->
             <div class="here-search-proxy" data-here-search-proxy>
-              <hds-hero-search data-here-hero-search placeholder="Search by product, keyword or solution"> <span slot="right" class="here-search__kbd" aria-hidden="true">⌘ K</span> </hds-hero-search> <button
+              <hds-hero-search data-here-hero-search placeholder="製品、キーワード、ソリューションで検索"> <span slot="right" class="here-search__kbd" aria-hidden="true">⌘ K</span> </hds-hero-search> <button
                 class="here-search-proxy__overlay"
                 type="button"
                 aria-label="検索を開く"
@@ -1287,7 +1286,7 @@
     </section>
 
     <!-- ── Explore technical resources (Figma 2101:82535) ── -->
-    <section class="here-resources" aria-label="技術リソースを探る">
+    <section class="here-resources" aria-label="技術リソースを探る" data-show-desc="1">
       <div class="here-wrap">
         <div class="here-resources__inner">
 
@@ -1297,11 +1296,11 @@
           </div>
 
           <div class="here-resources__filters" role="group" aria-label="フィルター">
-            <span class="here-solfilter" data-here-solfilter data-here-solfilter-labels='{"all":"Show all products &amp; services","adas":"ADAS &amp; AD","navigation":"Explore &amp; Navigate","fleet":"Fleet, Mobility &amp; Transportation","gis":"GIS &amp; Location Intelligence"}'> <hds-button variant="secondary" size="small" data-here-solfilter-trigger aria-haspopup="true" aria-expanded="false">すべての製品とサービスを表示</hds-button> <span class="here-dd-chevron" aria-hidden="true"></span>
+            <span class="here-solfilter" data-here-solfilter data-here-solfilter-labels='{"all":"ソリューションポートフォリオを表示","adas":"ADAS＆AD","navigation":"探索＆ナビゲーション","fleet":"フリート、モビリティ＆輸送","gis":"GIS＆ロケーションインテリジェンス"}'> <hds-button variant="secondary" size="small" data-here-solfilter-trigger aria-haspopup="true" aria-expanded="false">ソリューションポートフォリオを表示<svg class="here-btn-chevron" aria-hidden="true" viewBox="0 0 16 16" width="16" height="16" fill="none"><path d="M3.5 6l4.5 4.5L12.5 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></hds-button>
               <div class="here-solfilter__menu" role="menu" hidden>
                 <button type="button" class="here-solfilter__opt here-solfilter__opt--active" role="menuitemradio" aria-checked="true" data-sol="all">すべての製品とサービスを表示</button> <span class="here-solfilter__label" aria-hidden="true">フィルターで:</span><button type="button" class="here-solfilter__opt" role="menuitemradio" aria-checked="false" data-sol="adas">ADAS＆AD</button> <button type="button" class="here-solfilter__opt" role="menuitemradio" aria-checked="false" data-sol="navigation">探索＆ナビゲーション</button> <button type="button" class="here-solfilter__opt" role="menuitemradio" aria-checked="false" data-sol="fleet">フリート、モビリティ＆輸送</button> <button type="button" class="here-solfilter__opt" role="menuitemradio" aria-checked="false" data-sol="gis">GIS＆ロケーションインテリジェンス</button>
               </div>
-            </span> <hds-chip size="medium" selectable data-here-apis-chip>APIを表示</hds-chip> <hds-toggle aria-label="Show all descriptions" data-here-desc-toggle>すべての説明を表示</hds-toggle> <span class="here-filter-divider" aria-hidden="true"></span> <span class="here-sort" data-here-sort data-here-sort-labels='{"most":"Sort by: Most viewed","az":"Sort by: A - Z","za":"Sort by: Z - A"}'> <hds-button variant="subtle" size="small" data-here-sort-trigger aria-haspopup="true" aria-expanded="false">並べ替え:最も閲覧された</hds-button> <span class="here-dd-chevron" aria-hidden="true"></span>
+            </span> <hds-button variant="secondary" size="small" selectable data-here-apis-chip>APIを表示</hds-button> <hds-button variant="subtle" size="small" data-here-clear-all>すべてクリア</hds-button> <hds-toggle aria-label="説明を表示" data-here-desc-toggle checked>説明を表示</hds-toggle> <span class="here-filter-divider" aria-hidden="true"></span> <span class="here-sort" data-here-sort data-here-sort-labels='{"most":"並べ替え:最も閲覧された","az":"並べ替え:A - Z","za":"並べ替え:Z - A"}'> <hds-button variant="subtle" size="small" data-here-sort-trigger aria-haspopup="true" aria-expanded="false">並べ替え:最も閲覧された<svg class="here-btn-chevron" aria-hidden="true" viewBox="0 0 16 16" width="16" height="16" fill="none"><path d="M3.5 6l4.5 4.5L12.5 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></hds-button>
               <div class="here-sort__menu" role="menu" hidden>
                 <button type="button" class="here-sort__opt here-sort__opt--active" role="menuitemradio" aria-checked="true" data-sort="most">最も閲覧された</button> <button type="button" class="here-sort__opt" role="menuitemradio" aria-checked="false" data-sort="az">A - Z</button> <button type="button" class="here-sort__opt" role="menuitemradio" aria-checked="false" data-sort="za">Z - A</button>
               </div>
@@ -1378,7 +1377,7 @@
                 <li class="here-res-list__item"><a href="/tour-planning/docs"><span class="here-res-list__title"><span class="here-res-list__title-text">ツアー計画API</span></span><span class="here-res-list__desc">現場チームやフリート運用向けの複数ストップツアーを最適化します。</span></a></li>
                 <li class="here-res-list__item"><a href="/wego-pro"><span class="here-res-list__title"><span class="here-res-list__title-text">HERE WeGo Pro</span></span><span class="here-res-list__desc">フリートドライバーに、安全でトラック専用のナビゲーション、リアルタイム交通情報などを提供します。</span></a></li>
                 <li class="here-res-list__item"><a href="/routing"><span class="here-res-list__title"><span class="here-res-list__title-text">ルーティングAPI</span></span><span class="here-res-list__desc">さまざまな輸送タイプに対応したルート計画、ETAの最適化、ナビゲーションをサポートします。</span></a></li>
-                <li class="here-res-list__item"><a href="/traffic-api/docs"><span class="here-res-list__title"><span class="here-res-list__title-text">トラフィックAPI</span></span>は、<span class="here-res-list__desc">ライブ交通流データや、種類、場所、ステータス、時刻を含む事故に関する情報を提供します。</span></a></li>
+                <li class="here-res-list__item"><a href="/traffic-api/docs"><span class="here-res-list__title"><span class="here-res-list__title-text">トラフィックAPI</span></span><span class="here-res-list__desc">ライブ交通流データや、種類、場所、ステータス、時刻を含む事故に関する情報を提供します。</span></a></li>
                 <li class="here-res-list__item"><a href="/real-time-traffic/docs"><span class="here-res-list__title"><span class="here-res-list__title-text">リアルタイム交通</span><span class="here-lock-icon" role="img" aria-label="アクセスが必要"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true"><path d="M6 10V8a6 6 0 0 1 12 0v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><rect x="4" y="10" width="16" height="11" rx="2" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span></span><span class="here-res-list__desc">複数のソースから最新の交通量や事故のデータをストリーミングします。</span></a></li>
                 <li class="here-res-list__item"><a href="/transit/docs"><span class="here-res-list__title"><span class="here-res-list__title-text">トランジットAPI</span></span><span class="here-res-list__desc">公共交通機関の旅を計画し、高度なインターモーダルルーティング機能を取得します。</span></a></li>
                 <li class="here-res-list__item"><a href="/safety-cameras/docs"><span class="here-res-list__title"><span class="here-res-list__title-text">安全カメラAPI</span></span><span class="here-res-list__desc">固定および移動型安全カメラ、ゾーン、既知のチェックポイントのアクセスリスト。</span></a></li>
@@ -1513,7 +1512,7 @@
               <a href=https://www.here.com/learn/blog/may-2026-platform-release-notes rel="noopener">2026年5月</a> <a href=https://www.here.com/learn/blog/april-2026-platform-release-notes rel="noopener">2026年4月</a> <a href=https://www.here.com/learn/blog/march-2026-platform-release-notes rel="noopener">2026年3月</a> <a href=https://www.here.com/learn/blog/february-2026-platform-release-notes rel="noopener">2026年2月</a> <a href=https://www.here.com/learn/blog/january-2026-platform-release-notes rel="noopener">2026年1月</a> <a href=https://www.here.com/learn/blog/december-2025-platform-release-notes rel="noopener">2025年12月</a>
             </div>
             <div class="here-wn-footer">
-              開発者ブログの全リリースに移動 <a class="here-wn-seeall" href="https://www.here.com/developer/blog?category=Release%20notes#blog-results" rel="noopener">Go to all releases on the developer blog <svg viewBox="0 0 24 24" fill="none"><path d="M14 3h7v7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 14 21 3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg> </a>
+              <a class="here-wn-seeall" href="https://www.here.com/developer/blog?category=Release%20notes#blog-results" rel="noopener">開発者ブログの全リリースに移動 <svg viewBox="0 0 24 24" fill="none"><path d="M14 3h7v7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 14 21 3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg> </a>
             </div>
           </article>
 
@@ -1830,21 +1829,41 @@
 
       try {
         var lock = false;
-        new MutationObserver(function() {
-          if (lock) return;
+        var pending = false;
+        var langObserver = new MutationObserver(function() {
+          if (lock) { pending = true; return; }
+          runLocked();
+        });
+        // Trailing run so a footer/header reset to EN inside the same frame is not lost; takeRecords drops our own writes.
+        function runLocked() {
           lock = true;
           enforce();
           bindClicks();
           bindFooter();
-          requestAnimationFrame(function() { lock = false; });
-        }).observe(document.documentElement, {
+          langObserver.takeRecords();
+          requestAnimationFrame(function() {
+            lock = false;
+            if (pending) { pending = false; runLocked(); }
+          });
+        }
+        langObserver.observe(document.documentElement, {
           childList: true,
           subtree: true,
           attributes: true,
-          attributeFilter: ["selected", "aria-selected"]
+          attributeFilter: ["selected", "aria-selected", "data-active-lang"]
         });
       } catch (e) {}
     })();
+    /* ── Trigger label helper: updates only the text node so the inline chevron SVG survives ── */
+    (function () {
+      window.__hereSetTriggerLabel = function (btn, text) {
+        for (var n = btn.firstChild; n; n = n.nextSibling) {
+          if (n.nodeType === 3 && n.nodeValue.trim()) { n.nodeValue = text; return; }
+        }
+        btn.insertBefore(document.createTextNode(text), btn.firstChild);
+      };
+    })();
+
     /* ── Show all descriptions toggle ──
        Explore technical resources section only. Default state is
        compact / title-only (descriptions hidden); flipping the
@@ -1869,10 +1888,33 @@
         });
       }
 
+      // HDS 2026.2.0 draws a wrong glyph (calendar) for the toggle check icon; swap it for an inline SVG check.
+      var CHECK_CSS =
+        "hds-icon{display:none !important}" +
+        ".-checked .checkbox-trigger::before{content:'';display:block;flex:none;width:16px;height:16px;" +
+        "background-color:var(--hds-inverse-primary,#fff);" +
+        "-webkit-mask:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M3 8.5l3.2 3.2L13 5' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E\") no-repeat center / contain;" +
+        "mask:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M3 8.5l3.2 3.2L13 5' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E\") no-repeat center / contain}";
+
+      function fixCheckIcon(toggle) {
+        if (!window.customElements || !customElements.whenDefined) return;
+        customElements.whenDefined("hds-toggle").then(function () {
+          return toggle.updateComplete || Promise.resolve();
+        }).then(function () {
+          var root = toggle.shadowRoot;
+          if (!root || root.querySelector("style[data-here-check]")) return;
+          var st = document.createElement("style");
+          st.setAttribute("data-here-check", "1");
+          st.textContent = CHECK_CSS;
+          root.appendChild(st);
+        });
+      }
+
       function bind() {
         document.querySelectorAll("[data-here-desc-toggle]").forEach(function (toggle) {
           if (toggle.__hereDescBound) return;
           toggle.__hereDescBound = true;
+          fixCheckIcon(toggle);
           toggle.addEventListener("change", function (e) {
             setState(!!(e.detail && e.detail.checked));
           });
@@ -2027,7 +2069,7 @@
           var labels = {};
           try { labels = JSON.parse(wrap.getAttribute("data-here-sort-labels") || "{}"); } catch (e) {}
           var trigger = wrap.querySelector("[data-here-sort-trigger]");
-          if (trigger && labels[mode]) trigger.textContent = labels[mode];
+          if (trigger && labels[mode]) window.__hereSetTriggerLabel(trigger, labels[mode]);
           wrap.querySelectorAll(".here-sort__opt").forEach(function (opt) {
             var on = opt.getAttribute("data-sort") === mode;
             opt.classList.toggle("here-sort__opt--active", on);
@@ -2144,7 +2186,7 @@
           var labels = {};
           try { labels = JSON.parse(wrap.getAttribute("data-here-solfilter-labels") || "{}"); } catch (e) {}
           var trigger = wrap.querySelector("[data-here-solfilter-trigger]");
-          if (trigger && labels[sol]) trigger.textContent = labels[sol];
+          if (trigger && labels[sol]) window.__hereSetTriggerLabel(trigger, labels[sol]);
           wrap.querySelectorAll(".here-solfilter__opt").forEach(function (opt) {
             var on = opt.getAttribute("data-sol") === sol;
             opt.classList.toggle("here-solfilter__opt--active", on);
@@ -2203,6 +2245,31 @@
       bind();
       try {
         new MutationObserver(function () { bind(); }).observe(document.documentElement, { childList: true, subtree: true });
+      } catch (e) {}
+    })();
+
+    /* ── Clear all: resets solution filter + Show APIs; sort and descriptions stay as is ── */
+    (function () {
+      var TAG = "__hereClearAll_v1";
+      if (window[TAG]) return;
+      window[TAG] = true;
+
+      function clearAll() {
+        if (typeof window.__hereApisChipOff === "function") window.__hereApisChipOff();
+        if (typeof window.__hereSolFilterReset === "function") window.__hereSolFilterReset();
+      }
+
+      function bind() {
+        document.querySelectorAll("[data-here-clear-all]").forEach(function (btn) {
+          if (btn.__hereClearBound) return;
+          btn.__hereClearBound = true;
+          btn.addEventListener("click", clearAll);
+        });
+      }
+
+      bind();
+      try {
+        new MutationObserver(bind).observe(document.documentElement, { childList: true, subtree: true });
       } catch (e) {}
     })();
 

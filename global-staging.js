@@ -22,7 +22,8 @@
 //   9. Ask AI — Active Chat Header Title ~line 2728  Renames "Assistant" header in active chat
 //  10. Ask AI — Active Chat Header Chip  ~line 2808  Injects chip icon in active chat header
 //  11. Swagger / OAS Download Button  ~line 3579   Adds "Download Spec" button on Reference pages
-//  12. Contact us Button (site-wide)  end-of-file  Adds Contact us pill next to Ask AI on every page
+//  12. Contact us Button (site-wide)  near end    Adds Contact us pill next to Ask AI on every page
+//  13. Doc Sub Page Shell             end-of-file  Loads doc-shell.js on pages containing #here-doc-mount
 //
 // ─────────────────────────────────────────────────────────────────────────────
 // 1. SHARED SPA NAV BUS
@@ -1298,7 +1299,7 @@ function stampMarkdownScopes() {
   // "Explore" site-wide (previously showed the current project's name,
   // read from the og:site_name meta tag; that lookup is no longer needed).
 
-  var TRIGGER_LABEL = { en: "Explore", ja: "Explore" };
+  var TRIGGER_LABEL = { en: "Explore", ja: "探索" };
 
   function setTriggerLabel(text) {
     if (!_btn) return;
@@ -1669,6 +1670,71 @@ function stampMarkdownScopes() {
 })();
 
 // 3b. HEADER "DOCUMENTATION" WORDMARK — removed: the injected wordmark duplicated the "Documentation" already shown in the HERE logo image; the native project picker is hidden separately in CSS.
+
+// 3c. HEADER LOGO (JA) — swaps the "Documentation" logo image for a "ドキュメント" variant when the page is Japanese.
+(function () {
+  var TAG = "__here_header_logo_ja_v1_staging";
+  if (window[TAG]) return;
+  window[TAG] = true;
+
+  var ASSET_BASE = "https://here-dni.github.io/ReadMe-Frontend-customization/assets/images/";
+  var JA_LIGHT = ASSET_BASE + "header-logo-ja-light.svg";
+  var JA_DARK = ASSET_BASE + "header-logo-ja-dark.svg";
+  var EN_MARKER = "Logo__Primary_Navigation";
+  var EN_ATTR = "data-here-logo-en";
+
+  function currentLang() {
+    // GLP test page toggles language in place, so its override wins over the URL.
+    var glp = document.querySelector(".here-glp[data-here-lang-override]");
+    if (glp) return glp.getAttribute("data-here-lang-override") === "ja" ? "ja" : "en";
+    return /\/ja(\/|$|\?)/.test(window.location.pathname || "") ? "ja" : "en";
+  }
+
+  function apply() {
+    var ja = currentLang() === "ja";
+    document.querySelectorAll('img[class*="Header-logo-img"]').forEach(function (img) {
+      var src = img.getAttribute("src") || "";
+      // Remember ReadMe's own EN asset (and refresh it if ReadMe re-renders with a new one).
+      if (src.indexOf(EN_MARKER) !== -1) img.setAttribute(EN_ATTR, src);
+      var en = img.getAttribute(EN_ATTR);
+      if (!en) return;
+      var target = ja ? (en.indexOf("darkmode") !== -1 ? JA_DARK : JA_LIGHT) : en;
+      if (src !== target) img.setAttribute("src", target);
+      var alt = ja ? "HERE ドキュメント" : "HERE Technologies Documentation | HERE Docs";
+      if (img.getAttribute("alt") !== alt) img.setAttribute("alt", alt);
+    });
+  }
+
+  var scheduled = false;
+  function schedule() {
+    if (scheduled) return;
+    scheduled = true;
+    requestAnimationFrame(function () {
+      scheduled = false;
+      apply();
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", apply);
+  } else {
+    apply();
+  }
+
+  try {
+    new MutationObserver(schedule).observe(document.body || document.documentElement, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ["src"],
+    });
+  } catch (e) {}
+
+  if (window.__here_nav_bus_v1 && window.__here_nav_bus_v1.onNav) {
+    window.__here_nav_bus_v1.onNav(schedule);
+  }
+  document.addEventListener("here:langchange", apply);
+})();
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 4. IMAGE ALT → CAPTION BAR v2
@@ -2329,8 +2395,34 @@ function stampMarkdownScopes() {
     '<path d="M14 9H13V7H14C14.2652 7 14.5196 6.89464 14.7071 6.70711C14.8946 6.51957 15 6.26522 15 6C15 5.73478 14.8946 5.48043 14.7071 5.29289C14.5196 5.10536 14.2652 5 14 5H13V3H11V2C11 1.73478 10.8946 1.48043 10.7071 1.29289C10.5196 1.10536 10.2652 1 10 1C9.73478 1 9.48043 1.10536 9.29289 1.29289C9.10536 1.48043 9 1.73478 9 2V3H7V2C7 1.73478 6.89464 1.48043 6.70711 1.29289C6.51957 1.10536 6.26522 1 6 1C5.73478 1 5.48043 1.10536 5.29289 1.29289C5.10536 1.48043 5 1.73478 5 2V3H3V5H2C1.73478 5 1.48043 5.10536 1.29289 5.29289C1.10536 5.48043 1 5.73478 1 6C1 6.26522 1.10536 6.51957 1.29289 6.70711C1.48043 6.89464 1.73478 7 2 7H3V9H2C1.73478 9 1.48043 9.10536 1.29289 9.29289C1.10536 9.48043 1 9.73478 1 10C1 10.2652 1.10536 10.5196 1.29289 10.7071C1.48043 10.8946 1.73478 11 2 11H3V13H5V14C5 14.2652 5.10536 14.5196 5.29289 14.7071C5.48043 14.8946 5.73478 15 6 15C6.26522 15 6.51957 14.8946 6.70711 14.7071C6.89464 14.5196 7 14.2652 7 14V13H9V14C9 14.2652 9.10536 14.5196 9.29289 14.7071C9.48043 14.8946 10.2652 15 10 15C10.2652 15 10.5196 14.8946 10.7071 14.7071C10.8946 14.5196 11 14.2652 11 14V13H13V11H14C14.2652 11 14.5196 10.8946 14.7071 10.7071C14.8946 10.5196 15 10.2652 15 10C15 9.73478 14.8946 9.48043 14.7071 9.29289C14.5196 9.10536 14.2652 9 14 9ZM11 11H5V5H11V11ZM9 9H7V7H9V9Z" fill="#1EF3E4"/>' +
     "</svg>";
 
+  var LABELS = { en: "Ask AI", ja: "AIに質問する" };
+
+  function currentLang() {
+    // GLP test page toggles language in place, so its override wins over the URL.
+    var glp = document.querySelector(".here-glp[data-here-lang-override]");
+    if (glp) return glp.getAttribute("data-here-lang-override") === "ja" ? "ja" : "en";
+    return /\/ja(\/|$|\?)/.test(window.location.pathname || "") ? "ja" : "en";
+  }
+
+  function labelNode(button) {
+    var walker = document.createTreeWalker(button, NodeFilter.SHOW_TEXT);
+    for (var n = walker.nextNode(); n; n = walker.nextNode()) {
+      var text = n.nodeValue.trim();
+      if (text.toLowerCase() === LABELS.en.toLowerCase() || text === LABELS.ja) return n;
+    }
+    return null;
+  }
+
+  function syncLabel(button) {
+    var node = labelNode(button);
+    if (!node) return;
+    var label = LABELS[currentLang()] || LABELS.en;
+    if (node.nodeValue.trim() !== label) node.nodeValue = label;
+  }
+
   function injectIcon() {
     document.querySelectorAll(".rm-AskAi-button").forEach(function (button) {
+      syncLabel(button);
       if (button.querySelector(".custom-ask-ai-icon")) return;
 
       var oldSvg = button.querySelector("svg");
@@ -2344,6 +2436,8 @@ function stampMarkdownScopes() {
     childList: true,
     subtree: true,
   });
+
+  document.addEventListener("here:langchange", injectIcon);
 
   injectIcon();
 })();
@@ -4497,5 +4591,31 @@ function stampMarkdownScopes() {
       window.matchMedia("(prefers-color-scheme: dark)")
         .addEventListener("change", syncTheme);
     }
+  } catch (e) {}
+})();
+// 13. DOC SUB PAGE SHELL: ReadMe skips scripts in page content, so load doc-shell.js once a #here-doc-mount page renders.
+(function () {
+  var SRC = "https://here-dni.github.io/ReadMe-Frontend-customization/doc-shell.js";
+  var observer = null;
+  function check() {
+    if (!document.getElementById("here-doc-mount")) return;
+    if (observer) observer.disconnect();
+    // doc-shell.js follows later SPA routes itself, so it only needs loading once.
+    if (window.__hereDocShell) {
+      window.__hereDocShell.scan();
+      return;
+    }
+    if (document.getElementById("here-doc-shell-js")) return;
+    var s = document.createElement("script");
+    s.id = "here-doc-shell-js";
+    s.src = SRC;
+    s.async = true;
+    document.head.appendChild(s);
+  }
+  check();
+  if (document.getElementById("here-doc-shell-js") || window.__hereDocShell) return;
+  try {
+    observer = new MutationObserver(check);
+    observer.observe(document.documentElement, { childList: true, subtree: true });
   } catch (e) {}
 })();
