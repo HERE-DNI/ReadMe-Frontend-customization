@@ -69,6 +69,14 @@ html:has(#here-doc-mount),
 body:has(#here-doc-mount) {
   overflow-x: clip;
 }
+/* Hide ReadMe's custom page title bar, since the hero carries the title (same rule index-shell.html uses for the GLP). */
+body:has(#here-doc-mount) [class*="SuperHubCustomPage-content-header"],
+body:has(#here-doc-mount) .rm-PageHeader {
+  display: none;
+}
+body:has(#here-doc-mount) [class^="SuperHubCustomPage-content"] {
+  padding: 0;
+}
 
 .hgs *,
 .hgs *::before,

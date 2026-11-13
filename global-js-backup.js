@@ -22,7 +22,8 @@
 //   9. Ask AI — Active Chat Header Title ~line 2728  Renames "Assistant" header in active chat
 //  10. Ask AI — Active Chat Header Chip  ~line 2808  Injects chip icon in active chat header
 //  11. OpenAPI Download Label          near end-of-file  Adds "Download" text to ReadMe's native spec button
-//  12. Contact us Button (site-wide)  end-of-file  Adds Contact us pill next to Ask AI on every page
+//  12. Contact us Button (site-wide)  near end    Adds Contact us pill next to Ask AI on every page
+//  13. Doc Sub Page Shell             end-of-file  Loads doc-shell.js on pages containing #here-doc-mount
 //
 // ─────────────────────────────────────────────────────────────────────────────
 // 1. SHARED SPA NAV BUS
@@ -884,7 +885,7 @@ function stampMarkdownScopes() {
           showInJa: true,
         },
         {
-          text: { en: "Map Content", ja: "Map Content" },
+          text: { en: "HERE Map Content", ja: "HERE Map Content" },
           href: {
             en: "/map-content",
             ja: "/map-content/ja/v1.0/docs/map-content",
@@ -892,8 +893,8 @@ function stampMarkdownScopes() {
           showInJa: false,
         },
         {
-          text: { en: "Mapmaking", ja: "Mapmaking" },
-          href: { en: "/mapmaking", ja: "/mapmaking/ja/v1.0/docs/mapmaking" },
+          text: { en: "Custom Map Builder", ja: "Custom Map Builder" },
+          href: { en: "/custom-map-builder", ja: "/custom-map-builder/ja/v1.0/docs/mapmaking" },
           showInJa: false,
         },
         {
@@ -901,14 +902,6 @@ function stampMarkdownScopes() {
           href: {
             en: "/data-api-fmrg",
             ja: "/data-api-fmrg/ja/v1.0/docs/data-api",
-          },
-          showInJa: false,
-        },
-        {
-          text: { en: "Platform MOM", ja: "Platform MOM" },
-          href: {
-            en: "/platform-mom",
-            ja: "/platform-mom/ja/v1.0/docs/platform-mom",
           },
           showInJa: false,
         },
@@ -1093,7 +1086,7 @@ function stampMarkdownScopes() {
         },
         {
           text: { en: "HERE SDK", ja: "HERE SDK" },
-          href: { en: "/here-sdk", ja: "/here-sdk/ja/v1.0/docs" },
+          href: { en: "/here-sdk", ja: "/here-sdk/ja/v4.0/docs" },
           showInJa: true,
         },
         {
@@ -1159,7 +1152,7 @@ function stampMarkdownScopes() {
           text: { en: "Data SDK", ja: "Data SDK" },
           href: {
             en: "/data-sdk",
-            ja: "/data-sdk/ja/v1.0/docs/data-sdk",
+            ja: "/data-sdk/ja/v4.0/docs/data-sdk",
           },
           showInJa: false,
         },
@@ -3854,5 +3847,31 @@ function stampMarkdownScopes() {
       window.matchMedia("(prefers-color-scheme: dark)")
         .addEventListener("change", syncTheme);
     }
+  } catch (e) {}
+})();
+// 13. DOC SUB PAGE SHELL: ReadMe skips scripts in page content, so load doc-shell.js once a #here-doc-mount page renders.
+(function () {
+  var SRC = "https://here-dni.github.io/ReadMe-Frontend-customization/doc-shell.js";
+  var observer = null;
+  function check() {
+    if (!document.getElementById("here-doc-mount")) return;
+    if (observer) observer.disconnect();
+    // doc-shell.js follows later SPA routes itself, so it only needs loading once.
+    if (window.__hereDocShell) {
+      window.__hereDocShell.scan();
+      return;
+    }
+    if (document.getElementById("here-doc-shell-js")) return;
+    var s = document.createElement("script");
+    s.id = "here-doc-shell-js";
+    s.src = SRC;
+    s.async = true;
+    document.head.appendChild(s);
+  }
+  check();
+  if (document.getElementById("here-doc-shell-js") || window.__hereDocShell) return;
+  try {
+    observer = new MutationObserver(check);
+    observer.observe(document.documentElement, { childList: true, subtree: true });
   } catch (e) {}
 })();
