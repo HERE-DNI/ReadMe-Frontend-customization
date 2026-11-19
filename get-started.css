@@ -15,7 +15,6 @@
    ========================================================================== */
 
 .hgs-steps {
-  margin-top: var(--hds-spacing-2, 8px);
   display: flex;
   flex-direction: column;
   gap: var(--hds-spacing-6, 24px);
@@ -79,18 +78,16 @@
   gap: var(--hds-spacing-1, 4px);
 }
 
-/* Figma "headline-05": 16 / 24, weight 500 */
-.hgs-step__title {
+/* Figma "headline-05": 16 / 24, weight 500, padding 3px 0 1px (":root .hgs" beats the HDS h3 rule) */
+:root .hgs .hgs-step__title {
   margin: 0;
+  padding: 3px 0 1px;
   color: var(--hds-foreground-primary);
   font-family: var(--hgs-font-medium);
   font-size: 16px;
   font-weight: 500;
   line-height: 24px;
-}
-
-.hgs-step__text .hgs-prose {
-  margin-top: var(--hds-spacing-1, 4px);
+  letter-spacing: normal;
 }
 
 .hgs-step__links {
@@ -106,7 +103,7 @@
 
 /* Numbered instructions inside a step keep the HDS list markers and use body copy type. */
 .hgs-step__list {
-  margin: var(--hds-spacing-2, 8px) 0 0;
+  margin: var(--hds-spacing-4, 16px) 0 0;
   color: var(--hds-foreground-secondary);
   font-family: var(--hgs-font-regular);
   font-size: 16px;
@@ -121,8 +118,8 @@
   font-weight: 500;
 }
 
-.hgs-step__list code,
-.hgs-prose code {
+:root .hgs .hgs-step__list code,
+:root .hgs .hgs-prose code {
   padding: 1px 6px;
   border-radius: 4px;
   background: var(--hds-background-object);
@@ -165,7 +162,6 @@
    ========================================================================== */
 
 .hgs-videos {
-  margin-top: var(--hds-spacing-2, 8px);
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--hds-spacing-4, 16px);
@@ -232,8 +228,10 @@
 }
 
 /* Figma tablet "headline-04": 20 / 24, weight 500 */
-.hgs-video__title {
+:root .hgs .hgs-video__title {
   margin: 0;
+  padding: 0;
+  letter-spacing: normal;
   color: var(--hds-foreground-primary);
   font-family: var(--hgs-font-medium);
   font-size: 20px;

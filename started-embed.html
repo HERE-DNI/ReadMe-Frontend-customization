@@ -12,7 +12,7 @@
   <!-- Hero -->
   <section class="hgs-hero" aria-labelledby="hgs-hero-title">
     <div class="hgs-hero__inner">
-      <hds-button class="hgs-hero__back" variant="subtle" size="small" icon="arrow-left" icon-category="core-ui" data-hgs-href="/">Back to documentation</hds-button>
+      <hds-button class="hgs-hero__back" variant="subtle-quiet" size="small" icon="arrow-left" icon-category="core-ui" data-hgs-href="/">Back to documentation</hds-button>
 
       <div class="hgs-hero__flags">
         <hds-flag class="hgs-hero__flag" variant="custom" size="medium">Get started</hds-flag>
@@ -181,10 +181,12 @@
                   </p>
                 </div>
 
+                <!-- Code block: the language label is optional, line numbers are added by doc-shell.js -->
                 <div class="hgs-code">
                   <div class="hgs-code__panel">
-                    <hds-button class="hgs-code__copy" variant="subtle" size="extra-small" icon="copy" icon-category="file" data-hgs-copy="gs-request">Copy</hds-button>
                     <pre class="hgs-code__pre" id="gs-request"><code>curl "https://geocode.search.hereapi.com/v1/geocode?q=Berlin&amp;apiKey=YOUR_API_KEY"</code></pre>
+                    <span class="hgs-code__lang">cURL</span>
+                    <hds-button class="hgs-code__copy" variant="subtle-quiet" size="extra-small" icon-right="copy" icon-right-category="file" data-hgs-copy="gs-request">Copy</hds-button>
                   </div>
                 </div>
 
@@ -192,7 +194,6 @@
 
                 <div class="hgs-code">
                   <div class="hgs-code__panel">
-                    <hds-button class="hgs-code__copy" variant="subtle" size="extra-small" icon="copy" icon-category="file" data-hgs-copy="gs-response">Copy</hds-button>
                     <pre class="hgs-code__pre" id="gs-response"><code>{
   "items": [
     {
@@ -202,6 +203,8 @@
     }
   ]
 }</code></pre>
+                    <span class="hgs-code__lang">JSON</span>
+                    <hds-button class="hgs-code__copy" variant="subtle-quiet" size="extra-small" icon-right="copy" icon-right-category="file" data-hgs-copy="gs-response">Copy</hds-button>
                   </div>
                 </div>
 
@@ -215,45 +218,39 @@
           </ol>
         </section>
 
-        <!-- Where do I go next: copy one li.hgs-card to add a card -->
+        <!-- Where do I go next: copy one li.hgs-crosslink to add a link -->
         <section class="hgs-section" id="where-next">
           <header class="hgs-section__head">
             <h2 class="hgs-section__title">Where do I go next?</h2>
             <p class="hgs-section__kicker">Keep exploring with your new HERE app</p>
           </header>
 
-          <ul class="hgs-cards hgs-cards--3 hgs-plain-list">
-            <li class="hgs-card">
-              <span class="hgs-card__icon" aria-hidden="true">
-                <hds-icon name="search" category="core-ui" icon-style="outline" size="24px"></hds-icon>
-              </span>
-              <h3 class="hgs-card__title">Search for a place and show it on a map</h3>
-              <p class="hgs-card__body">Search for a place, retrieve its coordinates, and display it on an interactive map.</p>
-              <div class="hgs-card__action">
-                <hds-button variant="link" size="small" icon-right="chevron-right" icon-right-category="core-ui" data-hgs-href="/get-started/page/search-for-a-place-and-show-it-on-a-map">Read the guide</hds-button>
-              </div>
+          <ul class="hgs-crosslinks hgs-plain-list">
+            <li class="hgs-crosslink">
+              <a class="hgs-crosslink__link" href="/get-started/page/search-for-a-place-and-show-it-on-a-map">
+                <span class="hgs-crosslink__label">Search for a place and show it on a map</span>
+                <span class="hgs-crosslink__icon" aria-hidden="true">
+                  <hds-icon name="arrow-right" category="core-ui" icon-style="outline" size="24px"></hds-icon>
+                </span>
+              </a>
             </li>
 
-            <li class="hgs-card">
-              <span class="hgs-card__icon" aria-hidden="true">
-                <hds-icon name="route" category="travel-transport-tracking" icon-style="outline" size="24px"></hds-icon>
-              </span>
-              <h3 class="hgs-card__title">Calculate a route between two locations</h3>
-              <p class="hgs-card__body">Calculate a route between an origin and destination with the Routing API.</p>
-              <div class="hgs-card__action">
-                <hds-button variant="link" size="small" icon-right="chevron-right" icon-right-category="core-ui" data-hgs-href="/get-started/update/page/calculate-a-route-between-two-locations">Read the guide</hds-button>
-              </div>
+            <li class="hgs-crosslink">
+              <a class="hgs-crosslink__link" href="/get-started/update/page/calculate-a-route-between-two-locations">
+                <span class="hgs-crosslink__label">Calculate a route between two locations</span>
+                <span class="hgs-crosslink__icon" aria-hidden="true">
+                  <hds-icon name="arrow-right" category="core-ui" icon-style="outline" size="24px"></hds-icon>
+                </span>
+              </a>
             </li>
 
-            <li class="hgs-card">
-              <span class="hgs-card__icon" aria-hidden="true">
-                <hds-icon name="traffic-lights" category="travel-transport-tracking" icon-style="outline" size="24px"></hds-icon>
-              </span>
-              <h3 class="hgs-card__title">Build traffic-aware routing</h3>
-              <p class="hgs-card__body">Calculate routes that account for current traffic conditions.</p>
-              <div class="hgs-card__action">
-                <hds-button variant="link" size="small" icon-right="chevron-right" icon-right-category="core-ui" data-hgs-href="/get-started/update/page/build-traffic-aware-routing">Read the guide</hds-button>
-              </div>
+            <li class="hgs-crosslink">
+              <a class="hgs-crosslink__link" href="/get-started/update/page/build-traffic-aware-routing">
+                <span class="hgs-crosslink__label">Build traffic-aware routing</span>
+                <span class="hgs-crosslink__icon" aria-hidden="true">
+                  <hds-icon name="arrow-right" category="core-ui" icon-style="outline" size="24px"></hds-icon>
+                </span>
+              </a>
             </li>
           </ul>
         </section>

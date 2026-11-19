@@ -77,6 +77,18 @@ body:has(#here-doc-mount) .rm-PageHeader {
 body:has(#here-doc-mount) [class^="SuperHubCustomPage-content"] {
   padding: 0;
 }
+/* Figma navbar feedback: keep ReadMe's header controls inside the same 1388px grid (plus 32px gutters) as the hero and body. */
+body:has(#here-doc-mount) .App header .rm-Container {
+  max-width: 1452px;
+  padding-left: 32px;
+  padding-right: 32px;
+}
+@media (max-width: 767px) {
+  body:has(#here-doc-mount) .App header .rm-Container {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
 
 .hgs *,
 .hgs *::before,
@@ -145,22 +157,40 @@ body:has(#here-doc-mount) [class^="SuperHubCustomPage-content"] {
   display: none !important;
 }
 
+/* HDS also pads every list item 7px 0 1px at (0,2,2); cards keep their own padding. */
+:root .hgs .hgs-plain-list > li:not(.hgs-card) {
+  margin: 0;
+  padding: 0;
+}
+
 /* --------------------------------------------------------------------------
    Shared prose
    Figma "Global/Body/body": 16 / 24, letter-spacing -0.0125em
    -------------------------------------------------------------------------- */
 
-.hgs-prose {
+/* HDS types every h1-h6 and p at (0,2,1), so shell text rules use the ":root .hgs" prefix (0,3,0) to keep the Figma scale. */
+:root .hgs .hgs-prose {
   margin: 0;
+  padding: 0;
   color: var(--hds-foreground-secondary);
   font-family: var(--hgs-font-regular);
   font-size: 16px;
+  font-weight: 400;
   line-height: 24px;
   letter-spacing: -0.0125em;
 }
 
-.hgs-prose + .hgs-prose {
-  margin-top: var(--hds-spacing-4, 16px);
+/* Figma separates paragraphs with one blank 24px line; inside flex stacks the margin tops up the existing gap. */
+:root .hgs .hgs-prose + .hgs-prose {
+  margin-top: var(--hds-spacing-6, 24px);
+}
+
+:root .hgs .hgs-section > .hgs-prose + .hgs-prose {
+  margin-top: var(--hds-spacing-2, 8px);
+}
+
+:root .hgs .hgs-step__text > .hgs-prose + .hgs-prose {
+  margin-top: 20px;
 }
 
 /* ==========================================================================
@@ -210,6 +240,7 @@ body:has(#here-doc-mount) [class^="SuperHubCustomPage-content"] {
   padding: var(--hds-spacing-6, 24px) var(--hgs-gutter);
 }
 
+/* Figma: only the back link is spaced off (16px); flag, title, intro and meta stack with no gap. */
 .hgs-hero__inner {
   max-width: var(--hgs-max);
   margin: 0 auto;
@@ -217,12 +248,13 @@ body:has(#here-doc-mount) [class^="SuperHubCustomPage-content"] {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: var(--hds-spacing-4, 16px);
+  gap: 0;
 }
 
 /* Back link sits flush with the grid, so pull off the button's own inset. */
 .hgs-hero__back {
   margin-left: -12px;
+  margin-bottom: var(--hds-spacing-4, 16px);
 }
 
 .hgs-hero__flags {
@@ -238,9 +270,10 @@ body:has(#here-doc-mount) [class^="SuperHubCustomPage-content"] {
   --hds-flag-custom-font-color: var(--hds-foreground-primary);
 }
 
-/* Figma "Desktop/Headlines/headline-02": 48 / 56, weight 500, ls -0.0208em */
-.hgs-hero__title {
+/* Figma "Desktop/Headlines/headline-02": 48 / 56, weight 500, ls -0.0208em, 4px block padding */
+:root .hgs .hgs-hero__title {
   margin: 0;
+  padding: var(--hds-spacing-1, 4px) 0;
   max-width: var(--hgs-content-col);
   color: var(--hds-foreground-primary);
   font-family: var(--hgs-font-medium);
@@ -250,9 +283,10 @@ body:has(#here-doc-mount) [class^="SuperHubCustomPage-content"] {
   letter-spacing: -0.0208em;
 }
 
-/* Figma hero sub-headline: 20 / 24, weight 350, clamped to the 920px column */
-.hgs-hero__intro {
+/* Figma hero sub-headline: 20 / 24, weight 350, padding 1px 0 7px, clamped to the 920px column */
+:root .hgs .hgs-hero__intro {
   margin: 0;
+  padding: 1px 0 7px;
   max-width: var(--hgs-content-col);
   color: var(--hds-foreground-primary);
   font-family: var(--hgs-font-regular);
@@ -266,7 +300,7 @@ body:has(#here-doc-mount) [class^="SuperHubCustomPage-content"] {
   align-items: center;
   gap: var(--hds-spacing-2, 8px);
   min-height: 32px;
-  margin-top: var(--hds-spacing-2, 8px);
+  padding-top: var(--hds-spacing-4, 16px);
 }
 
 .hgs-meta-item {
@@ -282,6 +316,11 @@ body:has(#here-doc-mount) [class^="SuperHubCustomPage-content"] {
   font-size: 14px;
   line-height: 20px;
   letter-spacing: -0.0286em;
+}
+
+/* Figma: the "Last updated" date after the divider uses the primary text colour. */
+.hgs-meta-divider + .hgs-meta-item .hgs-meta-item__text {
+  color: var(--hds-foreground-primary);
 }
 
 .hgs-meta-divider {
@@ -310,10 +349,11 @@ body:has(#here-doc-mount) [class^="SuperHubCustomPage-content"] {
   align-items: start;
 }
 
+/* Figma: 56px between sections. */
 .hgs-content {
   display: flex;
   flex-direction: column;
-  gap: 64px;
+  gap: 56px;
   min-width: 0;
 }
 
@@ -335,27 +375,31 @@ body:has(#here-doc-mount) [class^="SuperHubCustomPage-content"] {
 }
 
 /* Figma "headline-04": 24 / 28, weight 500 */
-.hgs-section__title {
+:root .hgs .hgs-section__title {
   margin: 0;
+  padding: 0;
   color: var(--hds-foreground-primary);
   font-family: var(--hgs-font-medium);
   font-size: 24px;
   font-weight: 500;
   line-height: 28px;
+  letter-spacing: normal;
 }
 
 /* The first section uses the larger "headline-03": 36 / 44, ls -0.0278em */
-.hgs-section__title--lead {
+:root .hgs .hgs-section__title--lead {
   font-size: 36px;
   line-height: 44px;
   letter-spacing: -0.0278em;
 }
 
-.hgs-section__kicker {
+:root .hgs .hgs-section__kicker {
   margin: 0;
+  padding: 0;
   color: var(--hds-foreground-secondary);
   font-family: var(--hgs-font-regular);
   font-size: 16px;
+  font-weight: 400;
   line-height: 24px;
   letter-spacing: -0.0125em;
 }
@@ -372,7 +416,6 @@ body:has(#here-doc-mount) [class^="SuperHubCustomPage-content"] {
 /* -------- Where do I go next? (crosslink table) --------------------------- */
 
 .hgs-crosslinks {
-  margin-top: var(--hds-spacing-2, 8px);
   overflow: hidden;
   border: 1px solid var(--hds-foreground-divider);
   border-radius: 8px;
@@ -388,7 +431,7 @@ body:has(#here-doc-mount) [class^="SuperHubCustomPage-content"] {
   justify-content: space-between;
   gap: var(--hds-spacing-4, 16px);
   min-height: 56px;
-  padding: var(--hds-spacing-4, 16px);
+  padding: var(--hds-spacing-1, 4px) var(--hds-spacing-4, 16px);
   text-decoration: none;
   transition: background-color 120ms ease;
 }
@@ -615,12 +658,12 @@ body:has(#here-doc-mount) [class^="SuperHubCustomPage-content"] {
     order: -1;
   }
 
-  .hgs-hero__title {
+  :root .hgs .hgs-hero__title {
     font-size: 36px;
     line-height: 44px;
   }
 
-  .hgs-section__title--lead {
+  :root .hgs .hgs-section__title--lead {
     font-size: 28px;
     line-height: 36px;
   }
@@ -635,12 +678,12 @@ body:has(#here-doc-mount) [class^="SuperHubCustomPage-content"] {
     padding: var(--hds-spacing-4, 16px) 0;
   }
 
-  .hgs-hero__title {
+  :root .hgs .hgs-hero__title {
     font-size: 28px;
     line-height: 36px;
   }
 
-  .hgs-hero__intro {
+  :root .hgs .hgs-hero__intro {
     font-size: 18px;
   }
 

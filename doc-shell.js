@@ -293,6 +293,26 @@
     }, 1600);
   }
 
+  // Figma code blocks show line numbers; the gutter sits beside the <pre> so copy only picks up the code.
+  function addLineNumbers() {
+    toArray(root.querySelectorAll(".hgs-code__panel > .hgs-code__pre")).forEach(
+      function (pre) {
+        var panel = pre.parentNode;
+        if (panel.querySelector(":scope > .hgs-code__gutter")) return;
+
+        var count = pre.textContent.replace(/\n$/, "").split("\n").length;
+        var numbers = [];
+        for (var i = 1; i <= count; i += 1) numbers.push(i);
+
+        var gutter = document.createElement("span");
+        gutter.className = "hgs-code__gutter";
+        gutter.setAttribute("aria-hidden", "true");
+        gutter.textContent = numbers.join("\n");
+        panel.insertBefore(gutter, pre);
+      }
+    );
+  }
+
   /* -------------------------------------------------------------------------
      5. Media play buttons — placeholder for the real player/demo
      ---------------------------------------------------------------------- */
@@ -373,6 +393,7 @@
     entries = getTocEntries();
     initTheme();
     initLanguageSwitch();
+    addLineNumbers();
     syncOnScroll();
   }
 
