@@ -8,7 +8,7 @@
    "On this page" navigation and the footer.
 
    Page-specific blocks live in their own stylesheet next to this one:
-     get-started.css   icon-rail steps, video library cards
+     get-started blocks (icon-rail steps, quick start accordions, code samples) are at the end of this file
      use-case.css      numbered flow steps, card grids, code example
 
    Load order matters — this file first, then the page stylesheet.
@@ -191,44 +191,6 @@ body:has(#here-doc-mount) .App header .rm-Container {
 
 :root .hgs .hgs-step__text > .hgs-prose + .hgs-prose {
   margin-top: 20px;
-}
-
-/* ==========================================================================
-   1. NAVBAR TOP
-   ========================================================================== */
-
-.hgs-navbar {
-  position: sticky;
-  top: 0;
-  z-index: 40;
-  background: var(--hds-background-secondary);
-  border-bottom: 1px solid var(--hds-foreground-divider);
-}
-
-.hgs-navbar hds-navbar-top {
-  --hds-navbar-top-max-width: var(--hgs-max);
-  --hds-navbar-top-min-lr-spacing: var(--hgs-gutter);
-  display: block;
-  height: var(--hgs-navbar-h);
-}
-
-/* "Documentation" product name — Figma subheadline 18 / 24 */
-.hgs-navbar__title {
-  color: var(--hds-foreground-primary);
-  font-family: var(--hgs-font-regular);
-  font-size: 18px;
-  line-height: 24px;
-  text-decoration: none;
-}
-
-.hgs-navbar__title:hover {
-  text-decoration: none;
-}
-
-.hgs-navbar__tray {
-  display: flex;
-  align-items: center;
-  gap: var(--hds-spacing-4, 16px);
 }
 
 /* ==========================================================================
@@ -488,41 +450,6 @@ body:has(#here-doc-mount) .App header .rm-Container {
   text-decoration: none;
 }
 
-/* ==========================================================================
-   4. FOOTER
-   ========================================================================== */
-
-.hgs-footer {
-  background: var(--hds-background-primary);
-}
-
-.hgs-footer__inner {
-  max-width: var(--hgs-max);
-  margin: 0 auto;
-  padding: 64px var(--hgs-gutter);
-  display: flex;
-  flex-direction: column;
-  gap: var(--hds-spacing-8, 32px);
-}
-
-.hgs-footer__row {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--hds-spacing-4, 16px);
-}
-
-.hgs-footer__assist {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--hds-spacing-4, 16px);
-}
-
-.hgs-footer__spacer {
-  flex: 1 1 auto;
-  min-width: 16px;
-}
-
 .hgs-footer__lang {
   display: inline-flex;
   overflow: hidden;
@@ -554,79 +481,6 @@ body:has(#here-doc-mount) .App header .rm-Container {
 .hgs-footer__lang button:focus-visible {
   outline: 2px solid var(--hds-action);
   outline-offset: -2px;
-}
-
-.hgs-footer__column {
-  display: flex;
-  flex-direction: column;
-  gap: var(--hds-spacing-4, 16px);
-}
-
-.hgs-footer__columnTitle {
-  margin: 0;
-  color: var(--hds-foreground-primary);
-  font-family: var(--hgs-font-regular);
-  font-size: 16px;
-  line-height: 24px;
-  letter-spacing: -0.0125em;
-}
-
-.hgs-footer__list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--hds-spacing-2, 8px);
-}
-
-.hgs-footer__list a,
-.hgs-footer__legal a {
-  color: var(--hds-foreground-primary);
-  font-family: var(--hgs-font-medium);
-  font-size: 14px;
-  line-height: 16px;
-  letter-spacing: -0.0286em;
-  text-decoration: none;
-}
-
-.hgs-footer__list a:hover,
-.hgs-footer__legal a:hover {
-  text-decoration: underline;
-}
-
-.hgs-footer__rule {
-  height: 1px;
-  margin: 0;
-  border: 0;
-  background: var(--hds-foreground-divider);
-}
-
-.hgs-footer__bottom {
-  display: flex;
-  align-items: center;
-  gap: var(--hds-spacing-8, 32px);
-}
-
-.hgs-footer__copyright {
-  margin: 0;
-  flex: 0 0 auto;
-  color: var(--hds-foreground-secondary);
-  font-family: var(--hgs-font-regular);
-  font-size: 14px;
-  line-height: 20px;
-}
-
-.hgs-footer__legal {
-  flex: 1 1 auto;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: flex-end;
-  gap: var(--hds-spacing-8, 32px);
-}
-
-/* 4px brand bar closing the page. */
-.hgs-footer__accentBar {
-  height: 4px;
-  background: var(--hds-accent);
 }
 
 /* ==========================================================================
@@ -694,25 +548,6 @@ body:has(#here-doc-mount) .App header .rm-Container {
   .hgs-crosslink__link {
     align-items: flex-start;
   }
-
-  .hgs-footer__row {
-    flex-direction: column;
-  }
-
-  .hgs-footer__spacer {
-    display: none;
-  }
-
-  .hgs-footer__bottom {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--hds-spacing-4, 16px);
-  }
-
-  .hgs-footer__legal {
-    justify-content: flex-start;
-    gap: var(--hds-spacing-4, 16px);
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -722,5 +557,245 @@ body:has(#here-doc-mount) .App header .rm-Container {
 
   .hgs-crosslink__link {
     transition: none;
+  }
+}
+/* Get Started page blocks: icon-rail steps, quick start accordions, code samples. */
+
+/* ==========================================================================
+   QUICK START — icon-rail steps
+   ========================================================================== */
+
+.hgs-steps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hds-spacing-6, 24px);
+}
+
+.hgs-step {
+  display: flex;
+  align-items: stretch;
+  gap: var(--hds-spacing-4, 16px);
+}
+
+/* Icon badge plus the hairline that runs down the rest of the step. */
+.hgs-step__rail {
+  flex: 0 0 33px;
+  width: 33px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--hds-spacing-1, 4px);
+}
+
+.hgs-step__badge {
+  flex: 0 0 auto;
+  width: 33px;
+  height: 33px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--hds-background-secondary);
+  border: 1px solid var(--hds-foreground-divider);
+  border-radius: var(--hds-border-radius, 4px);
+  color: var(--hds-foreground-primary);
+  --hds-icon-color: var(--hds-foreground-primary);
+}
+
+.hgs-step__line {
+  flex: 1 1 auto;
+  width: 1px;
+  min-height: 24px;
+  background: var(--hds-foreground-divider);
+}
+
+/* The final step has no following step, so the rail stops at the badge. */
+.hgs-step--last .hgs-step__line {
+  display: none;
+}
+
+.hgs-step__body {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding-top: var(--hds-spacing-1, 4px);
+  display: flex;
+  flex-direction: column;
+  gap: var(--hds-spacing-4, 16px);
+}
+
+.hgs-step__text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--hds-spacing-1, 4px);
+}
+
+/* Figma "headline-05": 16 / 24, weight 500, padding 3px 0 1px (":root .hgs" beats the HDS h3 rule) */
+:root .hgs .hgs-step__title {
+  margin: 0;
+  padding: 3px 0 1px;
+  color: var(--hds-foreground-primary);
+  font-family: var(--hgs-font-medium);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  letter-spacing: normal;
+}
+
+.hgs-step__links {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--hds-spacing-2, 8px);
+}
+
+/* Only direct link buttons take the offset; buttons inside accordions and code panels keep their own position. */
+.hgs-step__links > hds-button {
+  margin-left: -12px;
+}
+
+/* Accordions fill the column; the links gap supplies the spacing to neighbouring buttons. */
+.hgs-step__links > hds-accordion {
+  align-self: stretch;
+  width: 100%;
+}
+
+/* Prose that follows a code sample inside an accordion needs room above it. */
+.hgs-step__links hds-accordion-item .hgs-code + .hgs-prose {
+  margin-top: var(--hds-spacing-4, 16px);
+}
+
+/* Numbered instructions inside a step keep the HDS list markers and use body copy type. */
+.hgs-step__list {
+  margin: var(--hds-spacing-4, 16px) 0 0;
+  color: var(--hds-foreground-secondary);
+  font-family: var(--hgs-font-regular);
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.0125em;
+}
+
+.hgs-step__list strong,
+.hgs-prose strong {
+  color: var(--hds-foreground-primary);
+  font-family: var(--hgs-font-medium);
+  font-weight: 500;
+}
+
+:root .hgs .hgs-step__list code,
+:root .hgs .hgs-prose code {
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: var(--hds-background-object);
+  color: var(--hds-foreground-primary);
+  font-family: var(--hgs-font-mono);
+  font-size: 14px;
+}
+
+/* Animated walkthrough below the introduction copy. */
+.hgs-figure {
+  margin: var(--hds-spacing-6, 24px) 0 0;
+  overflow: hidden;
+  border: 1px solid var(--hds-foreground-divider);
+  border-radius: 8px;
+}
+
+.hgs-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* HDS gives every ul li a 7px 0 1px padding at (0,2,2), which beats the card's own padding. */
+[data-styles="hds"] .hgs-cards > li.hgs-card {
+  padding: var(--hds-spacing-4, 16px);
+}
+
+.hgs-card__action hds-button {
+  margin-left: -12px;
+}
+
+/* Code samples inside quick start accordions, same rules as use-case.css. */
+.hgs-code {
+  margin-top: var(--hds-spacing-2, 8px);
+}
+.hgs-code hds-tabs {
+  display: block;
+}
+.hgs-code__panel {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  overflow: hidden;
+  padding: var(--hds-spacing-2, 8px);
+  background: var(--hds-background-primary);
+  border: 0;
+  border-radius: var(--hds-border-radius, 4px);
+}
+.hgs-code__gutter {
+  flex: 0 0 auto;
+  min-width: 32px;
+  padding-right: 12px;
+  color: rgb(0 118 160 / 35%);
+  font-family: var(--hgs-font-mono);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  text-align: right;
+  white-space: pre;
+  user-select: none;
+}
+:root .hgs .hgs-code__pre {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin: 0;
+  padding: 0 88px 0 0;
+  overflow-x: auto;
+  background: transparent;
+  border: 0;
+  color: var(--hds-foreground-secondary);
+  font-family: var(--hgs-font-mono);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  tab-size: 2;
+  white-space: pre;
+}
+:root .hgs .hgs-code__pre code {
+  font: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  white-space: inherit;
+}
+.hgs-code__lang {
+  position: absolute;
+  top: var(--hds-spacing-2, 8px);
+  right: var(--hds-spacing-3, 12px);
+  z-index: 1;
+  color: var(--hds-action);
+  font-family: var(--hgs-font-regular);
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: -0.0167em;
+}
+.hgs-code__copy {
+  position: absolute;
+  bottom: var(--hds-spacing-2, 8px);
+  right: var(--hds-spacing-2, 8px);
+  z-index: 1;
+}
+.hgs-code__panel:has(.hgs-code__copy) {
+  min-height: 40px;
+}
+.hgs-code__panel:has(.hgs-code__lang):has(.hgs-code__copy) {
+  min-height: 60px;
+}
+@media (max-width: 767px) {
+  :root .hgs .hgs-code__pre {
+    padding-right: 0;
+    padding-bottom: 28px;
   }
 }

@@ -1,10 +1,8 @@
 <HTMLBlock>{`
 <!-- Paste this whole file into the ReadMe custom page (MDX). Inside the block use only HTML comments, and no backticks or dollar-brace pairs. -->
 
-<!-- Shared shell CSS, same on every page. -->
+<!-- Shell and page CSS, same on every page. -->
 <link rel="stylesheet" href="https://here-dni.github.io/ReadMe-Frontend-customization/doc-shell.css" />
-<!-- Page-specific CSS, swap this one per page. -->
-<link rel="stylesheet" href="https://here-dni.github.io/ReadMe-Frontend-customization/get-started.css" />
 
 <!-- Wrapper: keep the id and classes, they drive the full-width layout and the HDS theme. -->
 <div id="here-doc-mount" class="hgs" data-styles="hds" data-theme="hds-web-product-light-theme">
@@ -58,18 +56,13 @@
             location-based experiences. This page is the shortest path from a
             blank editor to a working feature.
           </p>
-          <p class="hgs-prose">
-            If you prefer to learn by watching, jump to the video library. If
-            you'd rather copy a working project and edit it, head to the
-            sample projects below.
-          </p>
         </section>
 
         <!-- Quick start: copy one li.hgs-step to add a step, and give the last one the hgs-step--last class -->
         <section class="hgs-section" id="quick-start">
           <header class="hgs-section__head">
             <h2 class="hgs-section__title">Quick start</h2>
-            <p class="hgs-section__kicker">In four steps</p>
+            <p class="hgs-section__kicker">In three steps</p>
           </header>
 
           <ol class="hgs-steps hgs-plain-list">
@@ -100,9 +93,43 @@
                 </div>
 
                 <div class="hgs-step__links">
-                  <hds-button variant="link" size="small" icon-right="chevron-right" icon-right-category="core-ui" data-hgs-href="https://platform.here.com/sign-up">Create a free developer account</hds-button>
-                  <hds-button variant="link" size="small" icon-right="chevron-right" icon-right-category="core-ui" data-hgs-href="/identity-and-access-management/dev_guide/topics/plat-using-apikeys.html">Generate an API key</hds-button>
-                  <hds-button variant="link" size="small" icon-right="chevron-right" icon-right-category="core-ui" data-hgs-href="/identity-and-access-management/dev_guide/index.html">Keep your credentials safe</hds-button>
+                  <hds-accordion expand-mode="many" arrow-position="end">
+                    <hds-accordion-item headline="Create a free developer account">
+                      <div>
+                        <ol class="hgs-step__list">
+                          <li>Go to the <a href="https://platform.here.com">HERE platform</a>.</li>
+                          <li>Select <strong>Sign up</strong>.</li>
+                          <li>Enter your email address and complete the registration steps.</li>
+                          <li>Verify your email address.</li>
+                          <li>Click <strong>Sign in</strong> on the <a href="https://platform.here.com">HERE platform</a> and enter your HERE account credentials.</li>
+                        </ol>
+                      </div>
+                    </hds-accordion-item>
+                  </hds-accordion>
+                  <hds-accordion expand-mode="many" arrow-position="end">
+                    <hds-accordion-item headline="Generate an API key">
+                      <div>
+                        <p class="hgs-prose">
+                          A project contains the HERE services your application can use. An app represents your application and stores the credentials it uses to access those services.
+                        </p>
+                        <p class="hgs-prose">
+                          An API key authenticates your application when it sends requests to HERE APIs.
+                        </p>
+                        <ol class="hgs-step__list">
+                          <li>Select <strong>Projects Manager</strong> from the launcher.</li>
+                          <li>Select <strong>Create new project</strong>, fill in the required fields, and then select <strong>Create</strong>.</li>
+                          <li>In the project, select the <strong>Resources</strong> tab.</li>
+                          <li>Link the HERE service that you want to call. For the request in this guide, link <strong>Geocoding and Search</strong>.</li>
+                          <li>Select <strong>Access Manager</strong> from the launcher.</li>
+                          <li>On the <strong>Apps</strong> tab, select <strong>Create new app</strong>.</li>
+                          <li>Enter the required information, then select <strong>Create app</strong>.</li>
+                          <li>On the <strong>Apps</strong> tab, select the app that you registered.</li>
+                          <li>On the <em>Credentials</em> tab, click <strong>Create API key</strong>.</li>
+                          <li>Copy the API key. You will use it to authenticate the request in the next step.</li>
+                        </ol>
+                      </div>
+                    </hds-accordion-item>
+                  </hds-accordion>
                 </div>
               </div>
             </li>
@@ -134,15 +161,51 @@
                 </div>
 
                 <div class="hgs-step__links">
-                  <hds-button variant="link" size="small" icon-right="chevron-right" icon-right-category="core-ui" data-hgs-href="/geocoding-and-search/dev_guide/index.html">Geocoding &amp; Search quick start</hds-button>
-                  <hds-button variant="link" size="small" icon-right="chevron-right" icon-right-category="core-ui" data-hgs-href="/routing-api/dev_guide/index.html">Calculate a route</hds-button>
-                  <hds-button variant="link" size="small" icon-right="chevron-right" icon-right-category="core-ui" data-hgs-href="/maps-api-for-js/dev_guide/index.html">Render your first map</hds-button>
+                  <hds-accordion expand-mode="many" arrow-position="end">
+                    <hds-accordion-item headline="Geocoding &amp; Search quick start">
+                      <div>
+                        <p class="hgs-prose">
+                          This request uses your API key to call the Geocoding and Search service that you linked to your project.
+                        </p>
+                        <div class="hgs-code">
+                          <div class="hgs-code__panel">
+                            <pre class="hgs-code__pre" id="gs-request"><code>curl "https://geocode.search.hereapi.com/v1/geocode?q=Berlin&amp;apiKey=YOUR_API_KEY"</code></pre>
+                            <span class="hgs-code__lang">cURL</span>
+                            <hds-button class="hgs-code__copy" variant="subtle-quiet" size="extra-small" icon-right="copy" icon-right-category="file" data-hgs-copy="gs-request">Copy</hds-button>
+                          </div>
+                        </div>
+                        <p class="hgs-prose">
+                          The request returns a JSON response with location results:
+                        </p>
+                        <div class="hgs-code">
+                          <div class="hgs-code__panel">
+                            <pre class="hgs-code__pre" id="gs-response"><code>{
+  "items": [
+    {
+      "title": "Berlin, Deutschland",
+      "id": "here:cm:namedplace:20187429",
+      "resultType": "locality"
+    }
+  ]
+}</code></pre>
+                            <span class="hgs-code__lang">JSON</span>
+                            <hds-button class="hgs-code__copy" variant="subtle-quiet" size="extra-small" icon-right="copy" icon-right-category="file" data-hgs-copy="gs-response">Copy</hds-button>
+                          </div>
+                        </div>
+                        <p class="hgs-prose">
+                          If the request returns an authentication error, verify that you replaced <code>YOUR_API_KEY</code> with the complete API key and linked Geocoding and Search to your project.
+                        </p>
+                      </div>
+                    </hds-accordion-item>
+                  </hds-accordion>
+                  <hds-button variant="link" size="small" icon-right="chevron-right" icon-right-category="core-ui" data-hgs-href="/get-started/page/calculate-a-route-between-two-locations">Calculate a route</hds-button>
+                  <hds-button variant="link" size="small" icon-right="chevron-right" icon-right-category="core-ui" data-hgs-href="/get-started/page/search-for-a-place-and-show-it-on-a-map">Render your first map</hds-button>
                 </div>
               </div>
             </li>
 
             <!-- Step 3 -->
-            <li class="hgs-step">
+            <li class="hgs-step hgs-step--last">
               <div class="hgs-step__rail" aria-hidden="true">
                 <span class="hgs-step__badge">
                   <hds-icon name="library" category="poi" icon-style="outline" size="24px"></hds-icon>
@@ -157,135 +220,19 @@
                   <p class="hgs-prose">
                     A short read goes a long way. The basics cover how
                     authentication works, how coordinates are expressed, how
-                    rate limits apply, and how HERE products fit together so
-                    you can pick the right one for the job.
-                  </p>
-                  <p class="hgs-prose">
-                    Skim the glossary if you're new to mapping terms like
-                    geocoding, isolines, or map tiles.
+                    rate limits apply, and the coverage level for countries around the
+                    world.
                   </p>
                 </div>
 
                 <div class="hgs-step__links">
                   <hds-button variant="link" size="small" icon-right="chevron-right" icon-right-category="core-ui" data-hgs-href="/intro-to-mapping-concepts/dev_guide/index.html">Intro to mapping concepts</hds-button>
                   <hds-button variant="link" size="small" icon-right="chevron-right" icon-right-category="core-ui" data-hgs-href="/usage/dev_guide/index.html">Rate limits and quotas</hds-button>
-                  <hds-button variant="link" size="small" icon-right="chevron-right" icon-right-category="core-ui" data-hgs-href="/intro-to-mapping-concepts/dev_guide/topics/glossary.html">Mapping glossary</hds-button>
-                </div>
-              </div>
-            </li>
-
-            <!-- Step 4 -->
-            <li class="hgs-step hgs-step--last">
-              <div class="hgs-step__rail" aria-hidden="true">
-                <span class="hgs-step__badge">
-                  <hds-icon name="wrench" category="tools" icon-style="outline" size="24px"></hds-icon>
-                </span>
-                <span class="hgs-step__line"></span>
-              </div>
-
-              <div class="hgs-step__body">
-                <div class="hgs-step__text">
-                  <hds-flag variant="subtle" size="medium">Step 4</hds-flag>
-                  <h3 class="hgs-step__title">Build your first integration</h3>
-                  <p class="hgs-prose">
-                    When you're ready to ship something real, follow a guided
-                    tutorial. Each one walks you from an empty project to a
-                    working feature with full code you can adapt. Pick the one
-                    that matches what you're building.
-                  </p>
-                  <p class="hgs-prose">
-                    If you'd rather start from a working example, browse the
-                    use cases and clone the closest match.
-                  </p>
-                </div>
-
-                <div class="hgs-step__links">
-                  <hds-button variant="link" size="small" icon-right="chevron-right" icon-right-category="core-ui" data-hgs-href="/getting-started/docs">Follow a guided tutorial</hds-button>
-                  <hds-button variant="link" size="small" icon-right="chevron-right" icon-right-category="core-ui" data-hgs-href="/getting-started/docs">Browse the use cases</hds-button>
-                  <hds-button variant="link" size="small" icon-right="chevron-right" icon-right-category="core-ui" data-hgs-href="https://github.com/heremaps">Sample projects on GitHub</hds-button>
+                  <hds-button variant="link" size="small" icon-right="chevron-right" icon-right-category="core-ui" data-hgs-href="https://docs.here.com/coverage/docs/here-coverage-information">Coverage information</hds-button>
                 </div>
               </div>
             </li>
           </ol>
-        </section>
-
-        <!-- Video library: copy one li.hgs-video to add a video -->
-        <section class="hgs-section" id="video-library">
-          <header class="hgs-section__head">
-            <h2 class="hgs-section__title">Video library</h2>
-            <p class="hgs-section__kicker">Learn HERE by watching</p>
-          </header>
-
-          <p class="hgs-prose">
-            Short, focused videos that walk you through the most common
-            starting points. Watch in order or jump straight to what you need.
-          </p>
-
-          <ul class="hgs-videos hgs-plain-list">
-            <li class="hgs-video">
-              <div class="hgs-video__slot">
-                <button
-                  type="button"
-                  class="hgs-video__play"
-                  data-hgs-video="set-up-your-here-account"
-                  aria-label="Play: Set up your HERE account"
-                >
-                  <hds-icon name="video-tutorial" category="navigation-image" icon-style="solid" size="24px"></hds-icon>
-                </button>
-                <div class="hgs-video__duration">
-                  <hds-flag variant="subtle" size="small">04:12</hds-flag>
-                </div>
-              </div>
-              <div class="hgs-video__content">
-                <h3 class="hgs-video__title">Set up your HERE account</h3>
-                <p class="hgs-prose">Create a project, generate an API key, and confirm it works.</p>
-              </div>
-            </li>
-
-            <li class="hgs-video">
-              <div class="hgs-video__slot">
-                <button
-                  type="button"
-                  class="hgs-video__play"
-                  data-hgs-video="your-first-geocoding-request"
-                  aria-label="Play: Your first Geocoding request"
-                >
-                  <hds-icon name="video-tutorial" category="navigation-image" icon-style="solid" size="24px"></hds-icon>
-                </button>
-                <div class="hgs-video__duration">
-                  <hds-flag variant="subtle" size="small">06:45</hds-flag>
-                </div>
-              </div>
-              <div class="hgs-video__content">
-                <h3 class="hgs-video__title">Your first Geocoding request</h3>
-                <p class="hgs-prose">Turn an address into coordinates with a single GET request.</p>
-              </div>
-            </li>
-
-            <li class="hgs-video">
-              <div class="hgs-video__slot">
-                <button
-                  type="button"
-                  class="hgs-video__play"
-                  data-hgs-video="render-a-map-in-the-browser"
-                  aria-label="Play: Render a map in the browser"
-                >
-                  <hds-icon name="video-tutorial" category="navigation-image" icon-style="solid" size="24px"></hds-icon>
-                </button>
-                <div class="hgs-video__duration">
-                  <hds-flag variant="subtle" size="small">05:30</hds-flag>
-                </div>
-              </div>
-              <div class="hgs-video__content">
-                <h3 class="hgs-video__title">Render a map in the browser</h3>
-                <p class="hgs-prose">Add the Maps API for JavaScript and drop a marker on a map.</p>
-              </div>
-            </li>
-          </ul>
-
-          <div class="hgs-section__cta">
-            <hds-button variant="link" size="small" icon-right="chevron-right" icon-right-category="core-ui" data-hgs-href="/getting-started/docs">See the full video library</hds-button>
-          </div>
         </section>
 
         <!-- Where do I go next: copy one li.hgs-crosslink to add a link -->
@@ -351,7 +298,6 @@
           <hds-vertical-navigation-sub-list>
             <hds-vertical-navigation-sub-list-item selected><a href="#introduction">Introduction</a></hds-vertical-navigation-sub-list-item>
             <hds-vertical-navigation-sub-list-item><a href="#quick-start">Quick start</a></hds-vertical-navigation-sub-list-item>
-            <hds-vertical-navigation-sub-list-item><a href="#video-library">Video library</a></hds-vertical-navigation-sub-list-item>
             <hds-vertical-navigation-sub-list-item><a href="#where-next">Where do I go next?</a></hds-vertical-navigation-sub-list-item>
           </hds-vertical-navigation-sub-list>
         </hds-vertical-navigation>

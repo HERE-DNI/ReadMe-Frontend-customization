@@ -97,8 +97,20 @@
   gap: var(--hds-spacing-2, 8px);
 }
 
-.hgs-step__links hds-button {
+/* Only direct link buttons take the offset; buttons inside accordions and code panels keep their own position. */
+.hgs-step__links > hds-button {
   margin-left: -12px;
+}
+
+/* Accordions fill the column; the links gap supplies the spacing to neighbouring buttons. */
+.hgs-step__links > hds-accordion {
+  align-self: stretch;
+  width: 100%;
+}
+
+/* Prose that follows a code sample inside an accordion needs room above it. */
+.hgs-step__links hds-accordion-item .hgs-code + .hgs-prose {
+  margin-top: var(--hds-spacing-4, 16px);
 }
 
 /* Numbered instructions inside a step keep the HDS list markers and use body copy type. */
@@ -267,5 +279,91 @@
 @media (prefers-reduced-motion: reduce) {
   .hgs-video__play {
     transition: none;
+  }
+}
+
+/* Code samples inside quick start accordions, same rules as use-case.css. */
+.hgs-code {
+  margin-top: var(--hds-spacing-2, 8px);
+}
+.hgs-code hds-tabs {
+  display: block;
+}
+.hgs-code__panel {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  overflow: hidden;
+  padding: var(--hds-spacing-2, 8px);
+  background: var(--hds-background-primary);
+  border: 0;
+  border-radius: var(--hds-border-radius, 4px);
+}
+.hgs-code__gutter {
+  flex: 0 0 auto;
+  min-width: 32px;
+  padding-right: 12px;
+  color: rgb(0 118 160 / 35%);
+  font-family: var(--hgs-font-mono);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  text-align: right;
+  white-space: pre;
+  user-select: none;
+}
+:root .hgs .hgs-code__pre {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin: 0;
+  padding: 0 88px 0 0;
+  overflow-x: auto;
+  background: transparent;
+  border: 0;
+  color: var(--hds-foreground-secondary);
+  font-family: var(--hgs-font-mono);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  tab-size: 2;
+  white-space: pre;
+}
+:root .hgs .hgs-code__pre code {
+  font: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  white-space: inherit;
+}
+.hgs-code__lang {
+  position: absolute;
+  top: var(--hds-spacing-2, 8px);
+  right: var(--hds-spacing-3, 12px);
+  z-index: 1;
+  color: var(--hds-action);
+  font-family: var(--hgs-font-regular);
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: -0.0167em;
+}
+.hgs-code__copy {
+  position: absolute;
+  bottom: var(--hds-spacing-2, 8px);
+  right: var(--hds-spacing-2, 8px);
+  z-index: 1;
+}
+.hgs-code__panel:has(.hgs-code__copy) {
+  min-height: 40px;
+}
+.hgs-code__panel:has(.hgs-code__lang):has(.hgs-code__copy) {
+  min-height: 60px;
+}
+@media (max-width: 767px) {
+  :root .hgs .hgs-code__pre {
+    padding-right: 0;
+    padding-bottom: 28px;
   }
 }
