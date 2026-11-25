@@ -937,7 +937,7 @@ function stampMarkdownScopes() {
           showInJa: true,
         },
         {
-          text: { en: "GIS Data Suite", ja: "GIS Data Suite" },
+          text: { en: "HERE GIS Data Suite", ja: "HERE GIS Data Suite" },
           href: { en: "/gis-data-suite/docs", ja: "/gis-data-suite/docs" },
           showInJa: false,
         },
@@ -1166,7 +1166,7 @@ function stampMarkdownScopes() {
           showInJa: true,
         },
         {
-          text: { en: "Location Reasoning", ja: "Location Reasoning" },
+          text: { en: "HERE Location Reasoning", ja: "HERE Location Reasoning" },
           href: { en: "/location-reasoning", ja: "/location-reasoning" },
           showInJa: false,
         },
