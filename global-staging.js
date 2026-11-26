@@ -1347,7 +1347,7 @@ function stampMarkdownScopes() {
       var hds = doc.createElement("link");
       hds.id = "here-hds-styles";
       hds.rel = "stylesheet";
-      hds.href = "https://platform.here.com/hds/hds-styles.css";
+      hds.href = "https://platform.here.com/hds/hds-styles.css?versionOverride=2026.2.0";
       (doc.head || doc.documentElement).appendChild(hds);
     }
 
