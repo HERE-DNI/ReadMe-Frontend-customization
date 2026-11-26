@@ -855,7 +855,7 @@ function stampMarkdownScopes() {
           showInJa: false,
         },
         {
-          text: { en: "Optimized Client Map", ja: "Optimized Client Map" },
+          text: { en: "Optimized Client Map", ja: "最適化されたクライアントマップ" },
           href: {
             en: "/optimized-client-map/docs",
             ja: "/optimized-client-map/docs",
