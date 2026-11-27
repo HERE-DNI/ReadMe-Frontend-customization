@@ -855,7 +855,7 @@ function stampMarkdownScopes() {
           showInJa: false,
         },
         {
-          text: { en: "Optimized Client Map", ja: "最適化されたクライアントマップ" },
+          text: { en: "Optimized Client Map", ja: "Optimized Client Map" },
           href: {
             en: "/optimized-client-map/docs",
             ja: "/optimized-client-map/docs",
@@ -1134,7 +1134,7 @@ function stampMarkdownScopes() {
         {
           text: {
             en: "Identity & Access Management",
-            ja: "IDとアクセス管理",
+            ja: "ID およびアクセス管理",
           },
           href: {
             en: "/identity-and-access-management/docs",
@@ -1153,7 +1153,7 @@ function stampMarkdownScopes() {
           showInJa: false,
         },
         {
-          text: { en: "Embedded Editor", ja: "埋め込みエディター" },
+          text: { en: "Embedded Editor", ja: "Embedded Editor" },
           href: { en: "/embedded-editor/docs", ja: "/embedded-editor/docs" },
           showInJa: false,
         },
@@ -1299,7 +1299,7 @@ function stampMarkdownScopes() {
   // "Explore" site-wide (previously showed the current project's name,
   // read from the og:site_name meta tag; that lookup is no longer needed).
 
-  var TRIGGER_LABEL = { en: "Explore", ja: "Explore" };
+  var TRIGGER_LABEL = { en: "Explore", ja: "コンテンツを探す" };
 
   function setTriggerLabel(text) {
     if (!_btn) return;
